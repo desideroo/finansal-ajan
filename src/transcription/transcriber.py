@@ -41,9 +41,9 @@ def transcribe_audio(audio_path: str) -> list[dict]:
             path_or_hf_repo=_CHECKPOINT,
             language="tr",
             temperature=0.0,
-            vad_filter=True,
             word_timestamps=True,
             initial_prompt=WHISPER_INITIAL_PROMPT,
+            no_speech_threshold=0.6,
         )
     except Exception as exc:
         logger.error("Whisper transkripsiyon hatası: %s", exc)
