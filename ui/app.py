@@ -114,6 +114,46 @@ with tab2:
                 except Exception as exc:
                     st.error(f"Arama hatası: {exc}")
 
+        st.divider()
+        st.subheader("Fiyat Doğrulama")
+
+        if st.button("Fiyat Doğrula", disabled=(secili_hisse == "Tümü")):
+            if secili_hisse == "Tümü":
+                st.warning("Fiyat doğrulamak için sol panelden bir hisse seçin.")
+            else:
+                with st.spinner(f"{secili_hisse} sinyalleri doğrulanıyor..."):
+                    try:
+                        r = httpx.get(f"{API_URL}/verify", params={"hisse": secili_hisse}, timeout=30)
+                        r.raise_for_status()
+                        data = r.json()
+                        results = data.get("results", [])
+                        st.caption(f"{data.get('count', 0)} sinyal doğrulandı")
+
+                        if results:
+                            import pandas as pd
+                            df = pd.DataFrame(results)
+                            cols = [c for c in
+                                ["hisse", "sinyal_tipi", "fiyat", "anlik_fiyat", "fark_yuzde", "yorum"]
+                                if c in df.columns]
+                            df_show = df[cols].copy()
+
+                            def renk(val):
+                                if val is None or not isinstance(val, (int, float)):
+                                    return ""
+                                return "color: green" if val >= 0 else "color: red"
+
+                            if "fark_yuzde" in df_show.columns:
+                                st.dataframe(
+                                    df_show.style.applymap(renk, subset=["fark_yuzde"]),
+                                    use_container_width=True,
+                                )
+                            else:
+                                st.dataframe(df_show, use_container_width=True)
+                        else:
+                            st.info(f"{secili_hisse} için alım/satım sinyali bulunamadı.")
+                    except Exception as exc:
+                        st.error(f"Doğrulama hatası: {exc}")
+
 # ── SEKME 3: Hakkında ────────────────────────────────────────────────────────
 
 with tab3:

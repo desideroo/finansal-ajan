@@ -173,17 +173,20 @@ finansal-ajan/
 ## Modül Tamamlanma Durumu
 
 - [x] `src/transcription/transcriber.py`
-- [ ] `src/transcription/prompts.py`
+- [x] `src/transcription/prompts.py`
 - [x] `src/agents/chunker.py`
 - [x] `src/agents/analyst.py`
 - [x] `src/qdrant/client.py`
 - [x] `src/qdrant/uploader.py`
 - [x] `src/qdrant/searcher.py`
-- [ ] `src/utils/api_helpers.py`
-- [ ] `src/utils/logger.py`
+- [x] `src/utils/api_helpers.py`
+- [x] `src/utils/logger.py`
 - [x] `api/main.py`
 - [x] `ui/app.py`
 - [x] `orchestrator.py`
+- [x] `src/verification/agent.py`
+
+Tüm modüller tamamlandı — proje production-ready.
 
 ---
 

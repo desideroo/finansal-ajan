@@ -10,8 +10,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from orchestrator import run_pipeline
 from src.qdrant.client import get_client, get_or_create_collection
-from src.qdrant.searcher import search_filtered
+from src.qdrant.searcher import search_by_stock, search_filtered
 from src.utils.logger import get_logger
+from src.verification.agent import verify_signal
 
 load_dotenv()
 logger = get_logger(__name__)
@@ -110,6 +111,19 @@ async def stocks():
         return {"hisseler": sorted(hisseler)}
     except Exception as exc:
         logger.error("Hisse listesi hatası: %s", exc)
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.get("/verify")
+async def verify(hisse: str = Query(..., description="BIST ticker kodu")):
+    """Hissenin Qdrant'taki alım/satım sinyallerini anlık fiyatla karşılaştırır."""
+    try:
+        sinyaller = search_by_stock(hisse, limit=50)
+        ilgili = [s for s in sinyaller if s.get("sinyal_tipi") in ("alım", "satım")]
+        results = [verify_signal(s) for s in ilgili]
+        return {"hisse": hisse, "count": len(results), "results": results}
+    except Exception as exc:
+        logger.error("Doğrulama hatası (%s): %s", hisse, exc)
         raise HTTPException(status_code=500, detail=str(exc))
 
 
