@@ -172,7 +172,7 @@ finansal-ajan/
 
 ## Modül Tamamlanma Durumu
 
-- [ ] `src/transcription/transcriber.py`
+- [x] `src/transcription/transcriber.py`
 - [ ] `src/transcription/prompts.py`
 - [ ] `src/agents/chunker.py`
 - [ ] `src/agents/analyst.py`
