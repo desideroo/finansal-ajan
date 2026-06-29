@@ -176,9 +176,9 @@ finansal-ajan/
 - [ ] `src/transcription/prompts.py`
 - [x] `src/agents/chunker.py`
 - [x] `src/agents/analyst.py`
-- [ ] `src/qdrant/client.py`
-- [ ] `src/qdrant/uploader.py`
-- [ ] `src/qdrant/searcher.py`
+- [x] `src/qdrant/client.py`
+- [x] `src/qdrant/uploader.py`
+- [x] `src/qdrant/searcher.py`
 - [ ] `src/utils/api_helpers.py`
 - [ ] `src/utils/logger.py`
 - [ ] `api/main.py`

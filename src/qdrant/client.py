@@ -1,6 +1,6 @@
 """Qdrant vektör veritabanı bağlantısı ve koleksiyon yönetimi.
 
-Koleksiyon yoksa otomatik oluşturur: BGE-M3 dense (1024 dim) + sparse hybrid.
+Dense (BGE-M3, 1024 dim) + sparse (BM25 hybrid) koleksiyon şeması.
 Bağlantı bilgileri .env'den alınır.
 """
 
@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import (
     Distance,
+    Modifier,
     SparseIndexParams,
     SparseVectorParams,
     VectorParams,
@@ -24,17 +25,29 @@ _client: QdrantClient | None = None
 
 
 def get_client() -> QdrantClient:
-    """Singleton Qdrant istemcisi döndürür."""
+    """Singleton Qdrant istemcisi döndürür.
+
+    Raises:
+        ConnectionError: Qdrant'a bağlanılamazsa.
+    """
     global _client
-    if _client is None:
-        url = os.getenv("QDRANT_URL", "http://localhost:6333")
-        _client = QdrantClient(url=url)
+    if _client is not None:
+        return _client
+
+    url = os.getenv("QDRANT_URL", "http://localhost:6333")
+    try:
+        client = QdrantClient(url=url)
+        client.get_collections()  # bağlantıyı doğrula
+        _client = client
         logger.info("Qdrant istemcisi oluşturuldu: %s", url)
-    return _client
+        return _client
+    except Exception as exc:
+        logger.error("Qdrant bağlantısı kurulamadı (%s): %s", url, exc)
+        raise ConnectionError(f"Qdrant bağlantısı başarısız: {exc}") from exc
 
 
-def ensure_collection() -> None:
-    """Koleksiyon yoksa BGE-M3 uyumlu şemada oluşturur."""
+def get_or_create_collection() -> None:
+    """Koleksiyon yoksa dense + sparse hybrid şemada oluşturur."""
     client = get_client()
     collection = os.getenv("QDRANT_COLLECTION", "finansal_analiz")
 
@@ -45,24 +58,28 @@ def ensure_collection() -> None:
 
     client.create_collection(
         collection_name=collection,
-        vectors_config={"dense": VectorParams(size=1024, distance=Distance.COSINE)},
+        vectors_config={
+            "dense": VectorParams(size=1024, distance=Distance.COSINE),
+        },
         sparse_vectors_config={
-            "sparse": SparseVectorParams(index=SparseIndexParams(on_disk=False))
+            "sparse": SparseVectorParams(
+                index=SparseIndexParams(on_disk=False),
+                modifier=Modifier.IDF,
+            ),
         },
     )
     logger.info("Koleksiyon oluşturuldu: %s", collection)
 
 
-def test_connection() -> bool:
+def test_connection() -> None:
     """Qdrant bağlantısını doğrular ve koleksiyonu hazırlar."""
-    try:
-        client = get_client()
-        info = client.get_collections()
-        logger.info("Qdrant bağlantısı başarılı — %d koleksiyon mevcut", len(info.collections))
-        ensure_collection()
-        print("Qdrant bağlantısı başarılı")
-        return True
-    except Exception as exc:
-        logger.error("Qdrant bağlantısı başarısız: %s", exc)
-        print(f"Qdrant bağlantısı başarısız: {exc}")
-        return False
+    client = get_client()
+    get_or_create_collection()
+    collection = os.getenv("QDRANT_COLLECTION", "finansal_analiz")
+    info = client.get_collection(collection)
+    point_count = info.points_count or 0
+    logger.info(
+        "Qdrant bağlantısı başarılı, koleksiyon hazır: %s (%d kayıt)",
+        collection, point_count,
+    )
+    print("Qdrant bağlantısı başarılı, koleksiyon hazır")
