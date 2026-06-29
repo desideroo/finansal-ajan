@@ -181,8 +181,8 @@ finansal-ajan/
 - [x] `src/qdrant/searcher.py`
 - [ ] `src/utils/api_helpers.py`
 - [ ] `src/utils/logger.py`
-- [ ] `api/main.py`
-- [ ] `ui/app.py`
+- [x] `api/main.py`
+- [x] `ui/app.py`
 - [x] `orchestrator.py`
 
 ---
