@@ -183,7 +183,7 @@ finansal-ajan/
 - [ ] `src/utils/logger.py`
 - [ ] `api/main.py`
 - [ ] `ui/app.py`
-- [ ] `orchestrator.py`
+- [x] `orchestrator.py`
 
 ---
 
