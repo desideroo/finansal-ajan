@@ -1,40 +1,71 @@
 """FastAPI backend — ses yükleme, analiz ve sinyal sorgulama endpoint'leri."""
 
-import asyncio
-import json
 import os
 import tempfile
+import threading
+import uuid
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, File, HTTPException, Query, UploadFile, WebSocket
+from fastapi import FastAPI, File, Form, HTTPException, Query, UploadFile, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
 
 from src.agents.analyst import analyze_chunk, extract_stocks_from_result
 from src.agents.chunker import process_chunks
 from src.qdrant.client import get_client, get_or_create_collection
 from src.qdrant.searcher import search_by_stock, search_filtered
 from src.qdrant.uploader import upload_chunk_results
-from src.transcription.transcriber import add_overlap, build_chunks, transcribe_audio
+from src.transcription.transcriber import add_overlap, transcribe_streaming
 from src.utils.logger import get_logger
 from src.verification.agent import verify_signal
 
 load_dotenv()
 logger = get_logger(__name__)
 
-app = FastAPI(title="Borsa Analizi API", version="2.0.0")
+app = FastAPI(title="Borsa Analizi API", version="3.0.0")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# ── Job yönetimi ──────────────────────────────────────────────────────────────
 
+class Job:
+    def __init__(self, job_id: str):
+        self.job_id = job_id
+        self.events: list[dict] = []          # tüm geçmiş olaylar
+        self.cancelled = threading.Event()
+        self.done = False
+        self.error: str | None = None
+        self._lock = threading.Lock()
+
+    def add(self, event_type: str, data: dict):
+        with self._lock:
+            self.events.append({"type": event_type, "data": data})
+
+    def snapshot(self, cursor: int) -> dict:
+        with self._lock:
+            new_events = self.events[cursor:]
+            return {
+                "done": self.done,
+                "error": self.error,
+                "cancelled": self.cancelled.is_set(),
+                "total_events": len(self.events),
+                "events": new_events,
+            }
+
+
+_jobs: dict[str, Job] = {}
+
+
+def _new_job() -> Job:
+    jid = str(uuid.uuid4())[:8]
+    job = Job(jid)
+    _jobs[jid] = job
+    return job
+
+
+# ── Startup ───────────────────────────────────────────────────────────────────
 
 @app.on_event("startup")
-async def startup() -> None:
+async def startup():
     get_or_create_collection()
     logger.info("API hazır")
 
@@ -44,184 +75,159 @@ async def health():
     return {"status": "ok"}
 
 
-# ── SSE yardımcısı ────────────────────────────────────────────────────────────
+# ── Transkripsiyon job ────────────────────────────────────────────────────────
 
-def _sse(event: str, data: dict) -> str:
-    return f"event: {event}\ndata: {json.dumps(data, ensure_ascii=False)}\n\n"
+def _run_transcription(job: Job, audio_path: str, title: str):
+    try:
+        job.add("progress", {"mesaj": "Whisper başlatılıyor...", "yuzde": 2})
+        all_chunks: list[dict] = []
 
+        for ev in transcribe_streaming(audio_path, chunk_minutes=10, cancelled=job.cancelled):
+            if job.cancelled.is_set():
+                break
 
-# ── Transkripsiyon + chunking stream ─────────────────────────────────────────
+            chunk_idx = ev["chunk_idx"]
+            total = ev["total_chunks"]
+            yuzde = int(5 + (chunk_idx / max(total, 1)) * 90)
+            dakika = int(ev["start_sec"] // 60)
 
-@app.post("/stream/transcribe")
-async def stream_transcribe(
-    file: UploadFile = File(...),
-    title: str = "bilinmiyor",
-):
-    """Ses dosyasını yükle, transkripsiyon yap, chunk'ları SSE ile aktar."""
-    suffix = Path(file.filename).suffix if file.filename else ".tmp"
-    tmp_path = None
+            job.add("progress", {
+                "mesaj": f"Chunk {chunk_idx + 1}/{total} transkribe edildi ({dakika}. dakika)",
+                "yuzde": yuzde,
+                "chunk_idx": chunk_idx,
+                "total_chunks": total,
+            })
+            job.add("chunk", {
+                "chunk_id": ev["chunk_id"],
+                "chunk_idx": chunk_idx,
+                "total_chunks": total,
+                "start_sec": ev["start_sec"],
+                "end_sec": ev["end_sec"],
+                "text": ev["text"],
+                "word_count": ev["word_count"],
+                "from_cache": ev.get("from_cache", False),
+                "dakika": dakika,
+            })
+            all_chunks.append(ev)
 
-    async def generate():
-        nonlocal tmp_path
-        try:
-            # 1 — Dosyayı kaydet
-            yield _sse("progress", {"adim": "kayit", "mesaj": "Dosya kaydediliyor...", "yuzde": 5})
-            with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-                tmp.write(await file.read())
-                tmp_path = tmp.name
-
-            # 2 — Cache kontrolü
-            cache_file = Path(tmp_path).with_suffix(".segments.json")
-            if cache_file.exists():
-                yield _sse("progress", {"adim": "transkripsiyon", "mesaj": "Cache'den yükleniyor...", "yuzde": 40})
-            else:
-                yield _sse("progress", {"adim": "transkripsiyon", "mesaj": "Whisper transkripsiyon başlıyor (bu ~25 dk sürebilir)...", "yuzde": 10})
-
-            await asyncio.get_event_loop().run_in_executor(None, lambda: None)
-            segments = await asyncio.get_event_loop().run_in_executor(
-                None, transcribe_audio, tmp_path
-            )
-            yield _sse("progress", {"adim": "transkripsiyon", "mesaj": f"Transkripsiyon tamamlandı: {len(segments)} segment", "yuzde": 60})
-
-            # 3 — Chunk oluşturma
-            yield _sse("progress", {"adim": "chunking", "mesaj": "Chunk'lar oluşturuluyor...", "yuzde": 70})
-            raw_chunks = build_chunks(segments, chunk_minutes=10)
-            overlapped = add_overlap(raw_chunks, overlap_words=300)
-            chunks = process_chunks(overlapped)
-            yield _sse("progress", {"adim": "chunking", "mesaj": f"{len(chunks)} chunk oluşturuldu", "yuzde": 90})
-
-            # 4 — Chunk verilerini gönder
-            chunk_data = [
-                {
-                    "chunk_id": c.get("chunk_id"),
-                    "start_sec": c.get("start_sec"),
-                    "end_sec": c.get("end_sec"),
-                    "word_count": c.get("word_count"),
-                    "text": c.get("text", ""),
-                }
-                for c in chunks
-            ]
-
-            # tmp_path'i payload'da sakla (analiz aşaması için)
-            yield _sse("tamamlandi", {
-                "adim": "transkripsiyon",
+        if job.cancelled.is_set():
+            job.add("cancelled", {"mesaj": "Transkripsiyon durduruldu"})
+        else:
+            job.add("done", {
                 "mesaj": "Transkripsiyon tamamlandı",
                 "yuzde": 100,
-                "chunks": chunk_data,
-                "tmp_path": tmp_path,
+                "toplam_chunk": len(all_chunks),
+                "audio_path": audio_path,
                 "title": title,
-                "segment_sayisi": len(segments),
             })
 
-        except Exception as exc:
-            logger.error("Transkripsiyon stream hatası: %s", exc)
-            yield _sse("hata", {"mesaj": str(exc)})
-            if tmp_path and os.path.exists(tmp_path):
-                os.remove(tmp_path)
+    except Exception as exc:
+        logger.error("Transkripsiyon job hatası: %s", exc)
+        job.error = str(exc)
+        job.add("error", {"mesaj": str(exc)})
+    finally:
+        job.done = True
 
-    return StreamingResponse(generate(), media_type="text/event-stream")
 
-
-# ── Analiz stream ─────────────────────────────────────────────────────────────
-
-@app.post("/stream/analyze")
-async def stream_analyze(
+@app.post("/jobs/transcribe")
+async def start_transcription(
     file: UploadFile = File(...),
-    title: str = "bilinmiyor",
+    title: str = Form("bilinmiyor"),
 ):
-    """Transkripsiyon + analiz + Qdrant yükleme — her adım SSE ile iletilir."""
     suffix = Path(file.filename).suffix if file.filename else ".tmp"
-    tmp_path = None
+    with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+        tmp.write(await file.read())
+        tmp_path = tmp.name
 
-    async def generate():
-        nonlocal tmp_path
-        try:
-            # 1 — Dosya kaydet
-            yield _sse("progress", {"adim": "kayit", "mesaj": "Dosya kaydediliyor...", "yuzde": 2})
-            with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-                tmp.write(await file.read())
-                tmp_path = tmp.name
+    job = _new_job()
+    t = threading.Thread(target=_run_transcription, args=(job, tmp_path, title), daemon=True)
+    t.start()
+    return {"job_id": job.job_id}
 
-            # 2 — Transkripsiyon
-            cache_file = Path(tmp_path).with_suffix(".segments.json")
-            if cache_file.exists():
-                mesaj = "Cache'den yükleniyor..."
-            else:
-                mesaj = "Whisper transkripsiyon (~25 dk)..."
-            yield _sse("progress", {"adim": "transkripsiyon", "mesaj": mesaj, "yuzde": 5})
 
-            segments = await asyncio.get_event_loop().run_in_executor(
-                None, transcribe_audio, tmp_path
-            )
-            yield _sse("progress", {"adim": "transkripsiyon", "mesaj": f"{len(segments)} segment alındı", "yuzde": 35})
+# ── Analiz job ────────────────────────────────────────────────────────────────
 
-            # 3 — Chunking
-            yield _sse("progress", {"adim": "chunking", "mesaj": "Chunk'lar hazırlanıyor...", "yuzde": 38})
-            raw_chunks = build_chunks(segments, chunk_minutes=10)
-            overlapped = add_overlap(raw_chunks, overlap_words=300)
-            chunks = process_chunks(overlapped)
-            toplam = len(chunks)
-            yield _sse("progress", {"adim": "chunking", "mesaj": f"{toplam} chunk oluşturuldu", "yuzde": 40})
+def _run_analysis(job: Job, audio_path: str, title: str):
+    try:
+        # Transkripsiyon (cache varsa anında)
+        job.add("progress", {"mesaj": "Segmentler yükleniyor (cache)...", "yuzde": 2})
+        all_stream_chunks: list[dict] = []
+        for ev in transcribe_streaming(audio_path, chunk_minutes=10, cancelled=job.cancelled):
+            if job.cancelled.is_set():
+                break
+            all_stream_chunks.append(ev)
 
-            if toplam == 0:
-                yield _sse("hata", {"mesaj": "Hiç chunk oluşturulamadı"})
-                return
+        if job.cancelled.is_set():
+            job.add("cancelled", {"mesaj": "Analiz durduruldu"})
+            return
 
-            # 4 — Koleksiyon
-            get_or_create_collection()
+        job.add("progress", {"mesaj": f"{len(all_stream_chunks)} chunk hazır, analiz başlıyor...", "yuzde": 5})
 
-            # 5 — Her chunk analiz + yükle
-            seen_stocks: list[str] = []
-            tum_hisseler: set[str] = set()
-            tum_sinyaller: list[dict] = []
-            basarili = 0
+        # Chunker pipeline
+        raw_chunks = [
+            {"chunk_id": ev["chunk_id"], "start_sec": ev["start_sec"],
+             "end_sec": ev["end_sec"], "text": ev["text"]}
+            for ev in all_stream_chunks
+        ]
+        overlapped = add_overlap(raw_chunks, overlap_words=300)
+        chunks = process_chunks(overlapped)
+        toplam = len(chunks)
 
-            analiz_baslangic = 40
-            analiz_aralik = 55  # 40% → 95%
+        get_or_create_collection()
 
-            for i, chunk in enumerate(chunks):
-                chunk_id = chunk.get("chunk_id", f"{i:02d}")
-                yuzde = int(analiz_baslangic + (i / toplam) * analiz_aralik)
+        seen_stocks: list[str] = []
+        tum_hisseler: set[str] = set()
+        tum_sinyaller: list[dict] = []
+        basarili = 0
 
-                yield _sse("progress", {
-                    "adim": "analiz",
-                    "mesaj": f"Chunk {chunk_id} analiz ediliyor... ({i+1}/{toplam})",
-                    "yuzde": yuzde,
+        for i, chunk in enumerate(chunks):
+            if job.cancelled.is_set():
+                break
+
+            chunk_id = chunk.get("chunk_id", f"{i:02d}")
+            yuzde = int(5 + (i / max(toplam, 1)) * 90)
+            dakika = int(chunk.get("start_sec", 0) // 60)
+
+            job.add("progress", {
+                "mesaj": f"Chunk {chunk_id} analiz ediliyor ({i+1}/{toplam}, {dakika}. dakika)...",
+                "yuzde": yuzde,
+                "chunk_idx": i,
+                "total_chunks": toplam,
+            })
+
+            try:
+                analysis = analyze_chunk(chunk, seen_stocks)
+                upload_chunk_results(chunk, analysis, title)
+
+                yeni = extract_stocks_from_result(analysis)
+                seen_stocks = list(dict.fromkeys(seen_stocks + yeni))
+                tum_hisseler.update(yeni)
+
+                sinyaller = analysis.get("sinyaller", [])
+                for s in sinyaller:
+                    s["chunk_id"] = chunk_id
+                tum_sinyaller.extend(sinyaller)
+                basarili += 1
+
+                job.add("chunk_done", {
+                    "chunk_id": chunk_id,
                     "chunk_idx": i,
-                    "toplam_chunk": toplam,
+                    "total_chunks": toplam,
+                    "dakika": dakika,
+                    "hisseler": yeni,
+                    "sinyal_sayisi": len(sinyaller),
+                    "sinyaller": sinyaller,
+                    "genel_yorum": analysis.get("genel_yorum", ""),
                 })
 
-                try:
-                    analysis = await asyncio.get_event_loop().run_in_executor(
-                        None, analyze_chunk, chunk, seen_stocks
-                    )
-                    await asyncio.get_event_loop().run_in_executor(
-                        None, upload_chunk_results, chunk, analysis, title
-                    )
+            except Exception as exc:
+                logger.error("Chunk %s analiz hatası: %s", chunk_id, exc)
+                job.add("chunk_error", {"chunk_id": chunk_id, "mesaj": str(exc)})
 
-                    yeni = extract_stocks_from_result(analysis)
-                    seen_stocks = list(dict.fromkeys(seen_stocks + yeni))
-                    tum_hisseler.update(yeni)
-
-                    sinyaller_bu_chunk = analysis.get("sinyaller", [])
-                    for s in sinyaller_bu_chunk:
-                        s["chunk_id"] = chunk_id
-                    tum_sinyaller.extend(sinyaller_bu_chunk)
-                    basarili += 1
-
-                    yield _sse("chunk_tamamlandi", {
-                        "chunk_id": chunk_id,
-                        "hisseler": yeni,
-                        "sinyal_sayisi": len(sinyaller_bu_chunk),
-                        "sinyaller": sinyaller_bu_chunk,
-                    })
-
-                except Exception as exc:
-                    logger.error("Chunk %s hatası: %s", chunk_id, exc)
-                    yield _sse("chunk_hata", {"chunk_id": chunk_id, "mesaj": str(exc)})
-
-            yield _sse("tamamlandi", {
-                "adim": "analiz",
+        if job.cancelled.is_set():
+            job.add("cancelled", {"mesaj": "Analiz durduruldu"})
+        else:
+            job.add("done", {
                 "mesaj": "Analiz tamamlandı",
                 "yuzde": 100,
                 "ozet": {
@@ -233,23 +239,53 @@ async def stream_analyze(
                 "sinyaller": tum_sinyaller,
             })
 
-        except Exception as exc:
-            logger.error("Analiz stream hatası: %s", exc)
-            yield _sse("hata", {"mesaj": str(exc)})
-        finally:
-            if tmp_path and os.path.exists(tmp_path):
-                os.remove(tmp_path)
+    except Exception as exc:
+        logger.error("Analiz job hatası: %s", exc)
+        job.error = str(exc)
+        job.add("error", {"mesaj": str(exc)})
+    finally:
+        job.done = True
 
-    return StreamingResponse(generate(), media_type="text/event-stream")
+
+@app.post("/jobs/analyze")
+async def start_analysis(
+    file: UploadFile = File(...),
+    title: str = Form("bilinmiyor"),
+):
+    suffix = Path(file.filename).suffix if file.filename else ".tmp"
+    with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+        tmp.write(await file.read())
+        tmp_path = tmp.name
+
+    job = _new_job()
+    t = threading.Thread(target=_run_analysis, args=(job, tmp_path, title), daemon=True)
+    t.start()
+    return {"job_id": job.job_id}
+
+
+# ── Job poll + iptal ──────────────────────────────────────────────────────────
+
+@app.get("/jobs/{job_id}/poll")
+async def poll_job(job_id: str, cursor: int = Query(0)):
+    job = _jobs.get(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Job bulunamadı")
+    return job.snapshot(cursor)
+
+
+@app.delete("/jobs/{job_id}")
+async def cancel_job(job_id: str):
+    job = _jobs.get(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Job bulunamadı")
+    job.cancelled.set()
+    return {"cancelled": True}
 
 
 # ── Mevcut endpoint'ler ───────────────────────────────────────────────────────
 
 @app.post("/analyze")
-async def analyze(
-    file: UploadFile = File(...),
-    title: str = "bilinmiyor",
-):
+async def analyze(file: UploadFile = File(...), title: str = "bilinmiyor"):
     from orchestrator import run_pipeline
     suffix = Path(file.filename).suffix if file.filename else ".tmp"
     tmp_path = None
@@ -257,10 +293,8 @@ async def analyze(
         with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
             tmp.write(await file.read())
             tmp_path = tmp.name
-        result = run_pipeline(tmp_path, title)
-        return result
+        return run_pipeline(tmp_path, title)
     except Exception as exc:
-        logger.error("Analiz hatası: %s", exc)
         raise HTTPException(status_code=500, detail=str(exc))
     finally:
         if tmp_path and os.path.exists(tmp_path):
@@ -319,7 +353,6 @@ async def verify(hisse: str = Query(...)):
 @app.websocket("/progress")
 async def progress(websocket: WebSocket):
     await websocket.accept()
-    await websocket.send_text("Bağlantı kuruldu")
     try:
         while True:
             data = await websocket.receive_text()
