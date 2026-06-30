@@ -68,9 +68,12 @@ def upload_signal(signal: dict, chunk: dict, video_title: str) -> bool:
     Returns:
         True yüklendi, False atlandı/hata.
     """
+    from src.transcription.prompts import load_bist_tickers
+    _valid_tickers = load_bist_tickers()
+
     hisse = signal.get("hisse", "belirsiz")
-    if hisse == "belirsiz":
-        logger.info("Belirsiz hisse atlandı (chunk %s)", chunk.get("chunk_id"))
+    if hisse == "belirsiz" or hisse not in _valid_tickers:
+        logger.info("Geçersiz/belirsiz hisse atlandı: '%s' (chunk %s)", hisse, chunk.get("chunk_id"))
         return False
 
     embed_query = f"{hisse} {signal.get('sinyal_tipi', '')} {signal.get('gerekce', '')}"

@@ -10,4 +10,5 @@ qdrant_storage/
 *.wav
 *.mp4
 logs/
+*.segments.json
 .pytest_cache/

@@ -4,6 +4,7 @@ Uzun Türkçe ses dosyalarını segment bazlı ~10 dakikalık chunk'lara böler.
 3 katmanlı bağlam koruması: segment sınırları, 300 kelime overlap, seen_stocks.
 """
 
+import json
 from pathlib import Path
 
 import mlx_whisper
@@ -17,7 +18,11 @@ _CHECKPOINT = "mlx-community/whisper-large-v3-mlx"
 _HALLUCINATION_REPEAT_THRESHOLD = 4  # 3 kelimelik pattern N kez tekrarlarsa halüsinasyon
 
 
-def transcribe_audio(audio_path: str) -> list[dict]:
+def _cache_path(audio_path: str) -> Path:
+    return Path(audio_path).with_suffix(".segments.json")
+
+
+def transcribe_audio(audio_path: str, use_cache: bool = True) -> list[dict]:
     """Ses dosyasını MLX Whisper ile metne çevirir ve segment listesi döndürür.
 
     Args:
@@ -34,6 +39,13 @@ def transcribe_audio(audio_path: str) -> list[dict]:
     if not path.exists():
         logger.error("Ses dosyası bulunamadı: %s", path.resolve())
         raise FileNotFoundError(f"Ses dosyası bulunamadı: {audio_path}")
+
+    # Cache kontrolü — aynı ses dosyası için transkripsiyon tekrarını önler
+    cache = _cache_path(audio_path)
+    if use_cache and cache.exists():
+        logger.info("Cache'den yükleniyor: %s", cache.name)
+        with cache.open(encoding="utf-8") as f:
+            return json.load(f)
 
     logger.info("Transkripsiyon başlıyor: %s", path.name)
     try:
@@ -53,6 +65,12 @@ def transcribe_audio(audio_path: str) -> list[dict]:
 
     segments = result.get("segments", [])
     logger.info("Transkripsiyon tamamlandı: %d segment", len(segments))
+
+    # Sonucu cache'e kaydet
+    if use_cache:
+        with cache.open("w", encoding="utf-8") as f:
+            json.dump(segments, f, ensure_ascii=False)
+        logger.info("Segment cache'e yazıldı: %s", cache.name)
     return segments
 
 
