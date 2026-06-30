@@ -4,11 +4,41 @@ LLM çağrısı YAPILMAZ. Yalnızca Python ile chunk doğrulama,
 ID atama, kısa chunk filtreleme ve seen_stocks taşıma işlemleri yapılır.
 """
 
+import math
+
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
 _MIN_WORDS = 10
+
+
+def calculate_chunk_minutes(total_seconds: float, max_chunk_minutes: int = 30) -> int:
+    """Ses uzunluğuna göre optimum chunk boyutunu dakika cinsinden hesaplar.
+
+    Args:
+        total_seconds: Ses dosyasının toplam süresi (saniye).
+        max_chunk_minutes: İzin verilen maksimum chunk süresi (dakika).
+
+    Returns:
+        Kullanılacak chunk boyutu (dakika). Hiçbir chunk max_chunk_minutes'ı geçmez.
+    """
+    total_minutes = total_seconds / 60.0
+
+    if total_minutes <= max_chunk_minutes:
+        # Tüm ses tek chunk'a sığıyor
+        chunk_minutes = int(total_minutes) + 1
+    else:
+        chunk_count = math.ceil(total_minutes / max_chunk_minutes)
+        chunk_minutes = math.ceil(total_minutes / chunk_count)
+
+    logger.info(
+        "Toplam süre: %.0f dk, hesaplanan chunk boyutu: %d dk, tahmini chunk sayısı: %d",
+        total_minutes,
+        chunk_minutes,
+        math.ceil(total_minutes / chunk_minutes),
+    )
+    return chunk_minutes
 
 
 def process_chunks(raw_chunks: list[dict]) -> list[dict]:
@@ -20,6 +50,12 @@ def process_chunks(raw_chunks: list[dict]) -> list[dict]:
     Returns:
         Ajan 2'ye gönderilmeye hazır, word_count eklenmiş chunk listesi.
     """
+    # Chunk'ların toplam süresinden bilgi amaçlı chunk boyutunu logla
+    if raw_chunks:
+        total_seconds = max(c.get("end_sec", 0) for c in raw_chunks)
+        if total_seconds > 0:
+            calculate_chunk_minutes(total_seconds)
+
     validated = _validate_and_normalize(raw_chunks)
     with_ids = assign_chunk_ids(validated)
     filtered = filter_empty_chunks(with_ids)

@@ -15,6 +15,7 @@ from pathlib import Path
 
 import mlx_whisper
 
+from src.agents.chunker import calculate_chunk_minutes
 from src.transcription.prompts import WHISPER_INITIAL_PROMPT
 from src.utils.logger import get_logger
 
@@ -137,6 +138,8 @@ def transcribe_streaming(
             all_segments = json.load(f)
 
         clean = [s for s in all_segments if not _is_hallucination(s.get("text", ""))]
+        total_secs = max((s.get("end", 0) for s in clean), default=0)
+        chunk_minutes = calculate_chunk_minutes(total_secs)
         raw_chunks = build_chunks(clean, chunk_minutes)
         total = len(raw_chunks)
 
@@ -161,15 +164,19 @@ def transcribe_streaming(
     if duration <= 0:
         logger.warning("Ses süresi alınamadı, tam transkripsiyon yapılıyor")
         segments = transcribe_audio(audio_path, use_cache=True)
-        raw_chunks = build_chunks(segments, chunk_minutes)
+        total_secs = max((s.get("end", 0) for s in segments), default=0)
+        dyn_minutes = calculate_chunk_minutes(total_secs)
+        raw_chunks = build_chunks(segments, dyn_minutes)
         total = len(raw_chunks)
         for i, chunk in enumerate(raw_chunks):
             yield {**chunk, "chunk_idx": i, "total_chunks": total,
                    "word_count": len(chunk["text"].split()), "from_cache": False}
         return
 
+    chunk_minutes = calculate_chunk_minutes(duration)
+    chunk_secs = chunk_minutes * 60
     total_chunks = math.ceil(duration / chunk_secs)
-    logger.info("Ses süresi: %.0f sn → %d chunk planlandı", duration, total_chunks)
+    logger.info("Ses süresi: %.0f sn → chunk boyutu: %d dk → %d chunk planlandı", duration, chunk_minutes, total_chunks)
 
     tmp_dir = tempfile.mkdtemp(prefix="borsa_whisper_")
     all_segments: list[dict] = []

@@ -57,7 +57,7 @@ Uzun Türkçe borsa analiz ses dosyalarını (95+ dakika) otonom olarak işleyen
 **Problem:** Analistin cümlesi chunk sınırında kesilirse bir sonraki chunk hangi hisse için söylendiğini bilemez.
 
 ### Katman 1 — Segment Sınırlarında Kes
-Whisper her cümle için segment döndürür (start, end, text). Chunk'lar bu segmentleri biriktirerek oluşturulur (~10 dk). Asla bir segmentin ortasında bölme yapma.
+Whisper her cümle için segment döndürür (start, end, text). Chunk'lar bu segmentleri biriktirerek oluşturulur. Chunk boyutu dinamik hesaplanır, max 30 dk, `calculate_chunk_minutes()` (`src/agents/chunker.py`). Asla bir segmentin ortasında bölme yapma.
 
 ### Katman 2 — 300 Kelime Overlap
 Her chunk'a önceki chunk'ın son 300 kelimesi "context_prefix" olarak eklenir. Bu veri Qdrant'a kaydedilmez, sadece prompt'ta kullanılır.
