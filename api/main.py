@@ -27,7 +27,7 @@ logger = get_logger(__name__)
 
 # ── Session kalıcı depolama ───────────────────────────────────────────────────
 
-_SESSIONS_DIR = Path(__file__).parent / "data" / "sessions"
+_SESSIONS_DIR = Path(__file__).parent.parent / "data" / "sessions"
 _SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
 
 

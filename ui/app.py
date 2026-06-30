@@ -148,8 +148,8 @@ with st.sidebar:
                     for c in chunks:
                         if "word_count" not in c:
                             c["word_count"] = len(c.get("text","").split())
-                    st.session_state.t_chunks = chunks
-                    st.session_state.t_done   = True
+                    st.session_state.t_chunks  = chunks
+                    st.session_state.t_done    = bool(chunks)
                     st.session_state.t_running = False
                     # Sinyalleri yükle
                     st.session_state.a_sinyaller  = data.get("signals", [])
