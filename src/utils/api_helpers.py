@@ -45,7 +45,7 @@ def _call_gemini(prompt: str, system: str) -> str:
         max_output_tokens=1000,
     )
     response = client.models.generate_content(
-        model="models/gemini-2.0-flash",
+        model="models/gemini-2.5-flash",
         contents=prompt,
         config=config,
     )
