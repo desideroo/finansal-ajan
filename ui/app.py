@@ -179,7 +179,6 @@ with tab1:
 
     # ── Polling döngüsü (transkripsiyon) ─────────────────────────────────────
     if st.session_state.t_running and st.session_state.t_job_id:
-
         if st.session_state.t_stop:
             st.session_state.t_running = False
         else:
@@ -187,78 +186,36 @@ with tab1:
                 snap = _poll(st.session_state.t_job_id, st.session_state.t_cursor)
                 new_events = snap.get("events", [])
                 st.session_state.t_cursor += len(new_events)
-
                 for ev in new_events:
-                    typ  = ev["type"]
-                    data = ev["data"]
-
-                    if typ == "progress":
-                        st.session_state["t_last_progress"] = data
-                    elif typ == "chunk":
+                    typ, data = ev["type"], ev["data"]
+                    if typ == "chunk":
                         st.session_state.t_chunks.append(data)
-                        st.session_state["t_last_progress"] = {
-                            "mesaj": f"✅ Chunk {data['chunk_id']} tamamlandı ({data.get('dakika',0)}. dakika)",
-                            "yuzde": int((data["chunk_idx"]+1) / max(data["total_chunks"],1) * 100),
-                        }
                     elif typ in ("done", "cancelled", "error"):
                         st.session_state.t_running = False
-                        st.session_state.t_done    = (typ == "done")
-
+                        st.session_state.t_done = (typ == "done")
                 if snap.get("done"):
                     st.session_state.t_running = False
-                    st.session_state.t_done    = not snap.get("cancelled")
-
+                    st.session_state.t_done = not snap.get("cancelled")
             except Exception as exc:
                 st.warning(f"Polling hatası: {exc}")
                 st.session_state.t_running = False
-
             if st.session_state.t_running:
                 time.sleep(POLL_INTERVAL)
                 st.rerun()
 
-    # ── Transkripsiyon durumu göstergesi ─────────────────────────────────────
-    t_progress_bar  = st.empty()
-    t_status_box    = st.empty()
-
-    chunks = st.session_state.t_chunks
-    last_prog = st.session_state.get("t_last_progress", {})
-
-    if chunks or st.session_state.t_running or st.session_state.t_done:
-        done_count = len(chunks)
-        total_est  = chunks[-1].get("total_chunks", done_count) if chunks else 10
-
-        # Backend'den gelen son yüzde varsa onu kullan, yoksa chunk sayısından tahmin
-        yuzde_backend = last_prog.get("yuzde", 0) / 100 if last_prog else 0
-        yuzde_chunk   = done_count / max(total_est, 1)
-        yuzde = max(yuzde_backend, yuzde_chunk, 0.02)
-
-        mesaj_backend = last_prog.get("mesaj", "")
-
-        if st.session_state.t_running:
-            label = mesaj_backend or f"⏳ {done_count}/{total_est} chunk tamamlandı..."
-            t_progress_bar.progress(min(yuzde, 0.99), text=label)
-            t_status_box.info(f"🔄 {label}")
-        elif st.session_state.t_done:
-            t_progress_bar.progress(1.0, text=f"✅ Transkripsiyon tamamlandı — {done_count} chunk")
-            t_status_box.success(f"✅ {done_count} chunk oluşturuldu")
-        else:
-            t_progress_bar.progress(yuzde, text=f"⏸ Durduruldu — {done_count} chunk alındı")
-            t_status_box.warning(f"⏸ Durduruldu. Kaldığı yerden devam etmek için tekrar ▶ Başlat'a basın.")
-
     # ── Chunk listesi ─────────────────────────────────────────────────────────
-    if chunks:
-        st.markdown(f"**{len(chunks)} chunk** — tıklayarak metni okuyun:")
-        for c in chunks:
-            dakika = int(c.get("start_sec", 0) // 60)
-            cache_icon = "💾" if c.get("from_cache") else "🎙"
-            with st.expander(
-                f"{cache_icon} Chunk {c['chunk_id']} — {dakika}. dakika "
-                f"({c.get('word_count', '?')} kelime)"
-            ):
-                st.markdown(
-                    f'<div class="chunk-kart">{c["text"]}</div>',
-                    unsafe_allow_html=True,
-                )
+    chunks = st.session_state.t_chunks
+    if st.session_state.t_running:
+        st.caption(f"⏳ Transkripsiyon devam ediyor... ({len(chunks)} chunk alındı)")
+    elif st.session_state.t_done:
+        st.caption(f"✅ Transkripsiyon tamamlandı — {len(chunks)} chunk")
+    elif chunks:
+        st.caption(f"⏸ Durduruldu — {len(chunks)} chunk")
+
+    for c in chunks:
+        dakika = int(c.get("start_sec", 0) // 60)
+        with st.expander(f"Chunk {c['chunk_id']} — {dakika}. dakika ({c.get('word_count','?')} kelime)"):
+            st.markdown(f'<div class="chunk-kart">{c["text"]}</div>', unsafe_allow_html=True)
 
     st.divider()
 
@@ -310,31 +267,15 @@ with tab1:
                     typ  = ev["type"]
                     data = ev["data"]
 
-                    if typ == "progress":
-                        st.session_state["a_progress"] = data
-                        msg = data.get("mesaj", "")
-                        if msg and (not st.session_state.a_log or st.session_state.a_log[-1] != msg):
-                            st.session_state.a_log.append(msg)
-
-                    elif typ == "chunk_done":
+                    if typ == "chunk_done":
                         for s in data.get("sinyaller", []):
                             st.session_state.a_sinyaller.append(s)
-                        st.session_state.a_log.append(
-                            f"✅ Chunk {data['chunk_id']} — "
-                            f"{', '.join(data['hisseler']) or 'sinyal yok'} "
-                            f"({data['sinyal_sayisi']} sinyal)"
-                        )
-
-                    elif typ == "chunk_error":
-                        st.session_state.a_log.append(
-                            f"⚠️ Chunk {data['chunk_id']}: {data['mesaj']}"
-                        )
 
                     elif typ == "done":
-                        st.session_state.a_ozet    = data.get("ozet", {})
+                        st.session_state.a_ozet      = data.get("ozet", {})
                         st.session_state.a_sinyaller = data.get("sinyaller", [])
-                        st.session_state.a_running = False
-                        st.session_state.a_done    = True
+                        st.session_state.a_running   = False
+                        st.session_state.a_done      = True
 
                     elif typ in ("cancelled", "error"):
                         st.session_state.a_running = False
@@ -350,22 +291,11 @@ with tab1:
                 time.sleep(POLL_INTERVAL)
                 st.rerun()
 
-    # ── Analiz ilerleme göstergesi ────────────────────────────────────────────
-    prog = st.session_state.get("a_progress")
-    if prog or st.session_state.a_running or st.session_state.a_done:
-        yuzde = (prog.get("yuzde", 0) / 100) if prog else (1.0 if st.session_state.a_done else 0.02)
-        if st.session_state.a_running:
-            label = prog.get("mesaj", "Analiz yapılıyor...") if prog else "Analiz başlatılıyor..."
-        elif st.session_state.a_done:
-            label = "✅ Analiz tamamlandı"
-        else:
-            label = "⏸ Analiz durduruldu"
-        st.progress(yuzde, text=label)
-
-    # Canlı log (son 6 satır)
-    if st.session_state.a_log:
-        log_text = "\n".join(st.session_state.a_log[-6:])
-        st.code(log_text, language=None)
+    # Durum satırı
+    if st.session_state.a_running:
+        st.caption(f"⏳ Analiz devam ediyor... ({len(st.session_state.a_sinyaller)} sinyal alındı)")
+    elif st.session_state.a_done:
+        st.caption(f"✅ Analiz tamamlandı")
 
     # ── Özet metrikler ────────────────────────────────────────────────────────
     if st.session_state.a_ozet:
