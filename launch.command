@@ -1,116 +1,84 @@
 #!/bin/bash
 # Borsa Analizi — Tek tıkla başlatıcı
-# Bu dosyayı Dock'a veya masaüstüne kısayol olarak ekleyin.
+# Terminal açık kaldığı sürece API logları burada görünür.
+# Kapatmak için terminali kapat.
 
 set -e
 cd "$(dirname "$0")"
 
 PROJECT_DIR="$(pwd)"
 VENV="$PROJECT_DIR/.venv/bin/activate"
-LOG="$PROJECT_DIR/logs/launcher.log"
+ST_LOG="$PROJECT_DIR/logs/streamlit.log"
 mkdir -p "$PROJECT_DIR/logs"
 
-echo "========================================" | tee -a "$LOG"
-echo "$(date) — Başlatılıyor..." | tee -a "$LOG"
+echo "========================================"
+echo "  Borsa Analizi — Başlatılıyor"
+echo "========================================"
 
-# ── 1. Docker Desktop'ı aç ────────────────────────────────────────────────────
-echo "Docker açılıyor..." | tee -a "$LOG"
+# ── 1. Docker Desktop ────────────────────────────────────────────────────────
 if ! docker info &>/dev/null; then
+    echo "[1/4] Docker açılıyor..."
     open -a "Docker Desktop" 2>/dev/null || open -a "Docker" 2>/dev/null || true
-    echo "Docker başlaması bekleniyor..." | tee -a "$LOG"
+    echo "      Docker başlaması bekleniyor (max 60 sn)..."
     for i in $(seq 1 30); do
         sleep 2
         if docker info &>/dev/null; then
-            echo "Docker hazır ($((i*2)) sn)" | tee -a "$LOG"
+            echo "      ✓ Docker hazır"
             break
         fi
-        if [ $i -eq 30 ]; then
-            echo "UYARI: Docker 60 saniyede başlamadı, devam ediliyor..." | tee -a "$LOG"
-        fi
+        [ $i -eq 30 ] && echo "      ⚠️  Docker 60 sn'de başlamadı"
     done
 else
-    echo "Docker zaten çalışıyor." | tee -a "$LOG"
+    echo "[1/4] ✓ Docker zaten çalışıyor"
 fi
 
-# ── 2. Qdrant başlat ─────────────────────────────────────────────────────────
-echo "Qdrant başlatılıyor..." | tee -a "$LOG"
+# ── 2. Qdrant ────────────────────────────────────────────────────────────────
+echo "[2/4] Qdrant başlatılıyor..."
 if docker ps --filter "name=qdrant" --format "{{.Names}}" | grep -q "qdrant"; then
-    echo "Qdrant zaten çalışıyor." | tee -a "$LOG"
+    echo "      ✓ Qdrant zaten çalışıyor"
 else
     if docker ps -a --filter "name=qdrant" --format "{{.Names}}" | grep -q "qdrant"; then
-        docker start qdrant >> "$LOG" 2>&1
-        echo "Qdrant yeniden başlatıldı." | tee -a "$LOG"
+        docker start qdrant > /dev/null 2>&1
     else
-        docker compose up -d qdrant >> "$LOG" 2>&1
-        echo "Qdrant docker-compose ile başlatıldı." | tee -a "$LOG"
+        docker compose up -d qdrant > /dev/null 2>&1
     fi
     sleep 3
+    echo "      ✓ Qdrant başlatıldı"
 fi
 
-# ── 3. FastAPI backend başlat ─────────────────────────────────────────────────
-echo "FastAPI backend başlatılıyor..." | tee -a "$LOG"
+# ── 3. Streamlit (arka planda, sessiz) ───────────────────────────────────────
+echo "[3/4] Streamlit başlatılıyor (arka plan)..."
 source "$VENV"
 
-# Zaten çalışıyorsa öldür
-EXISTING_PID=$(lsof -ti:8000 2>/dev/null || true)
-if [ -n "$EXISTING_PID" ]; then
-    echo "Port 8000'deki mevcut process kapatılıyor (PID: $EXISTING_PID)..." | tee -a "$LOG"
-    kill "$EXISTING_PID" 2>/dev/null || true
-    sleep 1
-fi
-
-cd "$PROJECT_DIR"
-nohup python -m uvicorn api.main:app --host 0.0.0.0 --port 8000 >> "$LOG" 2>&1 &
-API_PID=$!
-echo "FastAPI başlatıldı (PID: $API_PID)" | tee -a "$LOG"
-
-# API hazır olana kadar bekle
-echo "API hazırlanıyor..." | tee -a "$LOG"
-for i in $(seq 1 20); do
-    sleep 1
-    if curl -s http://localhost:8000/health | grep -q "ok"; then
-        echo "API hazır ($i sn)" | tee -a "$LOG"
-        break
-    fi
-    if [ $i -eq 20 ]; then
-        echo "UYARI: API 20 saniyede yanıt vermedi." | tee -a "$LOG"
-    fi
-done
-
-# ── 4. Streamlit UI başlat ───────────────────────────────────────────────────
-echo "Streamlit başlatılıyor..." | tee -a "$LOG"
-
 EXISTING_ST=$(lsof -ti:8501 2>/dev/null || true)
-if [ -n "$EXISTING_ST" ]; then
-    kill "$EXISTING_ST" 2>/dev/null || true
-    sleep 1
-fi
+[ -n "$EXISTING_ST" ] && kill "$EXISTING_ST" 2>/dev/null; sleep 1
 
-nohup streamlit run "$PROJECT_DIR/ui/app.py" \
+streamlit run "$PROJECT_DIR/ui/app.py" \
     --server.port 8501 \
     --server.headless true \
     --browser.gatherUsageStats false \
-    >> "$LOG" 2>&1 &
+    > "$ST_LOG" 2>&1 &
 ST_PID=$!
-echo "Streamlit başlatıldı (PID: $ST_PID)" | tee -a "$LOG"
 
-# Streamlit hazır olana kadar bekle
-sleep 3
-for i in $(seq 1 15); do
-    sleep 1
-    if curl -s http://localhost:8501 | grep -q "streamlit"; then
-        echo "Streamlit hazır ($i sn)" | tee -a "$LOG"
-        break
-    fi
-done
+# Tarayıcıyı arka planda aç (5 sn sonra)
+(sleep 5 && open "http://localhost:8501") &
 
-# ── 5. Tarayıcıda aç ─────────────────────────────────────────────────────────
-echo "Tarayıcı açılıyor..." | tee -a "$LOG"
-sleep 1
-open "http://localhost:8501"
-
-echo "$(date) — Başlatma tamamlandı. PID'ler: API=$API_PID, Streamlit=$ST_PID" | tee -a "$LOG"
+echo "      ✓ Streamlit başlatıldı (PID: $ST_PID)"
 echo ""
-echo "✅ Uygulama hazır: http://localhost:8501"
-echo "   Kapatmak için bu terminali kapatın veya:"
-echo "   kill $API_PID $ST_PID"
+
+# ── 4. FastAPI — FOREGROUND (loglar burada görünür) ──────────────────────────
+echo "[4/4] API başlatılıyor — loglar aşağıda:"
+echo "========================================"
+echo "  Uygulama: http://localhost:8501"
+echo "  API docs: http://localhost:8000/docs"
+echo "  Kapatmak için: Ctrl+C"
+echo "========================================"
+echo ""
+
+EXISTING_API=$(lsof -ti:8000 2>/dev/null || true)
+[ -n "$EXISTING_API" ] && kill "$EXISTING_API" 2>/dev/null; sleep 1
+
+exec python -m uvicorn api.main:app \
+    --host 0.0.0.0 \
+    --port 8000 \
+    --log-level info

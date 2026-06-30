@@ -82,7 +82,7 @@ def transcribe_audio(audio_path: str, use_cache: bool = True) -> list[dict]:
             temperature=0.0,
             word_timestamps=True,
             initial_prompt=WHISPER_INITIAL_PROMPT,
-            no_speech_threshold=0.6,
+            no_speech_threshold=0.3,
             condition_on_previous_text=False,
         )
     except Exception as exc:
@@ -207,7 +207,7 @@ def transcribe_streaming(
                     temperature=0.0,
                     word_timestamps=True,
                     initial_prompt=WHISPER_INITIAL_PROMPT,
-                    no_speech_threshold=0.6,
+                    no_speech_threshold=0.3,
                     condition_on_previous_text=False,
                 )
             except Exception as exc:
