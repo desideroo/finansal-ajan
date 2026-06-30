@@ -53,6 +53,7 @@ _defaults = {
     "t_chunks": [], "t_stop": False,
     "a_job_id": None, "a_cursor": 0, "a_running": False, "a_done": False,
     "a_sinyaller": [], "a_ozet": None, "a_stop": False, "a_log": [],
+    "a_done_chunks": [],  # tamamlanan chunk_id listesi (devam için)
     "audio_bytes": None, "audio_name": None, "video_title": "",
 }
 for k, v in _defaults.items():
@@ -224,22 +225,30 @@ with tab1:
 
     col_c1, col_c2, col_c3 = st.columns([1, 1, 4])
 
-    if col_c1.button("▶ Başlat", key="analiz_start",
+    done_chunks = st.session_state.a_done_chunks
+    resuming = bool(done_chunks) and not st.session_state.a_done
+
+    col_c1, col_c2, col_c3, col_c4 = st.columns([1, 1, 1, 3])
+
+    btn_label = "▶ Devam Et" if resuming else "▶ Başlat"
+    if col_c1.button(btn_label, key="analiz_start",
                      disabled=(not st.session_state.audio_bytes or st.session_state.a_running)):
         if st.session_state.a_job_id:
             _cancel(st.session_state.a_job_id)
-        st.session_state.a_sinyaller = []
-        st.session_state.a_ozet      = None
-        st.session_state.a_done      = False
-        st.session_state.a_cursor    = 0
-        st.session_state.a_stop      = False
-        st.session_state.a_log       = []
+        # Devam modunda sinyalleri KORUYORUZ, sadece job durumunu sıfırla
+        st.session_state.a_ozet   = None
+        st.session_state.a_done   = False
+        st.session_state.a_cursor = 0
+        st.session_state.a_stop   = False
+        st.session_state.a_log    = []
 
+        skip = ",".join(done_chunks)
         r = httpx.post(
             f"{API_URL}/jobs/analyze",
             files={"file": (st.session_state.audio_name,
                             st.session_state.audio_bytes, "audio/mpeg")},
-            data={"title": st.session_state.video_title or "bilinmiyor"},
+            data={"title": st.session_state.video_title or "bilinmiyor",
+                  "skip_chunks": skip},
             timeout=60,
         )
         r.raise_for_status()
@@ -247,7 +256,15 @@ with tab1:
         st.session_state.a_running = True
         st.rerun()
 
-    if col_c2.button("⏹ Durdur", key="analiz_stop", disabled=(not st.session_state.a_running)):
+    if col_c2.button("🔄 Sıfırla", key="analiz_reset",
+                     disabled=st.session_state.a_running):
+        if st.session_state.a_job_id:
+            _cancel(st.session_state.a_job_id)
+        for k in ("a_sinyaller","a_ozet","a_done","a_cursor","a_stop","a_log","a_done_chunks","a_job_id"):
+            st.session_state[k] = [] if k in ("a_sinyaller","a_log","a_done_chunks") else None if k in ("a_ozet","a_job_id") else False
+        st.rerun()
+
+    if col_c3.button("⏹ Durdur", key="analiz_stop", disabled=(not st.session_state.a_running)):
         st.session_state.a_stop    = True
         st.session_state.a_running = False
         _cancel(st.session_state.a_job_id)
@@ -270,6 +287,9 @@ with tab1:
                     if typ == "chunk_done":
                         for s in data.get("sinyaller", []):
                             st.session_state.a_sinyaller.append(s)
+                        cid = data.get("chunk_id")
+                        if cid and cid not in st.session_state.a_done_chunks:
+                            st.session_state.a_done_chunks.append(cid)
 
                     elif typ == "done":
                         st.session_state.a_ozet      = data.get("ozet", {})
@@ -292,10 +312,14 @@ with tab1:
                 st.rerun()
 
     # Durum satırı
+    done_c = len(st.session_state.a_done_chunks)
+    n_sig  = len(st.session_state.a_sinyaller)
     if st.session_state.a_running:
-        st.caption(f"⏳ Analiz devam ediyor... ({len(st.session_state.a_sinyaller)} sinyal alındı)")
+        st.caption(f"⏳ Analiz devam ediyor... {done_c} chunk tamamlandı, {n_sig} sinyal")
     elif st.session_state.a_done:
-        st.caption(f"✅ Analiz tamamlandı")
+        st.caption(f"✅ Analiz tamamlandı — {done_c} chunk, {n_sig} sinyal")
+    elif done_c:
+        st.caption(f"⏸ Durduruldu — {done_c} chunk tamamlandı, {n_sig} sinyal · '▶ Devam Et' ile kaldığı yerden devam eder")
 
     # ── Özet metrikler ────────────────────────────────────────────────────────
     if st.session_state.a_ozet:

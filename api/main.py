@@ -164,7 +164,7 @@ async def start_transcription(
 
 # ── Analiz job ────────────────────────────────────────────────────────────────
 
-def _run_analysis(job: Job, audio_path: str, title: str):
+def _run_analysis(job: Job, audio_path: str, title: str, skip_chunks: set[str] | None = None):
     try:
         job.add("progress", {"mesaj": "Segmentler hazırlanıyor...", "yuzde": 1})
         all_stream_chunks: list[dict] = []
@@ -219,6 +219,11 @@ def _run_analysis(job: Job, audio_path: str, title: str):
             chunk_id = chunk.get("chunk_id", f"{i:02d}")
             yuzde = int(5 + (i / max(toplam, 1)) * 90)
             dakika = int(chunk.get("start_sec", 0) // 60)
+
+            # Daha önce yapılmış chunk'ı atla
+            if skip_chunks and chunk_id in skip_chunks:
+                job.add("chunk_skipped", {"chunk_id": chunk_id, "chunk_idx": i, "total_chunks": toplam})
+                continue
 
             job.add("progress", {
                 "mesaj": f"Chunk {chunk_id} analiz ediliyor ({i+1}/{toplam}, {dakika}. dakika)...",
@@ -283,14 +288,16 @@ def _run_analysis(job: Job, audio_path: str, title: str):
 async def start_analysis(
     file: UploadFile = File(...),
     title: str = Form("bilinmiyor"),
+    skip_chunks: str = Form(""),  # virgülle ayrılmış zaten yapılmış chunk_id'ler
 ):
     suffix = Path(file.filename).suffix if file.filename else ".tmp"
     with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
         tmp.write(await file.read())
         tmp_path = tmp.name
 
+    skip_set = {c.strip() for c in skip_chunks.split(",") if c.strip()}
     job = _new_job()
-    t = threading.Thread(target=_run_analysis, args=(job, tmp_path, title), daemon=True)
+    t = threading.Thread(target=_run_analysis, args=(job, tmp_path, title, skip_set), daemon=True)
     t.start()
     return {"job_id": job.job_id}
 
