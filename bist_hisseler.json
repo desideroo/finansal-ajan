@@ -1,0 +1,2402 @@
+[
+  {
+    "ticker": "A1CAP",
+    "name": "A1 Capital Yatitim Menkul Degerler A.S."
+  },
+  {
+    "ticker": "A1YEN",
+    "name": "A1 Yenilenebilir Enerji Uretim AS"
+  },
+  {
+    "ticker": "AAGYO",
+    "name": "Agaoglu Avrasya Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "ACSEL",
+    "name": "Aciselsan Acipayam Seluloz Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "ADEL",
+    "name": "Adel Kalemcilik Ticaret ve Sanayi A.S."
+  },
+  {
+    "ticker": "ADESE",
+    "name": "Adese Gayrimenkul Yatirim AS"
+  },
+  {
+    "ticker": "ADGYO",
+    "name": "Adra Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "AEFES",
+    "name": "Anadolu Efes Biracilik ve Malt Sanayii A.S."
+  },
+  {
+    "ticker": "AFYON",
+    "name": "Afyon Cimento Sanayii T.A.S."
+  },
+  {
+    "ticker": "AGESA",
+    "name": "AgeSA Hayat ve Emeklilik A.S."
+  },
+  {
+    "ticker": "AGHOL",
+    "name": "AG Anadolu Grubu Holding Anonim Sirketi"
+  },
+  {
+    "ticker": "AGROT",
+    "name": "Agrotech Yuksek Teknoloji ve Yatirim AS"
+  },
+  {
+    "ticker": "AGYO",
+    "name": "Atakule Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "AHGAZ",
+    "name": "Ahlatci Dogal Gaz Dagitim Enerji ve Yatirim AS"
+  },
+  {
+    "ticker": "AHSGY",
+    "name": "Ahes Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "AKBNK",
+    "name": "Akbank T.A.S."
+  },
+  {
+    "ticker": "AKCNS",
+    "name": "Akcansa Cimento Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "AKENR",
+    "name": "Akenerji Elektrik Uretim A.S."
+  },
+  {
+    "ticker": "AKFGY",
+    "name": "Akfen Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "AKFIS",
+    "name": "Akfen insaat Turizm ve Ticaret AS"
+  },
+  {
+    "ticker": "AKFYE",
+    "name": "AKFEN YENILENEBILIR ENERJI A.S."
+  },
+  {
+    "ticker": "AKGRT",
+    "name": "Aksigorta AS"
+  },
+  {
+    "ticker": "AKHAN",
+    "name": "Akhan Un Fabrikasi Ve Tarim Urunleri Gida Sanayi Ticaret Anonim Sirketi"
+  },
+  {
+    "ticker": "AKMGY",
+    "name": "Akmerkez Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "AKSA",
+    "name": "Aksa Akrilik Kimya Sanayii A.S."
+  },
+  {
+    "ticker": "AKSEN",
+    "name": "Aksa Enerji Uretim A.S."
+  },
+  {
+    "ticker": "AKSGY",
+    "name": "Akis Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "AKSUE",
+    "name": "Aksu Enerji ve Ticaret A.S."
+  },
+  {
+    "ticker": "AKYHO",
+    "name": "Akdeniz Yatirim Holding A.S."
+  },
+  {
+    "ticker": "ALARK",
+    "name": "Alarko Holding A.S."
+  },
+  {
+    "ticker": "ALBRK",
+    "name": "Albaraka Turk Katilim Bankasi A.S."
+  },
+  {
+    "ticker": "ALCAR",
+    "name": "Alarko Carrier Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "ALCTL",
+    "name": "Alcatel Lucent Teletas Telekomunikasyon A.S."
+  },
+  {
+    "ticker": "ALFAS",
+    "name": "ALFA SOLAR ENERJI SANAYI VE TICARET A.S."
+  },
+  {
+    "ticker": "ALGYO",
+    "name": "Alarko Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "ALKA",
+    "name": "Alkim Kagit Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "ALKIM",
+    "name": "Alkim Alkali Kimya A.S."
+  },
+  {
+    "ticker": "ALKLC",
+    "name": "Altinkilic Gida ve Sut Sanayi Ticaret AS"
+  },
+  {
+    "ticker": "ALTIN",
+    "name": "DARPHANE ALTIN SERTIFIKASI"
+  },
+  {
+    "ticker": "ALTNY",
+    "name": "Altinay Savunma Teknolojileri A.S."
+  },
+  {
+    "ticker": "ALVES",
+    "name": "Alves Kablo Sanayi ve Ticaret A. S."
+  },
+  {
+    "ticker": "ANELE",
+    "name": "Anel Elektrik Proje Taahhut ve Ticaret A.S."
+  },
+  {
+    "ticker": "ANGEN",
+    "name": "Anatolia Tani ve Biyoteknoloji Urunleri Arastirma Gelistirme Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "ANHYT",
+    "name": "Anadolu Hayat Emeklilik A.S."
+  },
+  {
+    "ticker": "ANSGR",
+    "name": "Anadolu Anonim Turk Sigorta Sirketi A.S."
+  },
+  {
+    "ticker": "ARASE",
+    "name": "Dogu Aras Enerji Yatirimlari AS"
+  },
+  {
+    "ticker": "ARCLK",
+    "name": "Arcelik A.S."
+  },
+  {
+    "ticker": "ARDYZ",
+    "name": "ARD Grup Bilisim Teknolojileri AS"
+  },
+  {
+    "ticker": "ARENA",
+    "name": "Arena Bilgisayar AS"
+  },
+  {
+    "ticker": "ARFYE",
+    "name": "ARF Bio Yenilenebilir Enerji Uretim AS"
+  },
+  {
+    "ticker": "ARMGD",
+    "name": "Armada Gida Ticaret ve Sanayi Anonim Sirketi"
+  },
+  {
+    "ticker": "ARSAN",
+    "name": "Arsan Holding A.S."
+  },
+  {
+    "ticker": "ARTMS",
+    "name": "Artemis Hali A. S."
+  },
+  {
+    "ticker": "ARZUM",
+    "name": "Arzum Elektrikli Ev Aletleri Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "ASELS",
+    "name": "Aselsan Elektronik Sanayi ve Ticaret A.S. Class B"
+  },
+  {
+    "ticker": "ASGYO",
+    "name": "ASCE GAYRIMENKUL YATIRIM ORTAKLIGI A.S."
+  },
+  {
+    "ticker": "ASTOR",
+    "name": "Astor Enerji A.S."
+  },
+  {
+    "ticker": "ASUZU",
+    "name": "Anadolu Isuzu Otomotiv Sanayi ve Ticaret A.S. Class C"
+  },
+  {
+    "ticker": "ATAGY",
+    "name": "Ata Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "ATAKP",
+    "name": "Atakey Patates Gida Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "ATATP",
+    "name": "ATP Yazilim ve Teknoloji AS"
+  },
+  {
+    "ticker": "ATATR",
+    "name": "Ata Turizm Isletmecilik Tasimacilik Madencilik Kuyumculu"
+  },
+  {
+    "ticker": "ATEKS",
+    "name": "Akin Tekstil A.S."
+  },
+  {
+    "ticker": "ATLAS",
+    "name": "Atlas Menkul Kiymetler Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "ATSYH",
+    "name": "Atlantis Yatirim Holding A.S."
+  },
+  {
+    "ticker": "AVGYO",
+    "name": "Avrasya Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "AVHOL",
+    "name": "Avrupa Yatirim Holding AS"
+  },
+  {
+    "ticker": "AVOD",
+    "name": "A.V.O.D. KURUTULMUS GIDA VE TARIM URUNLERI SANAYI TICARET A.S."
+  },
+  {
+    "ticker": "AVPGY",
+    "name": "Avrupakent Gayrimenkul Yatirim Ortakligi SA"
+  },
+  {
+    "ticker": "AYCES",
+    "name": "Altin Yunus Cesme Turistik Tesisler A.S."
+  },
+  {
+    "ticker": "AYDEM",
+    "name": "Aydem Yenilenebilir Enerji AS"
+  },
+  {
+    "ticker": "AYEN",
+    "name": "Ayen Enerji A.S."
+  },
+  {
+    "ticker": "AYES",
+    "name": "Ayes Celik Hasir ve Cit Sanayi AS"
+  },
+  {
+    "ticker": "AYGAZ",
+    "name": "Aygaz Anonim Sirketi"
+  },
+  {
+    "ticker": "AZTEK",
+    "name": "Aztek Teknoloji Urunleri Ticaret A.S."
+  },
+  {
+    "ticker": "BAGFS",
+    "name": "Bagfas Bandirma Gubre Fabrikalari A.S."
+  },
+  {
+    "ticker": "BAHKM",
+    "name": "Bahadir Kimya Sanayi Ve Ticaret Anonim Sirketi"
+  },
+  {
+    "ticker": "BAKAB",
+    "name": "Bak Ambalaj Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "BALAT",
+    "name": "Balatacilar Balatacilik Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "BALSU",
+    "name": "Balsu Gida Sanayi ve Ticaret Anonim Sirketi"
+  },
+  {
+    "ticker": "BANVT",
+    "name": "Banvit Bandirma Vitaminli Yem Sanayii A.S."
+  },
+  {
+    "ticker": "BARMA",
+    "name": "Barem Ambalaj Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "BASCM",
+    "name": "Bastas Baskent Cimento Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "BASGZ",
+    "name": "Baskent Dogalgaz Dagitim Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "BAYRK",
+    "name": "BAYRAK EBT TABAN SANAYI VE TICARET A.S."
+  },
+  {
+    "ticker": "BEGYO",
+    "name": "Bati Ege Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "BERA",
+    "name": "Bera Holding AS"
+  },
+  {
+    "ticker": "BESLR",
+    "name": "Besler Gida Ve Kimya Sanayi Ve Ticaret AS"
+  },
+  {
+    "ticker": "BESTE",
+    "name": "Best Brands Grup Enerji Yatirim as"
+  },
+  {
+    "ticker": "BEYAZ",
+    "name": "Beyaz Filo Oto Kiralama AS"
+  },
+  {
+    "ticker": "BFREN",
+    "name": "Bosch Fren Sistemleri Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "BIENY",
+    "name": "Bien Yapi Urunleri Sanayi Turizm Ve Ticaret Anonim Sirketi"
+  },
+  {
+    "ticker": "BIGCH",
+    "name": "Buyuk Sefler Gida Turizm Tekstil Danismanlik Organizasyon Egitim Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "BIGEN",
+    "name": "Birlesim Grup Enerji Yatirimlari AS"
+  },
+  {
+    "ticker": "BIGTK",
+    "name": "Big Medya Teknoloji A.S."
+  },
+  {
+    "ticker": "BIMAS",
+    "name": "BIM Birlesik Magazalar A.S."
+  },
+  {
+    "ticker": "BINBN",
+    "name": "Bin Ulasim Ve Akilli Sehir Teknolojileri AS"
+  },
+  {
+    "ticker": "BINHO",
+    "name": "1000 Yatirimlar Holding AS"
+  },
+  {
+    "ticker": "BIOEN",
+    "name": "BIotrend Cevre ve EnerjI Yatirimlari AS"
+  },
+  {
+    "ticker": "BIZIM",
+    "name": "Bizim Toptan SatiG Magazalari A.g."
+  },
+  {
+    "ticker": "BJKAS",
+    "name": "Besiktas Futbol Yatirimlari Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "BLCYT",
+    "name": "Bilici Yatirim Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "BLUME",
+    "name": "Blume Metal Kimya Anonim Sirketi"
+  },
+  {
+    "ticker": "BMSCH",
+    "name": "BMS Celik Hasir Sanayi Ve Ticaret A.S."
+  },
+  {
+    "ticker": "BMSTL",
+    "name": "BMS Birlesik Metal Sanayi ve Ticaret AS Class B"
+  },
+  {
+    "ticker": "BNTAS",
+    "name": "Bantas Bandirma Ambalaj Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "BOBET",
+    "name": "Bogazici Beton Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "BORLS",
+    "name": "Borlease Otomotiv AS"
+  },
+  {
+    "ticker": "BORSK",
+    "name": "Bor Seker A.S."
+  },
+  {
+    "ticker": "BOSSA",
+    "name": "Bossa Ticaret ve Sanayi Isletmeleri T.A.S."
+  },
+  {
+    "ticker": "BRISA",
+    "name": "Brisa Bridgestone Sabanci Lastik Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "BRKO",
+    "name": "Birko Birlesik Koyunlulular Mensucat ve Ticaret A.S."
+  },
+  {
+    "ticker": "BRKSN",
+    "name": "Berkosan Yalitim ve Tecrit Maddeleri Uretim ve Ticaret A.S."
+  },
+  {
+    "ticker": "BRKVY",
+    "name": "Birikim Varlik Yonetim A.S."
+  },
+  {
+    "ticker": "BRLSM",
+    "name": "Birlesim Muhendislik Isitma Sogutma Havalandirma Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "BRMEN",
+    "name": "Birlik Mensucat Ticaret ve Sanayi Isletmesi A.S."
+  },
+  {
+    "ticker": "BRSAN",
+    "name": "BORUSAN BIRLESIK BORU FABRIKALARI SANAYI VE TICARET ANONIM SIRKETI"
+  },
+  {
+    "ticker": "BRYAT",
+    "name": "Borusan Yatirim ve Pazarlama AS"
+  },
+  {
+    "ticker": "BSOKE",
+    "name": "Batisoke Soke Cimento Sanayii T.A.S."
+  },
+  {
+    "ticker": "BTCIM",
+    "name": "Baticim Bati Anadolu Cimento Sanayii A.S."
+  },
+  {
+    "ticker": "BUCIM",
+    "name": "Bursa Cimento Fabrikasi A.S."
+  },
+  {
+    "ticker": "BULGS",
+    "name": "Bulls Girisim Sermayesi Yatirim Ortakligi Anonim Sirketi"
+  },
+  {
+    "ticker": "BURCE",
+    "name": "Burcelik Bursa Celik Doekum Sanayii A.S."
+  },
+  {
+    "ticker": "BURVA",
+    "name": "Burcelik Vana Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "BVSAN",
+    "name": "BULBULOGLU VINC SANAYI VE TICARET A.S."
+  },
+  {
+    "ticker": "BYDNR",
+    "name": "Baydoner Restoranlari A.S."
+  },
+  {
+    "ticker": "CANTE",
+    "name": "CAN2 TERMIK A.S."
+  },
+  {
+    "ticker": "CASA",
+    "name": "Casa Emtia Petrol Kimyevi ve Turevleri Sanayi Ticaret AS"
+  },
+  {
+    "ticker": "CATES",
+    "name": "Cates Elektrik Uretim Anonim Sirketi"
+  },
+  {
+    "ticker": "CCOLA",
+    "name": "Coca-Cola Icecek A.S."
+  },
+  {
+    "ticker": "CELHA",
+    "name": "Celik Halat ve Tel Sanayii A.S."
+  },
+  {
+    "ticker": "CEMAS",
+    "name": "Cemas Dokum Sanayi A.S."
+  },
+  {
+    "ticker": "CEMTS",
+    "name": "Cemtas Celik Makina Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "CEMZY",
+    "name": "CEM ZEYTIN ANONIM SIRKETI"
+  },
+  {
+    "ticker": "CEOEM",
+    "name": "CEO Event Medya AS"
+  },
+  {
+    "ticker": "CGCAM",
+    "name": "Cagdas Cam Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "CIMSA",
+    "name": "Cimsa Cimento Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "CLEBI",
+    "name": "Celebi Hava Servisi A.S."
+  },
+  {
+    "ticker": "CMBTN",
+    "name": "Cimbeton Hazir Beton ve Prefabrik Yapi Elemanlari Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "CMENT",
+    "name": "Cimentas Izmir Cimento Fabrikasi Turk A.S."
+  },
+  {
+    "ticker": "CONSE",
+    "name": "Consus Enerji Isletmeciligi ve Hizmetleri A.S."
+  },
+  {
+    "ticker": "COSMO",
+    "name": "Cosmos Yatirim Holding A.S."
+  },
+  {
+    "ticker": "CRDFA",
+    "name": "Creditwest Faktoring A.S."
+  },
+  {
+    "ticker": "CRFSA",
+    "name": "CarrefourSA Carrefour Sabanci Ticaret Merkezi A.S."
+  },
+  {
+    "ticker": "CUSAN",
+    "name": "Cuhadaroglu Metal Sanayi ve Pazarlama AS"
+  },
+  {
+    "ticker": "CVKMD",
+    "name": "CVK MADEN ISLETMELERI SANAYI VE TICARET A.S"
+  },
+  {
+    "ticker": "CWENE",
+    "name": "CW ENERJI MUHENDISLIK TICARET VE SANAYI A.S."
+  },
+  {
+    "ticker": "DAGI",
+    "name": "Dagi Giyim Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "DAPGM",
+    "name": "DAP GAYRIMENKUL GELISTIRME AS"
+  },
+  {
+    "ticker": "DARDL",
+    "name": "Dardanel Onentas Gida San. A.S."
+  },
+  {
+    "ticker": "DCTTR",
+    "name": "DCT Trading Dis Ticaret Anonim Sirketi"
+  },
+  {
+    "ticker": "DENGE",
+    "name": "Denge Yatirim Holding AS"
+  },
+  {
+    "ticker": "DERHL",
+    "name": "Derluks Yatirim Holding AS"
+  },
+  {
+    "ticker": "DERIM",
+    "name": "Derimod Konfeksiyon Ayakkabi Deri Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "DESA",
+    "name": "Desa Deri Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "DESPC",
+    "name": "Despec Bilgisayar Pazarlama ve Ticaret A.S."
+  },
+  {
+    "ticker": "DEVA",
+    "name": "Deva Holding A.S."
+  },
+  {
+    "ticker": "DGATE",
+    "name": "Datagate Bilgisayar Malzemeleri Ticaret A.S."
+  },
+  {
+    "ticker": "DGGYO",
+    "name": "Dogus Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "DGNMO",
+    "name": "Doganlar Mobilya Grubu Imalat Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "DIRIT",
+    "name": "Diriteks Dirilis Tekstil Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "DITAS",
+    "name": "Ditas Dogan Yedek Parca Imalat ve Teknik A.S."
+  },
+  {
+    "ticker": "DMLKT",
+    "name": "Emlak Konut Gayrimenkul Yatirim Ortakligi A.S. 0 % Certificates 2025-31.12.2199"
+  },
+  {
+    "ticker": "DMRGD",
+    "name": "DMR Unlu Mamuller Uretim Gida Toptan Perakende Ihracat A.S."
+  },
+  {
+    "ticker": "DMSAS",
+    "name": "Demisas Dokum Emaye Mamulleri Sanayi A.S."
+  },
+  {
+    "ticker": "DNISI",
+    "name": "Dinamik Isi Makina Yalitim Malzemeleri Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "DOAS",
+    "name": "Dogus Otomotiv Servis ve Ticaret Anonim Sirketi"
+  },
+  {
+    "ticker": "DOFER",
+    "name": "Dofer Yapi Maizemeleri Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "DOFRB",
+    "name": "DOF Robotik Sanayi Anonim Sirketi"
+  },
+  {
+    "ticker": "DOGUB",
+    "name": "Dogusan Boru Sanayii ve Ticaret A.S."
+  },
+  {
+    "ticker": "DOHOL",
+    "name": "Dogan Sirketler Grubu Holding A.S."
+  },
+  {
+    "ticker": "DOKTA",
+    "name": "Doktas Dokumculuk Ticaret ve Sanayi A.S."
+  },
+  {
+    "ticker": "DSTKF",
+    "name": "Destek Finans Faktoring A.S."
+  },
+  {
+    "ticker": "DUNYH",
+    "name": "Dunya Holding Anonim Sirketi"
+  },
+  {
+    "ticker": "DURDO",
+    "name": "Duran Dogan Basim ve Ambalaj Sanayi A.S."
+  },
+  {
+    "ticker": "DURKN",
+    "name": "Durukan Sekerleme Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "DYOBY",
+    "name": "Dyo Boya Fabrikalari Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "DZGYO",
+    "name": "Deniz Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "EBEBK",
+    "name": "EBEBEK MAGAZACILIK ANONIM SIRKETI"
+  },
+  {
+    "ticker": "ECILC",
+    "name": "EIS Eczacibasi Ilac, Sinai ve Finansal Yatirimlar Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "ECOGR",
+    "name": "Ecogreen Enerji Holding A.S."
+  },
+  {
+    "ticker": "ECZYT",
+    "name": "Eczacibasi Yatirim Holding Ortakligi AS"
+  },
+  {
+    "ticker": "EDATA",
+    "name": "E-Data Teknoloji Pazarlama AS"
+  },
+  {
+    "ticker": "EDIP",
+    "name": "Edip Gayrimenkul Yatirim Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "EFOR",
+    "name": "Efor Yatirim Sanayi Ticaret A.S."
+  },
+  {
+    "ticker": "EGEEN",
+    "name": "Ege Endustri ve Ticaret A.S."
+  },
+  {
+    "ticker": "EGEGY",
+    "name": "Egeyapi Avrupa Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "EGEPO",
+    "name": "Nasmed Ozel Saglik Hizmetleri Ticaret A.S."
+  },
+  {
+    "ticker": "EGGUB",
+    "name": "Ege Gubre Sanayii A.S."
+  },
+  {
+    "ticker": "EGPRO",
+    "name": "Ege Profil Ticaret ve Sanayi A.S."
+  },
+  {
+    "ticker": "EGSER",
+    "name": "Ege Seramik Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "EKDMR",
+    "name": "Ekinciler Demir ve Celik Sanayi AS"
+  },
+  {
+    "ticker": "EKIZ",
+    "name": "Ekiz Kimya Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "EKOS",
+    "name": "Ekos Teknoloji ve Elektrik AS"
+  },
+  {
+    "ticker": "EKSUN",
+    "name": "Eksun Gida Tarim Sanayi ve Ticaret"
+  },
+  {
+    "ticker": "ELITE",
+    "name": "Elite Naturel Organik Gida Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "EMKEL",
+    "name": "Emek Elektrik Endustrisi A.S."
+  },
+  {
+    "ticker": "EMNIS",
+    "name": "Eminis Ambalaj Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "EMPAE",
+    "name": "Empa Elektronik Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "ENDAE",
+    "name": "Enda Enerji Holding Anonim Sirketi"
+  },
+  {
+    "ticker": "ENERY",
+    "name": "Enerya Enerji A.S."
+  },
+  {
+    "ticker": "ENJSA",
+    "name": "Enerjisa Enerji A.S."
+  },
+  {
+    "ticker": "ENKAI",
+    "name": "Enka Insaat ve Sanayi A.S."
+  },
+  {
+    "ticker": "ENPRA",
+    "name": "Enpara Bank A.S."
+  },
+  {
+    "ticker": "ENSRI",
+    "name": "Ensari Sinai Yatirimlar A.S."
+  },
+  {
+    "ticker": "ENTRA",
+    "name": "IC Enterra Yenilenebilir Enerji AS"
+  },
+  {
+    "ticker": "EPLAS",
+    "name": "Egeplast Ege Plastik Ticaret ve Sanayi A.S."
+  },
+  {
+    "ticker": "ERBOS",
+    "name": "Erbosan Erciyas Boru Sanayii ve Ticaret A.S."
+  },
+  {
+    "ticker": "ERCB",
+    "name": "Erciyas Celik Boru Sanayi A.S."
+  },
+  {
+    "ticker": "EREGL",
+    "name": "Eregli Demir Ve Celik Fabrikalari T.A.S."
+  },
+  {
+    "ticker": "ERSU",
+    "name": "Ersu Meyve ve Gida Sanayi A.S."
+  },
+  {
+    "ticker": "ESCAR",
+    "name": "Escar Filo Kiralama Hizmetleri Anonim Sirketi"
+  },
+  {
+    "ticker": "ESCOM",
+    "name": "Escort Teknoloji Yatirim A.S."
+  },
+  {
+    "ticker": "ESEN",
+    "name": "Esenboga Elektrik Uretim AS"
+  },
+  {
+    "ticker": "ETILR",
+    "name": "Etiler Gida ve Ticari Yatirimlar Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "ETYAT",
+    "name": "Euro Trend Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "EUHOL",
+    "name": "Euro Yatirim Holding A.S."
+  },
+  {
+    "ticker": "EUKYO",
+    "name": "Euro Kapital Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "EUPWR",
+    "name": "Europower Enerji ve Otomasyon Teknolojileri Sanayi Ticaret AS"
+  },
+  {
+    "ticker": "EUREN",
+    "name": "Europen Endustri Insaat Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "EUYO",
+    "name": "Euro Menkul Kiymet Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "EYGYO",
+    "name": "EYG Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "FADE",
+    "name": "Fade Gida Yatirim Sanayi Ticaret A.S."
+  },
+  {
+    "ticker": "FENER",
+    "name": "Fenerbahce Futbol A.S."
+  },
+  {
+    "ticker": "FLAP",
+    "name": "Flap Kongre Toplanti Hizmetleri Otomotiv ve Turizm A.S."
+  },
+  {
+    "ticker": "FMIZP",
+    "name": "Federal-Mogul Izmit Piston ve Pim Uretim Tesisleri A.S."
+  },
+  {
+    "ticker": "FONET",
+    "name": "Fonet Bilgi Teknolojileri AS"
+  },
+  {
+    "ticker": "FORMT",
+    "name": "FORMET METAL VE CAM SANAYI A.S."
+  },
+  {
+    "ticker": "FORTE",
+    "name": "FORTE BILGI ILETISIM TEKNOLOJILERI VE SAVUNMA SANAYI A.S."
+  },
+  {
+    "ticker": "FRIGO",
+    "name": "Frigo-Pak Gida Maddeleri Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "FRMPL",
+    "name": "Formul Plastik Ve Metal Sanayi AS"
+  },
+  {
+    "ticker": "FROTO",
+    "name": "Ford Otomotiv Sanayi A.S."
+  },
+  {
+    "ticker": "FZLGY",
+    "name": "FUZUL GAYRIMENKUL YATIRIM ORTAKLIGI A.S."
+  },
+  {
+    "ticker": "GARAN",
+    "name": "Turkiye Garanti Bankasi Anonim Sirketi"
+  },
+  {
+    "ticker": "GARFA",
+    "name": "Garanti Faktoring A.S."
+  },
+  {
+    "ticker": "GATEG",
+    "name": "Gate Group Teknoloji Medya Ve Siber Guvenlik Hizmetleri A.S."
+  },
+  {
+    "ticker": "GEDIK",
+    "name": "Gedik Yatirim Menkul Degerler A.S."
+  },
+  {
+    "ticker": "GEDZA",
+    "name": "Gediz Ambalaj Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "GENIL",
+    "name": "Gen Ilac ve Saglik Urunleri Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "GENKM",
+    "name": "Gentas Kimya Sanayi ve Ticaret Pazarlama"
+  },
+  {
+    "ticker": "GENTS",
+    "name": "Gentas Dekoratif Yuzeyler Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "GEREL",
+    "name": "Gersan Elektrik Ticaret ve Sanayi A.S."
+  },
+  {
+    "ticker": "GESAN",
+    "name": "GIRISIM ELEKTRIK SANAYI TAAHHUT VE TICARET A.S."
+  },
+  {
+    "ticker": "GIPTA",
+    "name": "Gipta Ofis Kirtasiye ve Promosyon Urunleri Imalat Sanayi A.S."
+  },
+  {
+    "ticker": "GLBMD",
+    "name": "Global Menkul Degerler A.S."
+  },
+  {
+    "ticker": "GLCVY",
+    "name": "GELECEK VARLIK YONETIMI A.S"
+  },
+  {
+    "ticker": "GLRMK",
+    "name": "Gulermak Agir Sanayi Insaat Ve Taahhut A.S."
+  },
+  {
+    "ticker": "GLRYH",
+    "name": "Guler Yatirim Holding A.S."
+  },
+  {
+    "ticker": "GLYHO",
+    "name": "Global Yatirim Holding A.S."
+  },
+  {
+    "ticker": "GMTAS",
+    "name": "Gimat Magazacilik Insaat Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "GOKNR",
+    "name": "GOKNUR GIDA MADDELERI ENERJI IMALAT ITHALAT IHRACAT TICARET VE SANAYI A.S."
+  },
+  {
+    "ticker": "GOLTS",
+    "name": "Goltas Goller Bolgesi Cimento Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "GOODY",
+    "name": "Goodyear Lastikleri T.A.S."
+  },
+  {
+    "ticker": "GOZDE",
+    "name": "Gozde Girisim Sermayesi Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "GRNYO",
+    "name": "Garanti Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "GRSEL",
+    "name": "Gur-Sel Turizm Tasimacilik Ve Servis Ticaret A.S."
+  },
+  {
+    "ticker": "GRTHO",
+    "name": "Grainturk Holding A.S."
+  },
+  {
+    "ticker": "GSDDE",
+    "name": "GSD Denizcilik Gayrimenkul Insaat Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "GSDHO",
+    "name": "GSD Holding A.S."
+  },
+  {
+    "ticker": "GSRAY",
+    "name": "Galatasaray Sportif Sinai Veticari Yatirimlar A.S."
+  },
+  {
+    "ticker": "GUBRF",
+    "name": "Gubre Fabrikalari T.A.S."
+  },
+  {
+    "ticker": "GUNDG",
+    "name": "Gundogdu Gida Sut Urunleri Sanayi Ve Dis Ticaret AS"
+  },
+  {
+    "ticker": "GWIND",
+    "name": "GALATA WIND ENERJI A.S."
+  },
+  {
+    "ticker": "GZNMI",
+    "name": "Gezinomi Seyahat Turizm Ticaret A.S."
+  },
+  {
+    "ticker": "HALKB",
+    "name": "Turkiye Halk Bankasi Anonim Sirketi"
+  },
+  {
+    "ticker": "HATEK",
+    "name": "Hateks Hatay Tekstil Isletmeleri A.S."
+  },
+  {
+    "ticker": "HATSN",
+    "name": "Hat-San Gemi Insaa Bakim Onarim Deniz Nakliyat Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "HDFGS",
+    "name": "Hedef Girisim Sermayesi Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "HEDEF",
+    "name": "Hedef Holding AS"
+  },
+  {
+    "ticker": "HEKTS",
+    "name": "Hektas Ticaret T.A.S."
+  },
+  {
+    "ticker": "HKTM",
+    "name": "HIDROPAR HAREKET KONTROL TEKNOLOJILERI MERKEZI SANAYI VE TICARET ANONIM SIRKETI"
+  },
+  {
+    "ticker": "HLGYO",
+    "name": "Halk Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "HOROZ",
+    "name": "Horoz Lojistik Kargo Hizmetleri Ve Ticaret AS"
+  },
+  {
+    "ticker": "HRKET",
+    "name": "Hareket Proje Tasimaciligi ve Yuk Muhendisligi AS"
+  },
+  {
+    "ticker": "HTTBT",
+    "name": "Hitit Bilgisayar Hizmetleri A.S."
+  },
+  {
+    "ticker": "HUBVC",
+    "name": "Hub Girisim Sermayesi Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "HUNER",
+    "name": "Hun Yenilenebilir Enerji Uretim AS"
+  },
+  {
+    "ticker": "HURGZ",
+    "name": "Hurriyet Gazetecilik ve Matbaacilik A.S."
+  },
+  {
+    "ticker": "ICBCT",
+    "name": "ICBC Turkey Bank Anonim Sirketi"
+  },
+  {
+    "ticker": "ICUGS",
+    "name": "ICU Girisim Sermayesi Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "IDGYO",
+    "name": "Idealist Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "IEYHO",
+    "name": "Isiklar Enerji ve Yapi Holding Anonim Sirketi"
+  },
+  {
+    "ticker": "IHAAS",
+    "name": "Ihlas Haber Ajansi SA"
+  },
+  {
+    "ticker": "IHEVA",
+    "name": "Ihlas Ev Aletleri Imalat, Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "IHGZT",
+    "name": "Ihlas Gazetecilik A.S."
+  },
+  {
+    "ticker": "IHLAS",
+    "name": "Ihlas Holding A.S."
+  },
+  {
+    "ticker": "IHLGM",
+    "name": "Ihlas Gayrimenkul Proje Gelistirme ve Ticaret A.S."
+  },
+  {
+    "ticker": "IHYAY",
+    "name": "Ihlas Yayin Holding A.S."
+  },
+  {
+    "ticker": "IMASM",
+    "name": "IMAS Makina Sanayi Anonim Sirketi"
+  },
+  {
+    "ticker": "INDES",
+    "name": "Indeks Bilgisayar Sistemleri Muhendislik Sanayi ve Ticaret A.S"
+  },
+  {
+    "ticker": "INFO",
+    "name": "INFO YATIRIM MENKUL DEGERLER A.S"
+  },
+  {
+    "ticker": "INGRM",
+    "name": "Ingram Micro Bilisim Sistemleri A.S."
+  },
+  {
+    "ticker": "INTEK",
+    "name": "Innosa Teknoloji Anonim Sirketi"
+  },
+  {
+    "ticker": "INTEM",
+    "name": "Intema Insaat ve Tesisat Malzemeleri Yatirim ve Pazarlama A.S."
+  },
+  {
+    "ticker": "INVEO",
+    "name": "Inveo Yatirim Holding AS"
+  },
+  {
+    "ticker": "INVES",
+    "name": "Investco Holding A.S."
+  },
+  {
+    "ticker": "ISBIR",
+    "name": "Isbir Holding AS"
+  },
+  {
+    "ticker": "ISDMR",
+    "name": "Iskenderun Demir ve Celik AS"
+  },
+  {
+    "ticker": "ISFIN",
+    "name": "Is Finansal Kiralama A.S."
+  },
+  {
+    "ticker": "ISGYO",
+    "name": "Is Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "ISKPL",
+    "name": "Isik Plastik Sanayi VE Dis Ticaret Pazarlama AS"
+  },
+  {
+    "ticker": "ISMEN",
+    "name": "Is Yatirim Menkul Degerler AS"
+  },
+  {
+    "ticker": "ISSEN",
+    "name": "Isbir Sentetik Dokuma Sanayi AS"
+  },
+  {
+    "ticker": "IZENR",
+    "name": "Izdemir Enerji Elektrik Uretim A.S."
+  },
+  {
+    "ticker": "IZFAS",
+    "name": "Izmir Firca Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "IZINV",
+    "name": "Iz Yatirim Holding AS"
+  },
+  {
+    "ticker": "IZMDC",
+    "name": "Izmir Demir Celik Sanayi A.S."
+  },
+  {
+    "ticker": "JANTS",
+    "name": "Jantsa Jant Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "KAPLM",
+    "name": "Kaplamin Ambalaj Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "KAREL",
+    "name": "Karel Elektronik Sanayi ve Ticaret SA"
+  },
+  {
+    "ticker": "KARSN",
+    "name": "Karsan Otomotiv Sanayii ve Ticaret A.S."
+  },
+  {
+    "ticker": "KARTN",
+    "name": "Kartonsan Karton Sanayi ve Ticaret Anonim Sirketi"
+  },
+  {
+    "ticker": "KATMR",
+    "name": "Katmerciler Arac Ustu Ekipman Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "KAYSE",
+    "name": "Kayseri Seker Fabrikasi AS"
+  },
+  {
+    "ticker": "KBORU",
+    "name": "Kuzey Boru A.S."
+  },
+  {
+    "ticker": "KCAER",
+    "name": "Kocaer Celik Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "KCHOL",
+    "name": "Koc Holding A.S."
+  },
+  {
+    "ticker": "KENT",
+    "name": "Kent Gida Maddeleri Sanayii ve Ticaret A.S."
+  },
+  {
+    "ticker": "KERVN",
+    "name": "Kervansaray Yatirim Holding A.S."
+  },
+  {
+    "ticker": "KFEIN",
+    "name": "Kafein Yazilim Hizmetleri Ticaret AS"
+  },
+  {
+    "ticker": "KGYO",
+    "name": "KORAY GAYRIMENKUL YATIRIM ORTAKLIGI A.S. Class B"
+  },
+  {
+    "ticker": "KIMMR",
+    "name": "Ersan Alisveris Hizmetleri ve Gida Sanayi Ticaret A.S."
+  },
+  {
+    "ticker": "KLGYO",
+    "name": "Kiler Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "KLKIM",
+    "name": "Kalekim Kimyevi Maddeler Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "KLMSN",
+    "name": "Klimasan Klima Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "KLNMA",
+    "name": "Turkiye Kalkinma ve Yatirim Bankasi A.S."
+  },
+  {
+    "ticker": "KLRHO",
+    "name": "KILER HOLDING A.S."
+  },
+  {
+    "ticker": "KLSER",
+    "name": "Kaleseramik Canakkale Kalebodur Seramik A.S."
+  },
+  {
+    "ticker": "KLSYN",
+    "name": "Koleksiyon Mobilya Sanayi AS"
+  },
+  {
+    "ticker": "KLYPV",
+    "name": "Kalyon Gunes Teknolojileri Uretim Anonim Sirketi"
+  },
+  {
+    "ticker": "KMPUR",
+    "name": "Kimteks Poliuretan Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "KNFRT",
+    "name": "Konfrut Tarim A.S."
+  },
+  {
+    "ticker": "KOCMT",
+    "name": "Koc Metalurji AS"
+  },
+  {
+    "ticker": "KONKA",
+    "name": "Konya Kagit Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "KONTR",
+    "name": "Kontrolmatik Teknoloji Enerji ve Muhendislik AS"
+  },
+  {
+    "ticker": "KONYA",
+    "name": "Konya Cimento Sanayi A.S."
+  },
+  {
+    "ticker": "KOPOL",
+    "name": "KOZA POLYESTER SANAYI VE TICARET A.S."
+  },
+  {
+    "ticker": "KORDS",
+    "name": "Kordsa Teknik Tekstil A.S."
+  },
+  {
+    "ticker": "KOTON",
+    "name": "Koton Magazacilik Tekstil Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "KRDMA",
+    "name": "Kardemir Karabiik Demir celik Sanayi ve Ticaret A.S. Class A"
+  },
+  {
+    "ticker": "KRGYO",
+    "name": "Korfez Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "KRONT",
+    "name": "Kron Teknoloji AS"
+  },
+  {
+    "ticker": "KRPLS",
+    "name": "Koroplast Temizlik Ambalaj Urunleri Sanayi ve dis Ticaret AS"
+  },
+  {
+    "ticker": "KRSTL",
+    "name": "Kristal Kola ve Mesrubat Sanayi Ticaret A.S."
+  },
+  {
+    "ticker": "KRTEK",
+    "name": "Karsu Tekstil Sanayii ve Ticaret A.S."
+  },
+  {
+    "ticker": "KRVGD",
+    "name": "Kervan Gida Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "KSTUR",
+    "name": "Kustur Kusadasi Turizm Endustrisi A.S."
+  },
+  {
+    "ticker": "KTLEV",
+    "name": "KATILIMEVIM TASARRUF FINANSMAN A.S."
+  },
+  {
+    "ticker": "KTSKR",
+    "name": "Kutahya Seker Fabrikasi AS"
+  },
+  {
+    "ticker": "KUTPO",
+    "name": "Kutahya Porselen Sanayi A.S."
+  },
+  {
+    "ticker": "KUVVA",
+    "name": "Kuvva Gida Ticaret ve Sanayi Yatirimlari A.S."
+  },
+  {
+    "ticker": "KUYAS",
+    "name": "Kuyas Yatirim A.S."
+  },
+  {
+    "ticker": "KZBGY",
+    "name": "KIZILBUK GAYRIMENKUL YATIRIM ORTAKLIGI A.S."
+  },
+  {
+    "ticker": "KZGYO",
+    "name": "Kuzugrup Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "LIDER",
+    "name": "LDR Turizm A.S."
+  },
+  {
+    "ticker": "LIDFA",
+    "name": "Lider Faktoring Anonim Sirketi"
+  },
+  {
+    "ticker": "LILAK",
+    "name": "Lila Kagit Sanayi Ve Ticaret Anonim Sirketi"
+  },
+  {
+    "ticker": "LINK",
+    "name": "Link Bilgisayar Sistemleri Yazilimi ve Donanimi Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "LKMNH",
+    "name": "Lokman Hekim Engurusag Saglik, Turizm, Egitim Hizmetleri ve Insaat Taahhut A.S."
+  },
+  {
+    "ticker": "LMKDC",
+    "name": "Limak Dogu Anadolu Cimento Sanayi Ve Ticaret AS"
+  },
+  {
+    "ticker": "LOGO",
+    "name": "Logo Yazilim Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "LRSHO",
+    "name": "Loras Holding Anonim Sirketi"
+  },
+  {
+    "ticker": "LUKSK",
+    "name": "Luks Kadife Ticaret ve Sanayi A.S."
+  },
+  {
+    "ticker": "LXGYO",
+    "name": "Luxera Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "LYDHO",
+    "name": "Lydia Holding A.S."
+  },
+  {
+    "ticker": "LYDYE",
+    "name": "Lydia Yesil Enerji kaynaklari A.S."
+  },
+  {
+    "ticker": "MAALT",
+    "name": "Marmaris Altinyunus Turistik Tesisler A.S"
+  },
+  {
+    "ticker": "MACKO",
+    "name": "Mackolik Internet Hizmetleri Ticaret AS"
+  },
+  {
+    "ticker": "MAGEN",
+    "name": "MARGUN ENERJI URETIM SANAYI VE TICARET A.S."
+  },
+  {
+    "ticker": "MAKIM",
+    "name": "MAKIM MAKINA TEKNOLOJILERI SANAYIVE TICARET A.S."
+  },
+  {
+    "ticker": "MAKTK",
+    "name": "Makina Takim Endustrisi A.S."
+  },
+  {
+    "ticker": "MANAS",
+    "name": "Manas Enerji Yonetimi Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "MARBL",
+    "name": "Tureks Turunc Madencilik Ic ve Dis Ticaret A.S."
+  },
+  {
+    "ticker": "MARKA",
+    "name": "Marka Yatirim Holding A.S."
+  },
+  {
+    "ticker": "MARMR",
+    "name": "Marmara Holding AS"
+  },
+  {
+    "ticker": "MARTI",
+    "name": "Marti Otel Isletmeleri A.S."
+  },
+  {
+    "ticker": "MAVI",
+    "name": "Mavi Giyim Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "MCARD",
+    "name": "Metropal Kurumsal Hizmetler A.S."
+  },
+  {
+    "ticker": "MEDTR",
+    "name": "Meditera Tibbi Malzeme Sanayi Ve Ticaret A.S."
+  },
+  {
+    "ticker": "MEGAP",
+    "name": "Mega Polietilen Kopuk Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "MEGMT",
+    "name": "Mega Metal Sanayi Ve Ticaret A.S."
+  },
+  {
+    "ticker": "MEKAG",
+    "name": "Meka Global Makine Imalat Sanayi Ve Ticaret A.S."
+  },
+  {
+    "ticker": "MEPET",
+    "name": "Break Mola Turizm Yatirimlar A.S."
+  },
+  {
+    "ticker": "MERCN",
+    "name": "MERCAN KIMYA SANAYI VE TICARET A.S."
+  },
+  {
+    "ticker": "MERIT",
+    "name": "Merit Turizm Yatirim ve Isletmeleri AS"
+  },
+  {
+    "ticker": "MERKO",
+    "name": "Merko Gida Sanayi ve Ticaret A.S. Class A"
+  },
+  {
+    "ticker": "METRO",
+    "name": "Metro Ticari ve Mali Yatirimlar Holding A.S."
+  },
+  {
+    "ticker": "MEYSU",
+    "name": "Meysu Gida Sanayi Ve Ticaret A.S."
+  },
+  {
+    "ticker": "MGROS",
+    "name": "Migros Ticaret A.S."
+  },
+  {
+    "ticker": "MHRGY",
+    "name": "MHR Gayrimenkul Yatirim Ortakligi Anonim Sirketi"
+  },
+  {
+    "ticker": "MIATK",
+    "name": "MIA Teknoloji AS"
+  },
+  {
+    "ticker": "MMCAS",
+    "name": "MMC Sanayi ve Ticari Yatirimlar A.S"
+  },
+  {
+    "ticker": "MNDRS",
+    "name": "Menderes Tekstil Sanayi ve Ticaret Anonim Sirketi"
+  },
+  {
+    "ticker": "MNDTR",
+    "name": "Mondi Turkey Oluklu Mukavva Kagit ve Ambalaj Sanayi A.S."
+  },
+  {
+    "ticker": "MOBTL",
+    "name": "Mobitel Iletisim Nizmetleri Sanayi ve Ticaret A.S"
+  },
+  {
+    "ticker": "MOGAN",
+    "name": "Mogan Enerji Yatirim Holding"
+  },
+  {
+    "ticker": "MOPAS",
+    "name": "Mopas Marketcilik Gida Sanayi Ve Ticaret A.S."
+  },
+  {
+    "ticker": "MPARK",
+    "name": "MLP Saglik Hizmetleri AS Class B"
+  },
+  {
+    "ticker": "MRGYO",
+    "name": "Marti Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "MRSHL",
+    "name": "Marshall Boya ve Vernik Sanayi A.S."
+  },
+  {
+    "ticker": "MSGYO",
+    "name": "Mistral Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "MTRKS",
+    "name": "Matriks Finansal Teknolojiler A.S."
+  },
+  {
+    "ticker": "MTRYO",
+    "name": "Metro Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "MZHLD",
+    "name": "Mazhar Zorlu Holding Anonim Sirketi"
+  },
+  {
+    "ticker": "NATEN",
+    "name": "Naturel Yenilenebilir Enerji Ticaret A.S."
+  },
+  {
+    "ticker": "NETAS",
+    "name": "Netas Telekomunikasyon A.S."
+  },
+  {
+    "ticker": "NETCD",
+    "name": "Netcad Yazilim A.S."
+  },
+  {
+    "ticker": "NIBAS",
+    "name": "Nigbas Nigde Beton Sanayi ve Ticarte A.S."
+  },
+  {
+    "ticker": "NTGAZ",
+    "name": "Naturelgaz Sanayi Ve Ticaret A.S."
+  },
+  {
+    "ticker": "NTHOL",
+    "name": "Net Holding A.S."
+  },
+  {
+    "ticker": "NUGYO",
+    "name": "Nurol Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "NUHCM",
+    "name": "Nuh Cimento Sanayi A.S."
+  },
+  {
+    "ticker": "OBAMS",
+    "name": "Oba Makarnacilik Sanayi Ve Ticaret A. S."
+  },
+  {
+    "ticker": "OBASE",
+    "name": "Obase Bilgisayar ve Danismanlik Hizmetleri Ticaret A.S."
+  },
+  {
+    "ticker": "ODAS",
+    "name": "ODAS Elektrik Uretim Sanayi Ticaret A.S."
+  },
+  {
+    "ticker": "ODINE",
+    "name": "Odine Solutions Teknoloji Ticaret ve Sanayi AS"
+  },
+  {
+    "ticker": "OFSYM",
+    "name": "Ofis Yem Gida Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "ONCSM",
+    "name": "ONCOSEM ONKOLOJIK SISTEMLER SANAYI VE TICARET A.S."
+  },
+  {
+    "ticker": "ONRYT",
+    "name": "Onur Yuksek Teknoloji AS"
+  },
+  {
+    "ticker": "ORCAY",
+    "name": "ORCAY ORTAKOY CAY SANAYI VE TICARET A.S."
+  },
+  {
+    "ticker": "ORGE",
+    "name": "Orge Enerji Elektrik Taahhut AS"
+  },
+  {
+    "ticker": "ORMA",
+    "name": "Orma Orman Mahsulleri Integre Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "OSMEN",
+    "name": "Osmanli Yatirim Menkul Degerler a.s."
+  },
+  {
+    "ticker": "OSTIM",
+    "name": "Ostim Endustriyel Yatirimlar ve Isletme AS"
+  },
+  {
+    "ticker": "OTKAR",
+    "name": "Otokar Otomotiv ve Savunma Sanayi A.S."
+  },
+  {
+    "ticker": "OTTO",
+    "name": "OTTO HOLDING A.S"
+  },
+  {
+    "ticker": "OYAKC",
+    "name": "OYAK Cimento Fabrikalari A.S."
+  },
+  {
+    "ticker": "OYAYO",
+    "name": "Oyak Yatirim Ortakligi Anonim Sirketi"
+  },
+  {
+    "ticker": "OYLUM",
+    "name": "Oylum Sinai Yatirimlar A.S."
+  },
+  {
+    "ticker": "OYYAT",
+    "name": "Oyak Yatirim Menkul Degerler A.S."
+  },
+  {
+    "ticker": "OZATD",
+    "name": "OZATA DENIZCILIK SANAYI VE TICARET AS"
+  },
+  {
+    "ticker": "OZGYO",
+    "name": "Ozderici Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "OZKGY",
+    "name": "Ozak Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "OZRDN",
+    "name": "Ozerden Ambalaj Sanayi A.S."
+  },
+  {
+    "ticker": "OZSUB",
+    "name": "Ozsu Balik Uretim A.S."
+  },
+  {
+    "ticker": "OZYSR",
+    "name": "Ozyasar Tel ve Galvanizleme Sanayi Anonim Sirketi"
+  },
+  {
+    "ticker": "PAGYO",
+    "name": "Panora Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "PAHOL",
+    "name": "PASIFIK HOLDING A.S"
+  },
+  {
+    "ticker": "PAMEL",
+    "name": "Pamel Yenilenebilir Elektrik Uretim AS"
+  },
+  {
+    "ticker": "PAPIL",
+    "name": "PAPILON SAVUNMA TEKNOLOJI VE TICARET A.S"
+  },
+  {
+    "ticker": "PARSN",
+    "name": "Parsan Makina Parcalari Sanayii Anonim Sirketi"
+  },
+  {
+    "ticker": "PASEU",
+    "name": "Pasifik Eurasia Lojistik dis Ticaret AS"
+  },
+  {
+    "ticker": "PATEK",
+    "name": "Pasifik Teknoloji AS"
+  },
+  {
+    "ticker": "PCILT",
+    "name": "PC Iletisim ve Medya Hizmetleri Sanayi Ticaret AS"
+  },
+  {
+    "ticker": "PEKGY",
+    "name": "Peker Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "PENGD",
+    "name": "Penguen Gida Sanayi A.S."
+  },
+  {
+    "ticker": "PENTA",
+    "name": "Penta Teknoloji Urunleri Dagitim Ticaret AS"
+  },
+  {
+    "ticker": "PETKM",
+    "name": "Petkim Petrokimya Holding Anonim Sirketi"
+  },
+  {
+    "ticker": "PETUN",
+    "name": "Pinar Entegre Et ve Un Sanayii Anonim Sirketi"
+  },
+  {
+    "ticker": "PGSUS",
+    "name": "Pegasus Hava Tasimaciligi Anonim Sirketi"
+  },
+  {
+    "ticker": "PINSU",
+    "name": "Pinar Su ve Icecek Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "PKART",
+    "name": "Plastikkart Akilli Kart Iletisim Sistemleri Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "PKENT",
+    "name": "Petrokent Turizm A.S."
+  },
+  {
+    "ticker": "PLTUR",
+    "name": "PLATFORM TURIZM TASIMACILIK GIDA INSAAT TEMIZLIK HIZMETLERI SANAYI VE TICARET A.S."
+  },
+  {
+    "ticker": "PNLSN",
+    "name": "Panelsan Cati Cephe Sistemleri Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "PNSUT",
+    "name": "Pinar Sut Mamulleri Sanayii A.S."
+  },
+  {
+    "ticker": "POLHO",
+    "name": "Polisan Holding AS"
+  },
+  {
+    "ticker": "POLTK",
+    "name": "Politeknik Metal Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "PRDGS",
+    "name": "PARDUS GIRISIM SERMAYESI YATIRIM ORTAKLIGI A.S."
+  },
+  {
+    "ticker": "PRKAB",
+    "name": "Turk Prysmian Kablo ve Sistemleri A.S."
+  },
+  {
+    "ticker": "PRKME",
+    "name": "Park Elektrik Uretim Madencilik Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "PRZMA",
+    "name": "Prizma Pres Matbaacilik Yayincilik Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "PSDTC",
+    "name": "Pergamon Status Dis Ticaret A.S."
+  },
+  {
+    "ticker": "PSGYO",
+    "name": "Pasifik Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "QNBFK",
+    "name": "QNB Finansal Kiralama A.S."
+  },
+  {
+    "ticker": "QNBTR",
+    "name": "QNB Bank AS"
+  },
+  {
+    "ticker": "QUAGR",
+    "name": "Qua Granite Hayal Yapi ve Urunleri Sanayi Ticaret AS"
+  },
+  {
+    "ticker": "RALYH",
+    "name": "Ral Yatirim Holding A.S."
+  },
+  {
+    "ticker": "RAYSG",
+    "name": "Ray Sigorta A.S."
+  },
+  {
+    "ticker": "REEDR",
+    "name": "Reeder Teknoloji Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "RGYAS",
+    "name": "Ronesans Gayrimenkul Yatirim A.S."
+  },
+  {
+    "ticker": "RNPOL",
+    "name": "Rainbow Polikarbonat Sanayi Ticaret Anonim Sirketi"
+  },
+  {
+    "ticker": "RODRG",
+    "name": "Rodrigo Tekstil Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "RTALB",
+    "name": "RTA Laboratuvarlari Biyolojik Urunler Ilac ve Makina Sanayi Ticaret A.S."
+  },
+  {
+    "ticker": "RUBNS",
+    "name": "Rubenis Tekstil Sanayi Ticaret AS"
+  },
+  {
+    "ticker": "RUZYE",
+    "name": "Ruzy Madencilik Ve Enerji Yatirimlari Sanayi Ve Ticaret A.S."
+  },
+  {
+    "ticker": "RYGYO",
+    "name": "Reysas Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "RYSAS",
+    "name": "Reysas Tasimacilik ve Lojistik Ticaret Anonim Sirketi"
+  },
+  {
+    "ticker": "SAFKR",
+    "name": "Safkar Ege Cooling Air Conditioning Cold Air Tes.Ihr.Ith.A.S"
+  },
+  {
+    "ticker": "SAHOL",
+    "name": "Haci Omer Sabanci Holding A.S."
+  },
+  {
+    "ticker": "SAMAT",
+    "name": "Saray Matbaacilik Kagitcilik Kirtasiyecilik Ticaret Ve Sanayi A.S."
+  },
+  {
+    "ticker": "SANEL",
+    "name": "San-El Muhendislik Elektrik Taahhut Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "SANFM",
+    "name": "SANIFOAM ENDUSTRI VE TUKETIM URUNLERI SANAYI TICARET A.S."
+  },
+  {
+    "ticker": "SANKO",
+    "name": "Sanko Pazarlama Ithalat Ihracat Anonim Sirketi"
+  },
+  {
+    "ticker": "SARKY",
+    "name": "Sarkuysan Elektrolitik Bakir Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "SASA",
+    "name": "Sasa Polyester Sanayi A.S."
+  },
+  {
+    "ticker": "SAYAS",
+    "name": "Say Yenilenebilir Enerji Ekipmanlari Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "SDTTR",
+    "name": "SDT Uzay ve Savunma Teknolojileri A.S."
+  },
+  {
+    "ticker": "SEGMN",
+    "name": "Segmen Kardesler Gida Uretim ve Ambalaj Sanayi AS"
+  },
+  {
+    "ticker": "SEGYO",
+    "name": "SEKER GAYRIMENKUL YATIRIM ORTAKLIGI A.S."
+  },
+  {
+    "ticker": "SEKFK",
+    "name": "Seker Finansal Kiralama A.S."
+  },
+  {
+    "ticker": "SEKUR",
+    "name": "Sekuro Plastik Ambalaj Sanayi A.S."
+  },
+  {
+    "ticker": "SELEC",
+    "name": "Selcuk Ecza Deposu Ticaret ve Sanayi A.S."
+  },
+  {
+    "ticker": "SELVA",
+    "name": "SELVA GIDA SANAYI A.S."
+  },
+  {
+    "ticker": "SERNT",
+    "name": "Seranit Granit Seramik Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "SEYKM",
+    "name": "Seyitler Kimya Sanayi AS"
+  },
+  {
+    "ticker": "SILVR",
+    "name": "Silverline Endustri ve Ticaret A.S."
+  },
+  {
+    "ticker": "SISE",
+    "name": "Turkiye Sise ve Cam Fabrikalari A.S."
+  },
+  {
+    "ticker": "SKBNK",
+    "name": "Sekerbank T.A.S."
+  },
+  {
+    "ticker": "SKTAS",
+    "name": "Soktas Tekstil Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "SKYLP",
+    "name": "Skyalp Finansal Teknolojiler ve Danismanlik A.S"
+  },
+  {
+    "ticker": "SKYMD",
+    "name": "Seker Yatirim Menkul Degerler A.S."
+  },
+  {
+    "ticker": "SMART",
+    "name": "Smartiks Yazilim AS"
+  },
+  {
+    "ticker": "SMRTG",
+    "name": "Smart Gunes Enerjisi Teknolojileri Arastirma Gelistirme Uretim Sanayi ve Ticaret"
+  },
+  {
+    "ticker": "SMRVA",
+    "name": "Sumer Varlik Yonetim A.S."
+  },
+  {
+    "ticker": "SNGYO",
+    "name": "Sinpas Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "SNICA",
+    "name": "Sanica Isi Sanayi A.S."
+  },
+  {
+    "ticker": "SNPAM",
+    "name": "Sonmez Pamuklu Sanayii A.S."
+  },
+  {
+    "ticker": "SODSN",
+    "name": "Sodas Sodyum Sanayii AS"
+  },
+  {
+    "ticker": "SOKE",
+    "name": "Soke Degirmencilik Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "SOKM",
+    "name": "Sok Marketler Ticaret AS"
+  },
+  {
+    "ticker": "SONME",
+    "name": "Soenmez Filament Sentetik Iplik ve Elyaf Sanayi Anonim Sirketi"
+  },
+  {
+    "ticker": "SRVGY",
+    "name": "Servet Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "SUMAS",
+    "name": "Sumas Suni Tahta ve Mobilya Sanayii AS"
+  },
+  {
+    "ticker": "SUNTK",
+    "name": "Sun Tekstil Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "SURGY",
+    "name": "Sur Tatil Evleri Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "SUWEN",
+    "name": "Suwen Tekstil San. Paz. AS"
+  },
+  {
+    "ticker": "SVGYO",
+    "name": "Savur Gayrimenkul Yatirim Ortakligi A.S"
+  },
+  {
+    "ticker": "TABGD",
+    "name": "TAB Gida Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "TARKM",
+    "name": "Tarkim Bitki Koruma Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "TATEN",
+    "name": "Tatlipinar Enerji Uretim A.S."
+  },
+  {
+    "ticker": "TATGD",
+    "name": "Tat Gida Sanayi A.S."
+  },
+  {
+    "ticker": "TAVHL",
+    "name": "TAV Havalimanlari Holding A.S."
+  },
+  {
+    "ticker": "TBORG",
+    "name": "Turk Tuborg Bira ve Malt Sanayii A.S."
+  },
+  {
+    "ticker": "TCELL",
+    "name": "Turkcell Iletisim Hizmetleri A.S."
+  },
+  {
+    "ticker": "TCKRC",
+    "name": "Kirac Galvaniz Telekominikasyon Metal Makine Insaat Elektrik Sanayi Ve Ticaret AS"
+  },
+  {
+    "ticker": "TDGYO",
+    "name": "Trend Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "TEHOL",
+    "name": "Tera Yatirim Teknoloji Holding A.S."
+  },
+  {
+    "ticker": "TEKTU",
+    "name": "Tek-Art Insaat Ticaret Turizm Sanayi ve Yatirimlar Anonim Sirketi"
+  },
+  {
+    "ticker": "TERA",
+    "name": "Tera Yatirim Menkul Degerler AS"
+  },
+  {
+    "ticker": "TEZOL",
+    "name": "Europap Tezol Paper Industry and Trade Inc."
+  },
+  {
+    "ticker": "TGSAS",
+    "name": "TGS Dis Ticaret AS"
+  },
+  {
+    "ticker": "THYAO",
+    "name": "Turk Hava Yollari A.O."
+  },
+  {
+    "ticker": "TKFEN",
+    "name": "Tekfen Holding Anonim Sirketi"
+  },
+  {
+    "ticker": "TKNSA",
+    "name": "Teknosa Ic ve Dis Ticaret AS"
+  },
+  {
+    "ticker": "TLMAN",
+    "name": "Trabzon Liman Isletmeciligi AS"
+  },
+  {
+    "ticker": "TMPOL",
+    "name": "Temapol Polimer Plastik Ve Insaat Sanayi Ticaret A..S"
+  },
+  {
+    "ticker": "TMSN",
+    "name": "Tumosan Motor Ve Traktor Sanayi AS"
+  },
+  {
+    "ticker": "TNZTP",
+    "name": "TAPDI OKSIJEN OZEL SAGLIK VE EGITIM HIZMETLERI SANAYI TICARET A.S."
+  },
+  {
+    "ticker": "TOASO",
+    "name": "Tofas Turk Otomobil Fabrikasi A.S."
+  },
+  {
+    "ticker": "TRALT",
+    "name": "Turk Altin Isletmeleri A.S."
+  },
+  {
+    "ticker": "TRCAS",
+    "name": "Turcas Holding A.S."
+  },
+  {
+    "ticker": "TRENJ",
+    "name": "TR Dogal Enerji Kaynaklari Arastirma ve Uretim Anonim Sirketi"
+  },
+  {
+    "ticker": "TRGYO",
+    "name": "Torunlar Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "TRHOL",
+    "name": "Tera Financial Investments Holding A.S."
+  },
+  {
+    "ticker": "TRILC",
+    "name": "Turk Ilac ve Serum Sanayi AS"
+  },
+  {
+    "ticker": "TRMET",
+    "name": "TR Anadolu Metal Madencilik Isletmeleri Anonim Sirketi"
+  },
+  {
+    "ticker": "TSGYO",
+    "name": "TSKB Gayrimenkul Yatirim Ortakligi Anonim Sirketi"
+  },
+  {
+    "ticker": "TSKB",
+    "name": "Turkiye Sinai Kalkinma Bankasi A.S."
+  },
+  {
+    "ticker": "TSPOR",
+    "name": "Trabzonspor Sportif Yatirim ve Futbol Isletmeciligi Ticaret A.S."
+  },
+  {
+    "ticker": "TTKOM",
+    "name": "Turk Telekomunikasyon A.S."
+  },
+  {
+    "ticker": "TTRAK",
+    "name": "Turk Traktor ve Ziraat Makineleri A.S."
+  },
+  {
+    "ticker": "TUCLK",
+    "name": "Tugcelik Aluminyum ve Metal Mamulleri Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "TUKAS",
+    "name": "Tukas Gida Sanayi ve Ticaret Anonim Sirketi"
+  },
+  {
+    "ticker": "TUPRS",
+    "name": "Turkiye Petrol Rafinerileri A.S."
+  },
+  {
+    "ticker": "TUREX",
+    "name": "TUREKS TURIZM TASIMACILIK A.S."
+  },
+  {
+    "ticker": "TURGG",
+    "name": "TURKER PROJE GAYRIMENKUL VE YATIRIM GELISTIRME A.S."
+  },
+  {
+    "ticker": "TURSG",
+    "name": "Turkiye Sigorta A.S."
+  },
+  {
+    "ticker": "UCAYM",
+    "name": "Ucay Muhendislik Enerji ve Iklimlendirme Teknolojileri"
+  },
+  {
+    "ticker": "UFUK",
+    "name": "Ufuk Yatirim Yonetim Ve Gayrimenkul A.S."
+  },
+  {
+    "ticker": "ULAS",
+    "name": "Ulaslar Turizm Energi Tarim Gida ve Insaat Yatirimlari A.S."
+  },
+  {
+    "ticker": "ULKER",
+    "name": "Ulker Biskuvi Sanayi A.S."
+  },
+  {
+    "ticker": "ULUFA",
+    "name": "Ulusal Faktoring A.S."
+  },
+  {
+    "ticker": "ULUSE",
+    "name": "Ulusoy Elektrik Imalat Taahhut ve Ticaret AS"
+  },
+  {
+    "ticker": "ULUUN",
+    "name": "Ulusoy Un Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "UNLU",
+    "name": "Unlu Yatirim Holding A.S."
+  },
+  {
+    "ticker": "USAK",
+    "name": "Usak Seramik Sanayii A.S."
+  },
+  {
+    "ticker": "VAKBN",
+    "name": "Turkiye Vakiflar Bankasi Turk Anonim Ortakligi"
+  },
+  {
+    "ticker": "VAKFA",
+    "name": "Vakif Faktoring A.S."
+  },
+  {
+    "ticker": "VAKFN",
+    "name": "Vakif Finansal Kiralama AS"
+  },
+  {
+    "ticker": "VAKKO",
+    "name": "Vakko Tekstil ve Hazir Giyim Sanayi Isletmeleri A.S."
+  },
+  {
+    "ticker": "VANGD",
+    "name": "Vanet Gida Sanayi Ic ve Dis Ticaret AS"
+  },
+  {
+    "ticker": "VBTYZ",
+    "name": "VBT Yazilim AS"
+  },
+  {
+    "ticker": "VERUS",
+    "name": "Verusa Holding AS"
+  },
+  {
+    "ticker": "VESBE",
+    "name": "Vestel Beyaz Esya Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "VESTL",
+    "name": "Vestel Elektronik Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "VKFYO",
+    "name": "Vakif Menkul Kiymet Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "VKGYO",
+    "name": "Vakif Gayrimenkul Yatirim Ortakligi Anonim Sirketi"
+  },
+  {
+    "ticker": "VKING",
+    "name": "Viking Kagit ve Seluloz A.S."
+  },
+  {
+    "ticker": "VRGYO",
+    "name": "Vera Konsept Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "VSNMD",
+    "name": "Visne Madencilik Uretim Sanayi ve Ticaret AS"
+  },
+  {
+    "ticker": "YAPRK",
+    "name": "Yaprak Sut ve Besi Ciftikleri Sanayi Ve Ticaret AS"
+  },
+  {
+    "ticker": "YATAS",
+    "name": "Yatas Yatak ve Yorgan Sanayi ve Ticaret Anonim Sirketi"
+  },
+  {
+    "ticker": "YAYLA",
+    "name": "Yayla Enerji Uretim Turizm ve Insaat Ticaret AS"
+  },
+  {
+    "ticker": "YBTAS",
+    "name": "Yibitas Yozgat Isci Birligi Insaat Malzemeleri Ticaret Ve San"
+  },
+  {
+    "ticker": "YEOTK",
+    "name": "YEO Teknoloji Enerji ve Endustri A.S."
+  },
+  {
+    "ticker": "YESIL",
+    "name": "Yesil Yatirim Holding AS"
+  },
+  {
+    "ticker": "YGGYO",
+    "name": "Yeni Gimat Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "YIGIT",
+    "name": "Yigit Aku Malzemeleri Nakliyat Turizm Insaat Sanayi Ve Ticaret"
+  },
+  {
+    "ticker": "YKBNK",
+    "name": "Yapi ve Kredi Bankasi A.S."
+  },
+  {
+    "ticker": "YKSLN",
+    "name": "Yukselen Celik AS"
+  },
+  {
+    "ticker": "YONGA",
+    "name": "Yonga Mobilya SANAYI ve TICARET AS"
+  },
+  {
+    "ticker": "YUNSA",
+    "name": "Yunsa Yunlu Sanayi ve Ticaret A.S."
+  },
+  {
+    "ticker": "YYAPI",
+    "name": "Yesil Yapi Endustrisi A.S."
+  },
+  {
+    "ticker": "YYLGD",
+    "name": "Yayla Agro Gida Sanayi ve Nakliyat AS"
+  },
+  {
+    "ticker": "ZEDUR",
+    "name": "Zedur Enerji ElekTrik Uretim A.S."
+  },
+  {
+    "ticker": "ZERGY",
+    "name": "Zeray Gayrimenkul Yatirim Ortakligi AS"
+  },
+  {
+    "ticker": "ZGYO",
+    "name": "Z Gayrimenkul Yatirim Ortakligi A.S."
+  },
+  {
+    "ticker": "ZOREN",
+    "name": "Zorlu Enerji Elektrik Uretim A.S."
+  },
+  {
+    "ticker": "ZRGYO",
+    "name": "Ziraat Gayrimenkul Yatirim Ortakligi AS"
+  }
+]

@@ -30,38 +30,65 @@ WHISPER_INITIAL_PROMPT = (
 def load_bist_tickers(json_path: str = "bist_hisseler.json") -> set[str]:
     """bist_hisseler.json'dan ticker kodlarını yükler ve set olarak döndürür.
 
-    Args:
-        json_path: JSON dosyasının yolu (varsayılan: proje kökü).
-
-    Returns:
-        Ticker kodlarından oluşan set (O(1) lookup için).
+    JSON formatı: [{"ticker": "THYAO", "name": "Turk Hava Yollari"}] veya ["THYAO", ...]
     """
     path = Path(json_path)
     if not path.exists():
         logger.warning("bist_hisseler.json bulunamadı: %s — boş set dönülüyor", path.resolve())
         return set()
-
     try:
         with path.open(encoding="utf-8") as f:
-            tickers = json.load(f)
-        return set(tickers)
+            data = json.load(f)
+        if data and isinstance(data[0], dict):
+            return {r["ticker"] for r in data}
+        return set(data)
     except Exception as exc:
         logger.warning("bist_hisseler.json okunamadı: %s — boş set dönülüyor", exc)
         return set()
 
 
+def load_bist_ticker_names(json_path: str = "bist_hisseler.json") -> dict[str, str]:
+    """Ticker → şirket adı eşleştirme sözlüğü döndürür.
+
+    Returns:
+        {"THYAO": "Turk Hava Yollari A.O.", ...}
+    """
+    path = Path(json_path)
+    if not path.exists():
+        return {}
+    try:
+        with path.open(encoding="utf-8") as f:
+            data = json.load(f)
+        if data and isinstance(data[0], dict):
+            return {r["ticker"]: r["name"] for r in data}
+        return {}
+    except Exception as exc:
+        logger.warning("Ticker isimleri yüklenemedi: %s", exc)
+        return {}
+
+
 # ── KISIM C: build_analyst_system_prompt() ────────────────────────────────────
 
-def build_analyst_system_prompt(bist_tickers: set[str]) -> str:
+def build_analyst_system_prompt(
+    bist_tickers: set[str],
+    ticker_names: dict[str, str] | None = None,
+) -> str:
     """Ajan 2 (analyst.py) için sistem promptunu oluşturur.
 
     Args:
         bist_tickers: load_bist_tickers() çıktısı — geçerli BIST kodları.
+        ticker_names: load_bist_ticker_names() çıktısı — ticker → şirket adı.
 
     Returns:
         LLM'e gönderilecek tam sistem prompt metni.
     """
     ticker_list = ", ".join(sorted(bist_tickers))
+
+    # Şirket adı → ticker eşleştirme tablosu (sadece adı olan ticker'lar)
+    name_map_lines = ""
+    if ticker_names:
+        entries = [f"{name} → {t}" for t, name in sorted(ticker_names.items()) if name]
+        name_map_lines = "\n".join(entries[:300])  # prompt sınırı için ilk 300
 
     schema = """{
   "chunk_id": "string",
@@ -81,17 +108,22 @@ def build_analyst_system_prompt(bist_tickers: set[str]) -> str:
   "genel_yorum": "tek cümle özet"
 }"""
 
+    name_section = f"""
+ŞİRKET ADI → BIST KODU EŞLEŞTİRMESİ (konuşmada şirket adı geçerse bu tablodan kodu bul):
+{name_map_lines}
+""" if name_map_lines else ""
+
     return f"""Sen Türk borsası teknik analiz uzmanısın.
 Verilen transkript bölümünden finansal sinyalleri çıkarıp JSON formatında döndürüyorsun.
 
 HİSSE TESPİT KURALLARI (EN ÖNEMLİ):
-- Bir sinyali hisseye bağlamak için hisse adının veya kodunun METİNDE AÇIKÇA geçmesi ZORUNLUDUR
-- Hisse adı geçmiyorsa → hisse="belirsiz", guven="dusuk" yaz, ASLA tahmin etme
+- Konuşmada şirket adı veya BIST kodu AÇIKÇA geçiyorsa → aşağıdaki eşleştirme tablosundan BIST kodunu bul
+- Hisse adı/kodu geçmiyorsa → hisse="belirsiz", guven="dusuk" yaz, ASLA tahmin etme
 - [ŞİMDİYE KADAR BAHSEDİLENLER] listesini YALNIZCA önceki cümledeki konuyu sürdüren açık atıflar için kullan
 - "bu hisse", "söz konusu şirket", "onun grafiği" gibi açık zamir atıfları kabul edilir
 - Sadece rakam/teknik seviye geçiyorsa ve hisse belli değilse → hisse="belirsiz"
-- ENKAI, THYAO gibi geçerli kodları yanlış duyulan kelimelerle karıştırma; emin değilsen belirsiz yaz
-
+- Şirket adını yanlış duyulmuş hâliyle eşleştir (ör. "Dov Roboti" → "DOF Robotik" → DOFRB)
+{name_section}
 BAĞLAM KURALLARI:
 - [ÖNCEKİ BAĞLAM] bölümü bağlamı korumak içindir, oradan hisse adı çıkarabilirsin
 - [ŞİMDİYE KADAR BAHSEDİLENLER] listesi referans içindir, otomatik atama için değil

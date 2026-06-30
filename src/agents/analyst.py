@@ -6,13 +6,14 @@ Her chunk için JSON şemasına uygun sinyal dict'i döndürür.
 
 import json
 
-from src.transcription.prompts import build_analyst_system_prompt, load_bist_tickers
+from src.transcription.prompts import build_analyst_system_prompt, load_bist_ticker_names, load_bist_tickers
 from src.utils.api_helpers import safe_llm_call
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
 _BIST_TICKERS = load_bist_tickers()
+_BIST_TICKER_NAMES = load_bist_ticker_names()
 
 _REQUIRED_KEYS = {"chunk_id", "bahsedilen_hisseler", "sinyaller", "teknik_terimler", "genel_yorum"}
 
@@ -37,7 +38,7 @@ def analyze_chunk(chunk: dict, seen_stocks: list[str]) -> dict:
         f"Chunk ID: {chunk_id}"
     )
 
-    system = build_analyst_system_prompt(_BIST_TICKERS)
+    system = build_analyst_system_prompt(_BIST_TICKERS, _BIST_TICKER_NAMES)
 
     try:
         raw = safe_llm_call(prompt=user_msg, system=system)
