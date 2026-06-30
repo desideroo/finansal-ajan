@@ -42,7 +42,8 @@ def analyze_chunk(chunk: dict, seen_stocks: list[str]) -> dict:
 
     try:
         raw = safe_llm_call(prompt=user_msg, system=system)
-        result = json.loads(raw)
+        cleaned = _strip_markdown(raw)
+        result = json.loads(cleaned)
     except json.JSONDecodeError as exc:
         logger.error("Chunk %s JSON parse hatası: %s | Yanıt: %.200s", chunk_id, exc, raw if 'raw' in dir() else "")
         return _empty_schema(chunk_id)
@@ -97,6 +98,18 @@ def validate_result(result: dict) -> bool:
         logger.warning("Şemada eksik alanlar: %s", missing)
         return False
     return True
+
+
+def _strip_markdown(text: str) -> str:
+    """```json ... ``` veya ``` ... ``` bloklarını soyar."""
+    text = text.strip()
+    if text.startswith("```"):
+        lines = text.splitlines()
+        # ilk satır ``` veya ```json, son satır ```
+        start = 1 if lines[0].startswith("```") else 0
+        end = -1 if lines[-1].strip() == "```" else len(lines)
+        text = "\n".join(lines[start:end]).strip()
+    return text
 
 
 def _empty_schema(chunk_id: str) -> dict:
