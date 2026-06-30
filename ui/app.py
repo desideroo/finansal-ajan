@@ -196,24 +196,27 @@ with tab1:
     # ── BLOK B: Transkripsiyon ───────────────────────────────────────────────
     st.subheader("2️⃣ Transkripsiyon")
 
-    col_b1, col_b2, col_b3 = st.columns([1, 1, 4])
+    t_done_count = len(st.session_state.t_chunks)
+    t_resuming   = t_done_count > 0 and not st.session_state.t_done
 
-    # Başlat butonu
-    if col_b1.button("▶ Başlat", disabled=(not st.session_state.audio_bytes or st.session_state.t_running)):
-        # Önceki job'ı temizle
+    col_b1, col_b2, col_b3, col_b4 = st.columns([1, 1, 1, 3])
+
+    t_btn_label = "▶ Devam Et" if t_resuming else "▶ Başlat"
+    if col_b1.button(t_btn_label, key="trans_start",
+                     disabled=(not st.session_state.audio_bytes or st.session_state.t_running)):
         if st.session_state.t_job_id:
             _cancel(st.session_state.t_job_id)
-        st.session_state.t_chunks  = []
-        st.session_state.t_done    = False
-        st.session_state.t_cursor  = 0
-        st.session_state.t_stop    = False
+        # Devam modunda t_chunks'ı KORUYORUZ
+        st.session_state.t_done   = False
+        st.session_state.t_cursor = 0
+        st.session_state.t_stop   = False
 
-        # Job başlat
         r = httpx.post(
             f"{API_URL}/jobs/transcribe",
             files={"file": (st.session_state.audio_name,
                             st.session_state.audio_bytes, "audio/mpeg")},
-            data={"title": st.session_state.video_title or "bilinmiyor"},
+            data={"title": st.session_state.video_title or "bilinmiyor",
+                  "resume_from": t_done_count},
             timeout=30,
         )
         r.raise_for_status()
@@ -221,8 +224,19 @@ with tab1:
         st.session_state.t_running = True
         st.rerun()
 
+    if col_b2.button("🔄 Sıfırla", key="trans_reset",
+                     disabled=st.session_state.t_running):
+        if st.session_state.t_job_id:
+            _cancel(st.session_state.t_job_id)
+        st.session_state.t_chunks  = []
+        st.session_state.t_done    = False
+        st.session_state.t_cursor  = 0
+        st.session_state.t_stop    = False
+        st.session_state.t_job_id  = None
+        st.rerun()
+
     # Durdur butonu
-    if col_b2.button("⏹ Durdur", disabled=(not st.session_state.t_running)):
+    if col_b3.button("⏹ Durdur", key="trans_stop", disabled=(not st.session_state.t_running)):
         st.session_state.t_stop    = True
         st.session_state.t_running = False
         _cancel(st.session_state.t_job_id)
@@ -260,7 +274,7 @@ with tab1:
     elif st.session_state.t_done:
         st.caption(f"✅ Transkripsiyon tamamlandı — {len(chunks)} chunk")
     elif chunks:
-        st.caption(f"⏸ Durduruldu — {len(chunks)} chunk")
+        st.caption(f"⏸ Durduruldu — {len(chunks)} chunk · '▶ Devam Et' ile kaldığı yerden devam eder")
 
     for c in chunks:
         dakika = int(c.get("start_sec", 0) // 60)

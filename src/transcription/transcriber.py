@@ -106,6 +106,7 @@ def transcribe_streaming(
     chunk_minutes: int = 10,
     cancelled: threading.Event | None = None,
     on_progress: "callable | None" = None,
+    resume_from: int = 0,
 ) -> Generator[dict, None, None]:
     """Ses dosyasını parça parça transkribe eder, her chunk hazır olunca yield eder.
 
@@ -143,7 +144,11 @@ def transcribe_streaming(
         raw_chunks = build_chunks(clean, chunk_minutes)
         total = len(raw_chunks)
 
+        if resume_from > 0:
+            logger.info("Cache: %d chunk atlanıyor (resume_from=%d)", resume_from, resume_from)
         for i, chunk in enumerate(raw_chunks):
+            if i < resume_from:
+                continue
             if cancelled and cancelled.is_set():
                 logger.info("Transkripsiyon iptal edildi (chunk %d/%d)", i, total)
                 return
@@ -180,7 +185,11 @@ def transcribe_streaming(
 
     tmp_dir = tempfile.mkdtemp(prefix="borsa_whisper_")
     all_segments: list[dict] = []
-    chunk_idx = 0
+    chunk_idx = resume_from  # zaten tamamlananları say
+
+    if resume_from > 0:
+        logger.info("Transkripsiyon %d. chunk'tan devam ediyor (%d parça atlanıyor)",
+                    resume_from, resume_from)
 
     try:
         for i in range(total_chunks):
@@ -191,6 +200,11 @@ def transcribe_streaming(
             start = i * chunk_secs
             actual_end = min(start + chunk_secs, duration)
             seg_duration = actual_end - start
+
+            # Daha önce tamamlanmış parçaları atla
+            if i < resume_from:
+                logger.info("Parça %d/%d atlanıyor (zaten tamamlandı)", i + 1, total_chunks)
+                continue
 
             piece_path = str(Path(tmp_dir) / f"piece_{i:02d}.wav")
             logger.info("Parça %d/%d çıkarılıyor (%.0f-%.0f sn)...", i + 1, total_chunks, start, actual_end)

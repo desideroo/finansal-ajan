@@ -141,7 +141,7 @@ async def health():
 
 # ── Transkripsiyon job ────────────────────────────────────────────────────────
 
-def _run_transcription(job: Job, audio_path: str, title: str):
+def _run_transcription(job: Job, audio_path: str, title: str, resume_from: int = 0):
     try:
         job.add("progress", {"mesaj": "Ses dosyası hazırlanıyor...", "yuzde": 1})
         all_chunks: list[dict] = []
@@ -163,6 +163,7 @@ def _run_transcription(job: Job, audio_path: str, title: str):
         for ev in transcribe_streaming(
             audio_path, chunk_minutes=10,
             cancelled=job.cancelled, on_progress=on_prog,
+            resume_from=resume_from,
         ):
             if job.cancelled.is_set():
                 break
@@ -222,6 +223,7 @@ def _run_transcription(job: Job, audio_path: str, title: str):
 async def start_transcription(
     file: UploadFile = File(...),
     title: str = Form("bilinmiyor"),
+    resume_from: int = Form(0),
 ):
     suffix = Path(file.filename).suffix if file.filename else ".tmp"
     with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
@@ -229,7 +231,7 @@ async def start_transcription(
         tmp_path = tmp.name
 
     job = _new_job()
-    t = threading.Thread(target=_run_transcription, args=(job, tmp_path, title), daemon=True)
+    t = threading.Thread(target=_run_transcription, args=(job, tmp_path, title, resume_from), daemon=True)
     t.start()
     return {"job_id": job.job_id}
 
