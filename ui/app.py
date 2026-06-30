@@ -223,16 +223,17 @@ with tab1:
     # ── BLOK C: Analiz ───────────────────────────────────────────────────────
     st.subheader("3️⃣ Finansal Sinyal Analizi")
 
-    col_c1, col_c2, col_c3 = st.columns([1, 1, 4])
-
     done_chunks = st.session_state.a_done_chunks
     resuming = bool(done_chunks) and not st.session_state.a_done
 
     col_c1, col_c2, col_c3, col_c4 = st.columns([1, 1, 1, 3])
 
+    has_chunks = bool(st.session_state.t_chunks)
     btn_label = "▶ Devam Et" if resuming else "▶ Başlat"
+    if not has_chunks and not resuming:
+        st.info("Önce transkripsiyon tamamlanmalı.")
     if col_c1.button(btn_label, key="analiz_start",
-                     disabled=(not st.session_state.audio_bytes or st.session_state.a_running)):
+                     disabled=(not has_chunks or st.session_state.a_running)):
         if st.session_state.a_job_id:
             _cancel(st.session_state.a_job_id)
         # Devam modunda sinyalleri KORUYORUZ, sadece job durumunu sıfırla
@@ -242,12 +243,17 @@ with tab1:
         st.session_state.a_stop   = False
         st.session_state.a_log    = []
 
+        import json as _json
+        chunks_for_api = [
+            {"chunk_id": c["chunk_id"], "start_sec": c.get("start_sec", 0),
+             "end_sec": c.get("end_sec", 0), "text": c["text"]}
+            for c in st.session_state.t_chunks
+        ]
         skip = ",".join(done_chunks)
         r = httpx.post(
             f"{API_URL}/jobs/analyze",
-            files={"file": (st.session_state.audio_name,
-                            st.session_state.audio_bytes, "audio/mpeg")},
-            data={"title": st.session_state.video_title or "bilinmiyor",
+            data={"chunks_json": _json.dumps(chunks_for_api, ensure_ascii=False),
+                  "title": st.session_state.video_title or "bilinmiyor",
                   "skip_chunks": skip},
             timeout=60,
         )

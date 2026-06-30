@@ -1,5 +1,6 @@
 """FastAPI backend — ses yükleme, analiz ve sinyal sorgulama endpoint'leri."""
 
+import json
 import os
 import tempfile
 import threading
@@ -164,43 +165,10 @@ async def start_transcription(
 
 # ── Analiz job ────────────────────────────────────────────────────────────────
 
-def _run_analysis(job: Job, audio_path: str, title: str, skip_chunks: set[str] | None = None):
+def _run_analysis(job: Job, raw_chunks: list[dict], title: str, skip_chunks: set[str] | None = None):
     try:
-        job.add("progress", {"mesaj": "Segmentler hazırlanıyor...", "yuzde": 1})
-        all_stream_chunks: list[dict] = []
+        job.add("progress", {"mesaj": f"{len(raw_chunks)} chunk analiz için hazırlanıyor...", "yuzde": 1})
 
-        def on_prog(step: str, idx: int, total: int, dakika: int):
-            if step == "ffmpeg":
-                job.add("progress", {
-                    "mesaj": f"🎬 Parça {idx+1}/{total} ses kesiliyor ({dakika}. dakika)...",
-                    "yuzde": int(1 + (idx / max(total, 1)) * 4),
-                })
-            elif step == "whisper":
-                job.add("progress", {
-                    "mesaj": f"🎙 Parça {idx+1}/{total} Whisper işliyor...",
-                    "yuzde": int(2 + (idx / max(total, 1)) * 4),
-                })
-
-        for ev in transcribe_streaming(
-            audio_path, chunk_minutes=10,
-            cancelled=job.cancelled, on_progress=on_prog,
-        ):
-            if job.cancelled.is_set():
-                break
-            all_stream_chunks.append(ev)
-
-        if job.cancelled.is_set():
-            job.add("cancelled", {"mesaj": "Analiz durduruldu"})
-            return
-
-        job.add("progress", {"mesaj": f"{len(all_stream_chunks)} chunk hazır, analiz başlıyor...", "yuzde": 5})
-
-        # Chunker pipeline
-        raw_chunks = [
-            {"chunk_id": ev["chunk_id"], "start_sec": ev["start_sec"],
-             "end_sec": ev["end_sec"], "text": ev["text"]}
-            for ev in all_stream_chunks
-        ]
         overlapped = add_overlap(raw_chunks, overlap_words=300)
         chunks = process_chunks(overlapped)
         toplam = len(chunks)
@@ -286,18 +254,18 @@ def _run_analysis(job: Job, audio_path: str, title: str, skip_chunks: set[str] |
 
 @app.post("/jobs/analyze")
 async def start_analysis(
-    file: UploadFile = File(...),
+    chunks_json: str = Form(...),   # JSON string: [{chunk_id, start_sec, end_sec, text}, ...]
     title: str = Form("bilinmiyor"),
-    skip_chunks: str = Form(""),  # virgülle ayrılmış zaten yapılmış chunk_id'ler
+    skip_chunks: str = Form(""),
 ):
-    suffix = Path(file.filename).suffix if file.filename else ".tmp"
-    with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-        tmp.write(await file.read())
-        tmp_path = tmp.name
+    try:
+        raw_chunks: list[dict] = json.loads(chunks_json)
+    except Exception:
+        raise HTTPException(status_code=400, detail="chunks_json geçersiz JSON")
 
     skip_set = {c.strip() for c in skip_chunks.split(",") if c.strip()}
     job = _new_job()
-    t = threading.Thread(target=_run_analysis, args=(job, tmp_path, title, skip_set), daemon=True)
+    t = threading.Thread(target=_run_analysis, args=(job, raw_chunks, title, skip_set), daemon=True)
     t.start()
     return {"job_id": job.job_id}
 
