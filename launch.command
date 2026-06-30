@@ -81,4 +81,5 @@ EXISTING_API=$(lsof -ti:8000 2>/dev/null || true)
 exec python -m uvicorn api.main:app \
     --host 0.0.0.0 \
     --port 8000 \
-    --log-level info
+    --log-level warning \
+    --no-access-log
