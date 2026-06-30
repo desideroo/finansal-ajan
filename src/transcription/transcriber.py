@@ -104,6 +104,7 @@ def transcribe_streaming(
     audio_path: str,
     chunk_minutes: int = 10,
     cancelled: threading.Event | None = None,
+    on_progress: "callable | None" = None,
 ) -> Generator[dict, None, None]:
     """Ses dosyasını parça parça transkribe eder, her chunk hazır olunca yield eder.
 
@@ -187,9 +188,15 @@ def transcribe_streaming(
             piece_path = str(Path(tmp_dir) / f"piece_{i:02d}.wav")
             logger.info("Parça %d/%d çıkarılıyor (%.0f-%.0f sn)...", i + 1, total_chunks, start, actual_end)
 
+            if on_progress:
+                on_progress("ffmpeg", i, total_chunks, int(start // 60))
+
             if not _extract_segment_wav(audio_path, start, seg_duration, piece_path):
                 logger.error("Parça %d çıkarılamadı, atlanıyor", i)
                 continue
+
+            if on_progress:
+                on_progress("whisper", i, total_chunks, int(start // 60))
 
             # Whisper bu parçaya uygula
             try:

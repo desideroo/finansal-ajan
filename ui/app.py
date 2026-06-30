@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 API_URL = os.getenv("API_URL", "http://localhost:8000")
-POLL_INTERVAL = 1.0  # saniye
+POLL_INTERVAL = 0.5  # saniye
 
 st.set_page_config(page_title="Borsa Analizi", page_icon="📈", layout="wide")
 
@@ -192,8 +192,14 @@ with tab1:
                     typ  = ev["type"]
                     data = ev["data"]
 
-                    if typ == "chunk":
+                    if typ == "progress":
+                        st.session_state["t_last_progress"] = data
+                    elif typ == "chunk":
                         st.session_state.t_chunks.append(data)
+                        st.session_state["t_last_progress"] = {
+                            "mesaj": f"✅ Chunk {data['chunk_id']} tamamlandı ({data.get('dakika',0)}. dakika)",
+                            "yuzde": int((data["chunk_idx"]+1) / max(data["total_chunks"],1) * 100),
+                        }
                     elif typ in ("done", "cancelled", "error"):
                         st.session_state.t_running = False
                         st.session_state.t_done    = (typ == "done")
@@ -211,26 +217,33 @@ with tab1:
                 st.rerun()
 
     # ── Transkripsiyon durumu göstergesi ─────────────────────────────────────
-    chunks = st.session_state.t_chunks
-    if chunks or st.session_state.t_running:
-        done_count = len(chunks)
+    t_progress_bar  = st.empty()
+    t_status_box    = st.empty()
 
-        # İlerleme tahmini
-        if chunks:
-            total_est = chunks[-1].get("total_chunks", done_count)
-            yuzde = min(done_count / max(total_est, 1), 1.0)
-        else:
-            total_est = 1
-            yuzde = 0.02
+    chunks = st.session_state.t_chunks
+    last_prog = st.session_state.get("t_last_progress", {})
+
+    if chunks or st.session_state.t_running or st.session_state.t_done:
+        done_count = len(chunks)
+        total_est  = chunks[-1].get("total_chunks", done_count) if chunks else 10
+
+        # Backend'den gelen son yüzde varsa onu kullan, yoksa chunk sayısından tahmin
+        yuzde_backend = last_prog.get("yuzde", 0) / 100 if last_prog else 0
+        yuzde_chunk   = done_count / max(total_est, 1)
+        yuzde = max(yuzde_backend, yuzde_chunk, 0.02)
+
+        mesaj_backend = last_prog.get("mesaj", "")
 
         if st.session_state.t_running:
-            label = f"⏳ Chunk {done_count}/{total_est} transkribe edildi..."
+            label = mesaj_backend or f"⏳ {done_count}/{total_est} chunk tamamlandı..."
+            t_progress_bar.progress(min(yuzde, 0.99), text=label)
+            t_status_box.info(f"🔄 {label}")
         elif st.session_state.t_done:
-            label = f"✅ Transkripsiyon tamamlandı — {done_count} chunk"
+            t_progress_bar.progress(1.0, text=f"✅ Transkripsiyon tamamlandı — {done_count} chunk")
+            t_status_box.success(f"✅ {done_count} chunk oluşturuldu")
         else:
-            label = f"⏸ Durduruldu — {done_count} chunk alındı"
-
-        st.progress(yuzde, text=label)
+            t_progress_bar.progress(yuzde, text=f"⏸ Durduruldu — {done_count} chunk alındı")
+            t_status_box.warning(f"⏸ Durduruldu. Kaldığı yerden devam etmek için tekrar ▶ Başlat'a basın.")
 
     # ── Chunk listesi ─────────────────────────────────────────────────────────
     if chunks:
@@ -298,9 +311,10 @@ with tab1:
                     data = ev["data"]
 
                     if typ == "progress":
-                        st.session_state.a_log.append(data.get("mesaj",""))
-                        # son 1 log tut (progress bar için)
                         st.session_state["a_progress"] = data
+                        msg = data.get("mesaj", "")
+                        if msg and (not st.session_state.a_log or st.session_state.a_log[-1] != msg):
+                            st.session_state.a_log.append(msg)
 
                     elif typ == "chunk_done":
                         for s in data.get("sinyaller", []):

@@ -79,10 +79,27 @@ async def health():
 
 def _run_transcription(job: Job, audio_path: str, title: str):
     try:
-        job.add("progress", {"mesaj": "Whisper başlatılıyor...", "yuzde": 2})
+        job.add("progress", {"mesaj": "Ses dosyası hazırlanıyor...", "yuzde": 1})
         all_chunks: list[dict] = []
 
-        for ev in transcribe_streaming(audio_path, chunk_minutes=10, cancelled=job.cancelled):
+        def on_prog(step: str, idx: int, total: int, dakika: int):
+            if step == "ffmpeg":
+                yuzde = int(2 + (idx / max(total, 1)) * 90)
+                job.add("progress", {
+                    "mesaj": f"🎬 Parça {idx+1}/{total} ses kesiliyor ({dakika}. dakika)...",
+                    "yuzde": yuzde,
+                })
+            elif step == "whisper":
+                yuzde = int(3 + (idx / max(total, 1)) * 90)
+                job.add("progress", {
+                    "mesaj": f"🎙 Parça {idx+1}/{total} Whisper'a gönderildi, bekleniyor (~2 dk)...",
+                    "yuzde": yuzde,
+                })
+
+        for ev in transcribe_streaming(
+            audio_path, chunk_minutes=10,
+            cancelled=job.cancelled, on_progress=on_prog,
+        ):
             if job.cancelled.is_set():
                 break
 
@@ -149,10 +166,25 @@ async def start_transcription(
 
 def _run_analysis(job: Job, audio_path: str, title: str):
     try:
-        # Transkripsiyon (cache varsa anında)
-        job.add("progress", {"mesaj": "Segmentler yükleniyor (cache)...", "yuzde": 2})
+        job.add("progress", {"mesaj": "Segmentler hazırlanıyor...", "yuzde": 1})
         all_stream_chunks: list[dict] = []
-        for ev in transcribe_streaming(audio_path, chunk_minutes=10, cancelled=job.cancelled):
+
+        def on_prog(step: str, idx: int, total: int, dakika: int):
+            if step == "ffmpeg":
+                job.add("progress", {
+                    "mesaj": f"🎬 Parça {idx+1}/{total} ses kesiliyor ({dakika}. dakika)...",
+                    "yuzde": int(1 + (idx / max(total, 1)) * 4),
+                })
+            elif step == "whisper":
+                job.add("progress", {
+                    "mesaj": f"🎙 Parça {idx+1}/{total} Whisper işliyor...",
+                    "yuzde": int(2 + (idx / max(total, 1)) * 4),
+                })
+
+        for ev in transcribe_streaming(
+            audio_path, chunk_minutes=10,
+            cancelled=job.cancelled, on_progress=on_prog,
+        ):
             if job.cancelled.is_set():
                 break
             all_stream_chunks.append(ev)
