@@ -133,8 +133,16 @@ def build_analyst_system_prompt(
   "genel_yorum": "tek cümle özet"
 }"""
 
+    # Alias tablosu — konuşma dilindeki kısa/takma adlar
+    _aliases = load_bist_aliases(json_path)
+    alias_lines = "\n".join(f"{alias} → {ticker}" for alias, ticker in sorted(_aliases.items()))
+
     name_section = f"""
-ŞİRKET ADI → BIST KODU EŞLEŞTİRMESİ (konuşmada şirket adı geçerse bu tablodan kodu bul):
+KONUŞMA DİLİ TAKMA AD → BIST KODU (önce buna bak):
+Analistler şirket adını kısaltarak veya takma adıyla söyler:
+{alias_lines}
+
+Resmi şirket adları (İngilizce):
 {name_map_lines}
 """ if name_map_lines else ""
 
