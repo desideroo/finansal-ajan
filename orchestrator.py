@@ -10,7 +10,7 @@ from src.agents.analyst import analyze_chunk, extract_stocks_from_result
 from src.agents.chunker import process_chunks
 from src.qdrant.client import get_or_create_collection
 from src.qdrant.uploader import upload_chunk_results
-from src.transcription.transcriber import transcribe_audio
+from src.transcription.transcriber import add_overlap, build_chunks, transcribe_audio
 from src.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -43,9 +43,11 @@ def run_pipeline(
     logger.info("Adım 1/3: Transkripsiyon başlıyor")
     segments = transcribe_audio(audio_path)
 
-    # 3 — Chunking
+    # 3 — Chunking: segment → ~10dk gruplar → overlap ekle → doğrula/filtrele
     logger.info("Adım 2/3: Chunk işleme başlıyor (%d segment)", len(segments))
-    chunks = process_chunks(segments)
+    raw_chunks = build_chunks(segments, chunk_minutes=10)
+    overlapped = add_overlap(raw_chunks, overlap_words=300)
+    chunks = process_chunks(overlapped)
     toplam = len(chunks)
     logger.info("%d chunk oluşturuldu", toplam)
 

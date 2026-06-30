@@ -14,6 +14,7 @@ from src.utils.logger import get_logger
 logger = get_logger(__name__)
 
 _CHECKPOINT = "mlx-community/whisper-large-v3-mlx"
+_HALLUCINATION_REPEAT_THRESHOLD = 4  # 3 kelimelik pattern N kez tekrarlarsa halüsinasyon
 
 
 def transcribe_audio(audio_path: str) -> list[dict]:
@@ -44,6 +45,7 @@ def transcribe_audio(audio_path: str) -> list[dict]:
             word_timestamps=True,
             initial_prompt=WHISPER_INITIAL_PROMPT,
             no_speech_threshold=0.6,
+            condition_on_previous_text=False,  # halüsinasyon döngüsünü kırar
         )
     except Exception as exc:
         logger.error("Whisper transkripsiyon hatası: %s", exc)
@@ -52,6 +54,34 @@ def transcribe_audio(audio_path: str) -> list[dict]:
     segments = result.get("segments", [])
     logger.info("Transkripsiyon tamamlandı: %d segment", len(segments))
     return segments
+
+
+def _is_hallucination(text: str) -> bool:
+    """Kısa bir kalıbın tekrarından oluşan halüsinasyon segmentini tespit eder.
+
+    Hem trigram (ilk 3 kelime) hem de tüm bigram'ları kontrol eder.
+    """
+    words = text.strip().split()
+    if len(words) < 6:
+        return False
+
+    # Trigram kontrolü: ilk 3 kelime N kez tekrar
+    trigram = " ".join(words[:3])
+    if text.count(trigram) >= _HALLUCINATION_REPEAT_THRESHOLD:
+        return True
+
+    # Bigram taraması: herhangi bir 2 kelimelik kalıp çok tekrarlanıyorsa
+    bigrams: dict[str, int] = {}
+    for i in range(len(words) - 1):
+        bg = f"{words[i]} {words[i+1]}"
+        bigrams[bg] = bigrams.get(bg, 0) + 1
+
+    max_repeat = max(bigrams.values()) if bigrams else 0
+    # Toplam kelime sayısının %30'undan fazlası tek bigram ise halüsinasyon
+    if max_repeat >= max(8, len(words) * 0.30):
+        return True
+
+    return False
 
 
 def build_chunks(segments: list, chunk_minutes: int = 10) -> list[dict]:
@@ -71,12 +101,21 @@ def build_chunks(segments: list, chunk_minutes: int = 10) -> list[dict]:
         logger.warning("Segment listesi boş, chunk oluşturulamadı")
         return []
 
+    # Halüsinasyon segmentlerini filtrele
+    clean_segments = [s for s in segments if not _is_hallucination(s.get("text", ""))]
+    skipped = len(segments) - len(clean_segments)
+    if skipped:
+        logger.warning("%d halüsinasyon segmenti filtrelendi (%d kaldı)", skipped, len(clean_segments))
+    if not clean_segments:
+        logger.error("Tüm segmentler halüsinasyon — transkripsiyon kalitesiz")
+        return []
+
     chunk_seconds = chunk_minutes * 60
     chunks: list[dict] = []
     current_segs: list[dict] = []
-    chunk_start: float = segments[0]["start"]
+    chunk_start: float = clean_segments[0]["start"]
 
-    for seg in segments:
+    for seg in clean_segments:
         current_segs.append(seg)
         elapsed = seg["end"] - chunk_start
 
