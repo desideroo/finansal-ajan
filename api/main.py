@@ -458,6 +458,18 @@ async def stocks():
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@app.delete("/signals/all")
+async def clear_all_signals():
+    """Qdrant koleksiyonundaki tüm sinyalleri siler ve koleksiyonu yeniden oluşturur."""
+    from src.qdrant.client import get_client
+    collection = os.getenv("QDRANT_COLLECTION", "finansal_analiz")
+    client = get_client()
+    client.delete_collection(collection)
+    get_or_create_collection()
+    logger.info("Tüm sinyaller silindi, koleksiyon yeniden oluşturuldu")
+    return {"cleared": True}
+
+
 @app.get("/verify")
 async def verify(hisse: str = Query(...)):
     try:

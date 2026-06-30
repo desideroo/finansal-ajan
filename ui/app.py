@@ -347,10 +347,12 @@ with tab1:
                             st.session_state.a_done_chunks.append(cid)
 
                     elif typ == "done":
-                        st.session_state.a_ozet      = data.get("ozet", {})
-                        st.session_state.a_sinyaller = data.get("sinyaller", [])
-                        st.session_state.a_running   = False
-                        st.session_state.a_done      = True
+                        st.session_state.a_ozet    = data.get("ozet", {})
+                        # chunk_done'larla birikmiş sinyalleri kullan, done'daki liste override etmesin
+                        if not st.session_state.a_sinyaller:
+                            st.session_state.a_sinyaller = data.get("sinyaller", [])
+                        st.session_state.a_running = False
+                        st.session_state.a_done    = True
 
                     elif typ in ("cancelled", "error"):
                         st.session_state.a_running = False
@@ -416,7 +418,15 @@ with tab1:
 # SEKME 2 — ARAMA
 # ─────────────────────────────────────────────────────────────────────────────
 with tab2:
-    st.header("Sinyal Arama")
+    col_hdr, col_clr = st.columns([5, 1])
+    col_hdr.header("Sinyal Arama")
+    if col_clr.button("🗑 Temizle", help="Qdrant'taki tüm sinyalleri sil"):
+        try:
+            httpx.delete(f"{API_URL}/signals/all", timeout=10)
+            st.toast("Tüm sinyaller silindi", icon="🗑")
+            st.rerun()
+        except Exception as e:
+            st.error(str(e))
     col_left, col_right = st.columns([1, 2])
 
     with col_left:
