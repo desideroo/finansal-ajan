@@ -2,9 +2,11 @@
 
 import json
 import os
+import re
 import tempfile
 import threading
 import uuid
+from datetime import datetime
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -22,6 +24,67 @@ from src.verification.agent import verify_signal
 
 load_dotenv()
 logger = get_logger(__name__)
+
+# ── Session kalıcı depolama ───────────────────────────────────────────────────
+
+_SESSIONS_DIR = Path(__file__).parent / "data" / "sessions"
+_SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def _slugify(title: str) -> str:
+    slug = title.lower().strip()
+    slug = re.sub(r"[^\w\s-]", "", slug)
+    slug = re.sub(r"[\s_-]+", "-", slug)
+    return slug[:80] or "session"
+
+
+def _session_dir(title: str) -> Path:
+    return _SESSIONS_DIR / _slugify(title)
+
+
+def _save_chunks(title: str, chunks: list[dict]) -> None:
+    d = _session_dir(title)
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "chunks.json").write_text(
+        json.dumps(chunks, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    _update_meta(title, {"chunk_count": len(chunks)})
+    logger.info("Session chunks kaydedildi: %s (%d chunk)", title, len(chunks))
+
+
+def _save_signals(title: str, signals: list[dict], done_chunks: list[str]) -> None:
+    d = _session_dir(title)
+    d.mkdir(parents=True, exist_ok=True)
+    payload = {"signals": signals, "done_chunks": done_chunks}
+    (d / "signals.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    _update_meta(title, {"signal_count": len(signals), "done_chunks": len(done_chunks)})
+
+
+def _update_meta(title: str, extra: dict) -> None:
+    d = _session_dir(title)
+    meta_path = d / "meta.json"
+    meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
+    meta.update({"title": title, "updated_at": datetime.now().isoformat()})
+    meta.update(extra)
+    if "created_at" not in meta:
+        meta["created_at"] = meta["updated_at"]
+    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _list_sessions() -> list[dict]:
+    sessions = []
+    for d in sorted(_SESSIONS_DIR.iterdir(), key=lambda p: p.stat().st_mtime, reverse=True):
+        meta_path = d / "meta.json"
+        if not meta_path.exists():
+            continue
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        meta["slug"] = d.name
+        meta["has_chunks"] = (d / "chunks.json").exists()
+        meta["has_signals"] = (d / "signals.json").exists()
+        sessions.append(meta)
+    return sessions
 
 app = FastAPI(title="Borsa Analizi API", version="3.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -131,6 +194,14 @@ def _run_transcription(job: Job, audio_path: str, title: str):
         if job.cancelled.is_set():
             job.add("cancelled", {"mesaj": "Transkripsiyon durduruldu"})
         else:
+            # Chunk'ları diske kaydet
+            save_list = [
+                {"chunk_id": c["chunk_id"], "start_sec": c["start_sec"],
+                 "end_sec": c["end_sec"], "text": c["text"],
+                 "word_count": c.get("word_count", 0)}
+                for c in all_chunks
+            ]
+            _save_chunks(title, save_list)
             job.add("done", {
                 "mesaj": "Transkripsiyon tamamlandı",
                 "yuzde": 100,
@@ -224,6 +295,10 @@ def _run_analysis(job: Job, raw_chunks: list[dict], title: str, skip_chunks: set
                     "sinyaller": sinyaller,
                     "genel_yorum": analysis.get("genel_yorum", ""),
                 })
+                # Anlık diske kaydet — durdurulsa bile sinyal kaybolmasın
+                _save_signals(title, tum_sinyaller,
+                              [c.get("chunk_id", f"{j:02d}") for j, c in enumerate(chunks) if j <= i
+                               and c.get("chunk_id") not in (skip_chunks or set())])
 
             except Exception as exc:
                 logger.error("Chunk %s analiz hatası: %s", chunk_id, exc)
@@ -287,6 +362,43 @@ async def cancel_job(job_id: str):
         raise HTTPException(status_code=404, detail="Job bulunamadı")
     job.cancelled.set()
     return {"cancelled": True}
+
+
+# ── Session endpoint'leri ─────────────────────────────────────────────────────
+
+@app.get("/sessions")
+async def list_sessions():
+    return {"sessions": _list_sessions()}
+
+
+@app.get("/sessions/{slug}")
+async def get_session(slug: str):
+    d = _SESSIONS_DIR / slug
+    if not d.exists():
+        raise HTTPException(status_code=404, detail="Session bulunamadı")
+    result: dict = {}
+    chunks_path = d / "chunks.json"
+    if chunks_path.exists():
+        result["chunks"] = json.loads(chunks_path.read_text(encoding="utf-8"))
+    signals_path = d / "signals.json"
+    if signals_path.exists():
+        data = json.loads(signals_path.read_text(encoding="utf-8"))
+        result["signals"] = data.get("signals", [])
+        result["done_chunks"] = data.get("done_chunks", [])
+    meta_path = d / "meta.json"
+    if meta_path.exists():
+        result["meta"] = json.loads(meta_path.read_text(encoding="utf-8"))
+    return result
+
+
+@app.delete("/sessions/{slug}")
+async def delete_session(slug: str):
+    import shutil
+    d = _SESSIONS_DIR / slug
+    if not d.exists():
+        raise HTTPException(status_code=404, detail="Session bulunamadı")
+    shutil.rmtree(d)
+    return {"deleted": slug}
 
 
 # ── Mevcut endpoint'ler ───────────────────────────────────────────────────────

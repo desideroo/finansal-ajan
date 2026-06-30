@@ -120,6 +120,55 @@ if not _ok:
     st.error("⚠️ API'ye bağlanılamıyor. Lütfen uygulamayı **launch.command** ile başlatın.")
     st.stop()
 
+# ── Sidebar: Kayıtlı oturumlar ────────────────────────────────────────────────
+with st.sidebar:
+    st.header("📂 Kayıtlı Oturumlar")
+    try:
+        sess_resp = httpx.get(f"{API_URL}/sessions", timeout=5).json()
+        sessions = sess_resp.get("sessions", [])
+    except Exception:
+        sessions = []
+
+    if not sessions:
+        st.caption("Henüz kayıtlı oturum yok.")
+    else:
+        for s in sessions:
+            slug  = s.get("slug","")
+            title = s.get("title", slug)
+            n_c   = s.get("chunk_count", "?")
+            n_s   = s.get("signal_count", "?")
+            upd   = s.get("updated_at","")[:10] if s.get("updated_at") else ""
+            label = f"**{title}**\n{n_c} chunk · {n_s} sinyal · {upd}"
+            col1, col2 = st.columns([5, 1])
+            if col1.button(label, key=f"sess_{slug}", use_container_width=True):
+                try:
+                    data = httpx.get(f"{API_URL}/sessions/{slug}", timeout=10).json()
+                    # Chunk'ları yükle
+                    chunks = data.get("chunks", [])
+                    for c in chunks:
+                        if "word_count" not in c:
+                            c["word_count"] = len(c.get("text","").split())
+                    st.session_state.t_chunks = chunks
+                    st.session_state.t_done   = True
+                    st.session_state.t_running = False
+                    # Sinyalleri yükle
+                    st.session_state.a_sinyaller  = data.get("signals", [])
+                    st.session_state.a_done_chunks = data.get("done_chunks", [])
+                    st.session_state.a_done  = bool(data.get("signals"))
+                    # Başlığı yükle
+                    meta = data.get("meta", {})
+                    st.session_state.video_title = meta.get("title", title)
+                    st.toast(f"✅ '{title}' yüklendi", icon="📂")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Yüklenemedi: {e}")
+            if col2.button("🗑", key=f"del_{slug}", help="Sil"):
+                try:
+                    httpx.delete(f"{API_URL}/sessions/{slug}", timeout=5)
+                    st.rerun()
+                except Exception:
+                    pass
+
 tab1, tab2, tab3 = st.tabs(["🎙️ Analiz", "🔍 Arama", "ℹ️ Hakkında"])
 
 # ─────────────────────────────────────────────────────────────────────────────
