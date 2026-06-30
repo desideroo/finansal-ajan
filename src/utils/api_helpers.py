@@ -42,7 +42,8 @@ def _call_gemini(prompt: str, system: str) -> str:
     client = _get_gemini_client()
     config = genai_types.GenerateContentConfig(
         system_instruction=system if system else None,
-        max_output_tokens=4096,
+        max_output_tokens=8192,
+        thinking_config=genai_types.ThinkingConfig(thinking_budget=0),
     )
     response = client.models.generate_content(
         model="models/gemini-2.5-flash",
