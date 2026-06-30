@@ -67,6 +67,31 @@ def load_bist_ticker_names(json_path: str = "bist_hisseler.json") -> dict[str, s
         return {}
 
 
+def load_bist_aliases(json_path: str = "bist_hisseler.json") -> dict[str, str]:
+    """Takma ad / konuşma dili → ticker kodu eşleştirmesi döndürür.
+
+    Returns:
+        {"paholi": "PAHOL", "vakfa": "VAKFA", "bim": "BIMAS", ...}
+    """
+    path = Path(json_path)
+    if not path.exists():
+        return {}
+    try:
+        with path.open(encoding="utf-8") as f:
+            data = json.load(f)
+        result: dict[str, str] = {}
+        for r in data:
+            if not isinstance(r, dict):
+                continue
+            ticker = r.get("ticker", "")
+            for alias in r.get("aliases", []):
+                result[alias.lower()] = ticker
+        return result
+    except Exception as exc:
+        logger.warning("Alias listesi yüklenemedi: %s", exc)
+        return {}
+
+
 # ── KISIM C: build_analyst_system_prompt() ────────────────────────────────────
 
 def build_analyst_system_prompt(

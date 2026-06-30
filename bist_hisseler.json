@@ -61,7 +61,10 @@
   },
   {
     "ticker": "AKBNK",
-    "name": "Akbank T.A.S."
+    "name": "Akbank T.A.S.",
+    "aliases": [
+      "akbank"
+    ]
   },
   {
     "ticker": "AKCNS",
@@ -185,7 +188,11 @@
   },
   {
     "ticker": "ARCLK",
-    "name": "Arcelik A.S."
+    "name": "Arcelik A.S.",
+    "aliases": [
+      "arçelik",
+      "arcelik"
+    ]
   },
   {
     "ticker": "ARDYZ",
@@ -217,7 +224,10 @@
   },
   {
     "ticker": "ASELS",
-    "name": "Aselsan Elektronik Sanayi ve Ticaret A.S. Class B"
+    "name": "Aselsan Elektronik Sanayi ve Ticaret A.S. Class B",
+    "aliases": [
+      "aselsan"
+    ]
   },
   {
     "ticker": "ASGYO",
@@ -381,7 +391,10 @@
   },
   {
     "ticker": "BIMAS",
-    "name": "BIM Birlesik Magazalar A.S."
+    "name": "BIM Birlesik Magazalar A.S.",
+    "aliases": [
+      "bim"
+    ]
   },
   {
     "ticker": "BINBN",
@@ -517,7 +530,11 @@
   },
   {
     "ticker": "CCOLA",
-    "name": "Coca-Cola Icecek A.S."
+    "name": "Coca-Cola Icecek A.S.",
+    "aliases": [
+      "coca cola içecek",
+      "cci"
+    ]
   },
   {
     "ticker": "CELHA",
@@ -673,7 +690,14 @@
   },
   {
     "ticker": "DOFRB",
-    "name": "DOF Robotik Sanayi Anonim Sirketi"
+    "name": "DOF Robotik Sanayi Anonim Sirketi",
+    "aliases": [
+      "dof robotik",
+      "dov robotik",
+      "dov roboti",
+      "dofrb",
+      "dof robot"
+    ]
   },
   {
     "ticker": "DOGUB",
@@ -821,7 +845,10 @@
   },
   {
     "ticker": "ENTRA",
-    "name": "IC Enterra Yenilenebilir Enerji AS"
+    "name": "IC Enterra Yenilenebilir Enerji AS",
+    "aliases": [
+      "entra"
+    ]
   },
   {
     "ticker": "EPLAS",
@@ -837,7 +864,12 @@
   },
   {
     "ticker": "EREGL",
-    "name": "Eregli Demir Ve Celik Fabrikalari T.A.S."
+    "name": "Eregli Demir Ve Celik Fabrikalari T.A.S.",
+    "aliases": [
+      "ereğli",
+      "eregli",
+      "erdemir"
+    ]
   },
   {
     "ticker": "ERSU",
@@ -925,7 +957,10 @@
   },
   {
     "ticker": "FROTO",
-    "name": "Ford Otomotiv Sanayi A.S."
+    "name": "Ford Otomotiv Sanayi A.S.",
+    "aliases": [
+      "ford otosan"
+    ]
   },
   {
     "ticker": "FZLGY",
@@ -933,7 +968,11 @@
   },
   {
     "ticker": "GARAN",
-    "name": "Turkiye Garanti Bankasi Anonim Sirketi"
+    "name": "Turkiye Garanti Bankasi Anonim Sirketi",
+    "aliases": [
+      "garanti",
+      "garanti bankası"
+    ]
   },
   {
     "ticker": "GARFA",
@@ -1057,7 +1096,11 @@
   },
   {
     "ticker": "HALKB",
-    "name": "Turkiye Halk Bankasi Anonim Sirketi"
+    "name": "Turkiye Halk Bankasi Anonim Sirketi",
+    "aliases": [
+      "halk bankası",
+      "halkbank"
+    ]
   },
   {
     "ticker": "HATEK",
@@ -1265,7 +1308,11 @@
   },
   {
     "ticker": "KCHOL",
-    "name": "Koc Holding A.S."
+    "name": "Koc Holding A.S.",
+    "aliases": [
+      "koç holding",
+      "koc holding"
+    ]
   },
   {
     "ticker": "KENT",
@@ -1425,7 +1472,13 @@
   },
   {
     "ticker": "LILAK",
-    "name": "Lila Kagit Sanayi Ve Ticaret Anonim Sirketi"
+    "name": "Lila Kagit Sanayi Ve Ticaret Anonim Sirketi",
+    "aliases": [
+      "lilac",
+      "dillak",
+      "lila",
+      "lilaç"
+    ]
   },
   {
     "ticker": "LINK",
@@ -1553,7 +1606,10 @@
   },
   {
     "ticker": "MGROS",
-    "name": "Migros Ticaret A.S."
+    "name": "Migros Ticaret A.S.",
+    "aliases": [
+      "migros"
+    ]
   },
   {
     "ticker": "MHRGY",
@@ -1561,7 +1617,14 @@
   },
   {
     "ticker": "MIATK",
-    "name": "MIA Teknoloji AS"
+    "name": "MIA Teknoloji AS",
+    "aliases": [
+      "miatek",
+      "miya tech",
+      "miyatek",
+      "mia tech",
+      "mia teknoloji"
+    ]
   },
   {
     "ticker": "MMCAS",
@@ -1749,7 +1812,12 @@
   },
   {
     "ticker": "PAHOL",
-    "name": "PASIFIK HOLDING A.S"
+    "name": "PASIFIK HOLDING A.S",
+    "aliases": [
+      "paholi",
+      "paho",
+      "paholimiz"
+    ]
   },
   {
     "ticker": "PAMEL",
@@ -1789,7 +1857,10 @@
   },
   {
     "ticker": "PETKM",
-    "name": "Petkim Petrokimya Holding Anonim Sirketi"
+    "name": "Petkim Petrokimya Holding Anonim Sirketi",
+    "aliases": [
+      "petkim"
+    ]
   },
   {
     "ticker": "PETUN",
@@ -1797,7 +1868,10 @@
   },
   {
     "ticker": "PGSUS",
-    "name": "Pegasus Hava Tasimaciligi Anonim Sirketi"
+    "name": "Pegasus Hava Tasimaciligi Anonim Sirketi",
+    "aliases": [
+      "pegasus"
+    ]
   },
   {
     "ticker": "PINSU",
@@ -1917,7 +1991,11 @@
   },
   {
     "ticker": "SAHOL",
-    "name": "Haci Omer Sabanci Holding A.S."
+    "name": "Haci Omer Sabanci Holding A.S.",
+    "aliases": [
+      "sabancı holding",
+      "sabanci holding"
+    ]
   },
   {
     "ticker": "SAMAT",
@@ -1989,7 +2067,11 @@
   },
   {
     "ticker": "SISE",
-    "name": "Turkiye Sise ve Cam Fabrikalari A.S."
+    "name": "Turkiye Sise ve Cam Fabrikalari A.S.",
+    "aliases": [
+      "şişecam",
+      "sisecam"
+    ]
   },
   {
     "ticker": "SKBNK",
@@ -2089,7 +2171,11 @@
   },
   {
     "ticker": "TAVHL",
-    "name": "TAV Havalimanlari Holding A.S."
+    "name": "TAV Havalimanlari Holding A.S.",
+    "aliases": [
+      "tav havalimanları",
+      "tav havalimanlari"
+    ]
   },
   {
     "ticker": "TBORG",
@@ -2097,7 +2183,10 @@
   },
   {
     "ticker": "TCELL",
-    "name": "Turkcell Iletisim Hizmetleri A.S."
+    "name": "Turkcell Iletisim Hizmetleri A.S.",
+    "aliases": [
+      "turkcell"
+    ]
   },
   {
     "ticker": "TCKRC",
@@ -2129,11 +2218,19 @@
   },
   {
     "ticker": "THYAO",
-    "name": "Turk Hava Yollari A.O."
+    "name": "Turk Hava Yollari A.O.",
+    "aliases": [
+      "thy",
+      "türk hava yolları",
+      "turk hava yollari"
+    ]
   },
   {
     "ticker": "TKFEN",
-    "name": "Tekfen Holding Anonim Sirketi"
+    "name": "Tekfen Holding Anonim Sirketi",
+    "aliases": [
+      "tekfen"
+    ]
   },
   {
     "ticker": "TKNSA",
@@ -2157,7 +2254,11 @@
   },
   {
     "ticker": "TOASO",
-    "name": "Tofas Turk Otomobil Fabrikasi A.S."
+    "name": "Tofas Turk Otomobil Fabrikasi A.S.",
+    "aliases": [
+      "tofaş",
+      "tofas"
+    ]
   },
   {
     "ticker": "TRALT",
@@ -2201,7 +2302,11 @@
   },
   {
     "ticker": "TTKOM",
-    "name": "Turk Telekomunikasyon A.S."
+    "name": "Turk Telekomunikasyon A.S.",
+    "aliases": [
+      "türk telekom",
+      "turk telekom"
+    ]
   },
   {
     "ticker": "TTRAK",
@@ -2217,7 +2322,11 @@
   },
   {
     "ticker": "TUPRS",
-    "name": "Turkiye Petrol Rafinerileri A.S."
+    "name": "Turkiye Petrol Rafinerileri A.S.",
+    "aliases": [
+      "tüpraş",
+      "tupras"
+    ]
   },
   {
     "ticker": "TUREX",
@@ -2269,11 +2378,20 @@
   },
   {
     "ticker": "VAKBN",
-    "name": "Turkiye Vakiflar Bankasi Turk Anonim Ortakligi"
+    "name": "Turkiye Vakiflar Bankasi Turk Anonim Ortakligi",
+    "aliases": [
+      "vakıfbank",
+      "vakifbank"
+    ]
   },
   {
     "ticker": "VAKFA",
-    "name": "Vakif Faktoring A.S."
+    "name": "Vakif Faktoring A.S.",
+    "aliases": [
+      "vakfa",
+      "vakfamız",
+      "vakfam"
+    ]
   },
   {
     "ticker": "VAKFN",
@@ -2301,7 +2419,10 @@
   },
   {
     "ticker": "VESTL",
-    "name": "Vestel Elektronik Sanayi ve Ticaret A.S."
+    "name": "Vestel Elektronik Sanayi ve Ticaret A.S.",
+    "aliases": [
+      "vestel"
+    ]
   },
   {
     "ticker": "VKFYO",
@@ -2357,7 +2478,11 @@
   },
   {
     "ticker": "YKBNK",
-    "name": "Yapi ve Kredi Bankasi A.S."
+    "name": "Yapi ve Kredi Bankasi A.S.",
+    "aliases": [
+      "yapı kredi",
+      "yapi kredi"
+    ]
   },
   {
     "ticker": "YKSLN",

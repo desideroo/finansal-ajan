@@ -68,13 +68,46 @@ def upload_signal(signal: dict, chunk: dict, video_title: str) -> bool:
     Returns:
         True yüklendi, False atlandı/hata.
     """
-    from src.transcription.prompts import load_bist_tickers
+    import re as _re
+    from src.transcription.prompts import load_bist_aliases, load_bist_ticker_names, load_bist_tickers
     _valid_tickers = load_bist_tickers()
+    _ticker_names = load_bist_ticker_names()
+    _aliases = load_bist_aliases()
+    # Resmi şirket adı → ticker ters eşleştirme (normalize edilmiş)
+    _name_to_ticker = {
+        _re.sub(r"[^a-z0-9]", "", v.lower()): k
+        for k, v in _ticker_names.items()
+    }
 
     hisse = signal.get("hisse", "belirsiz")
-    if hisse == "belirsiz" or hisse not in _valid_tickers:
-        logger.info("Geçersiz/belirsiz hisse atlandı: '%s' (chunk %s)", hisse, chunk.get("chunk_id"))
+    if hisse == "belirsiz":
+        logger.info("Belirsiz hisse atlandı (chunk %s)", chunk.get("chunk_id"))
         return False
+    if hisse not in _valid_tickers:
+        normalized = _re.sub(r"[^a-z0-9]", "", hisse.lower())
+        matched = None
+
+        # 1) Alias listesinde tam eşleşme (paholi, vakfa, bim...)
+        matched = _aliases.get(hisse.lower()) or _aliases.get(normalized)
+
+        # 2) Resmi şirket adında tam eşleşme
+        if not matched:
+            matched = _name_to_ticker.get(normalized)
+
+        # 3) Kısmi eşleşme (şirket adı içinde geçiyor mu?)
+        if not matched:
+            for norm_name, ticker in _name_to_ticker.items():
+                if len(normalized) >= 4 and (normalized in norm_name or norm_name in normalized):
+                    matched = ticker
+                    break
+
+        if matched:
+            logger.info("Hisse eşleştirildi: '%s' → %s", hisse, matched)
+            hisse = matched
+            signal["hisse"] = matched
+        else:
+            logger.info("Geçersiz hisse atlandı: '%s' (chunk %s)", hisse, chunk.get("chunk_id"))
+            return False
 
     embed_query = f"{hisse} {signal.get('sinyal_tipi', '')} {signal.get('gerekce', '')}"
     try:
