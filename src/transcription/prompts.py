@@ -134,7 +134,7 @@ def build_analyst_system_prompt(
 }"""
 
     # Alias tablosu — konuşma dilindeki kısa/takma adlar
-    _aliases = load_bist_aliases(json_path)
+    _aliases = load_bist_aliases()
     alias_lines = "\n".join(f"{alias} → {ticker}" for alias, ticker in sorted(_aliases.items()))
 
     name_section = f"""
