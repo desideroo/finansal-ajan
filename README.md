@@ -29,7 +29,7 @@ Uzun Türkçe borsa analiz ses kayıtlarını otomatik olarak transkript eden, i
                              │ HTTP
 ┌────────────────────────────▼────────────────────────────────────┐
 │                      Streamlit UI (ui/app.py)                   │
-│  • Ses dosyası yükleme    • Transkript görüntüleme              │
+│  • Ses/Video dosyası yükleme • Transkript görüntüleme           │
 │  • Analiz başlatma        • Sinyal kartları                     │
 │  • Oturum yönetimi        • Vektör arama                        │
 └────────────────────────────┬────────────────────────────────────┘
@@ -75,7 +75,7 @@ Uzun Türkçe borsa analiz ses kayıtlarını otomatik olarak transkript eden, i
 ### Veri Akışı
 
 ```
-Ses Dosyası (.m4a / .mp3 / .wav)
+Ses/Video Dosyası (.m4a / .mp3 / .wav / .mp4)
         │
         ▼
 [1] mlx-whisper transkripsiyon
@@ -397,11 +397,7 @@ Streamlit arayüzü üç ana sekmeden oluşur:
 
 ### 1. Ses Dosyası Yükleme ve Transkripsiyon
 
-> **Video dosyanız mı var?** Sistem doğrudan ses dosyası kabul eder. Video dosyasını önce ses dosyasına dönüştürmeniz gerekir. `ffmpeg` kuruluysa terminalde şu komutu çalıştırın:
-> ```bash
-> ffmpeg -i video.mp4 -vn -acodec copy ses.m4a
-> ```
-> `ffmpeg` kurulu değilse: [ffmpeg.org/download](https://ffmpeg.org/download.html) adresinden indirin veya `brew install ffmpeg` komutunu kullanın.
+> **Video dosyanız mı var?** Sistem `.mp4` video dosyalarını da doğrudan kabul eder — arka planda `ffmpeg` ile ses otomatik ayrıştırılır. `.m4a`, `.mp3`, `.wav` ve `.mp4` formatları desteklenir. `ffmpeg` sisteminizde kurulu değilse `brew install ffmpeg` ile kurabilirsiniz.
 
 1. Sayfanın sol kenar çubuğunda **"Oturum başlığı"** alanına bir isim girin (ör. `analiz-01`). Bu isimle oturum diske kaydedilecektir.
 2. **"Ses dosyası yükle"** alanından `.m4a`, `.mp3` veya `.wav` formatında dosyanızı seçin.

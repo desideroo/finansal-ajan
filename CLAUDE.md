@@ -16,7 +16,7 @@ Uzun Türkçe borsa analiz ses dosyalarını (95+ dakika) otonom olarak işleyen
 |--------|-----------|-------|
 | Transkripsiyon | mlx-whisper | checkpoint: `mlx-community/whisper-large-v3-mlx` |
 | Ajan Çerçevesi | langchain-core | Sade Python ajan mimarisi, JSON iletişim |
-| Ana LLM | Google Gemini 2.0 Flash | `gemini-2.0-flash`, max_output_tokens=1000 |
+| Ana LLM | Google Gemini 2.5 Flash | `gemini-2.5-flash`, max_output_tokens=8192, thinking_budget=0 |
 | Yedek LLM | OpenAI GPT-4o-mini | `gpt-4o-mini`, max_tokens=1000, json_object |
 | Vektör DB | Qdrant (Docker) | localhost:6333, koleksiyon: `finansal_analiz` |
 | Embedding | BGE-M3 (BAAI/bge-m3) | Lokal, dense+sparse hybrid, dim=1024 |
@@ -34,7 +34,7 @@ Uzun Türkçe borsa analiz ses dosyalarını (95+ dakika) otonom olarak işleyen
 - **Transkripsiyon:** `mlx-community/whisper-large-v3-mlx` (turbo değil)
   - language="tr" (zorunlu, otomatik tespite bırakma)
   - vad_filter=True, word_timestamps=True, temperature=0.0
-- **Ana LLM:** `gemini-2.0-flash` (GOOGLE_API_KEY)
+- **Ana LLM:** `gemini-2.5-flash` (GOOGLE_API_KEY)
 - **Yedek LLM:** `gpt-4o-mini` (OPENAI_API_KEY)
 - **Embedding:** `BAAI/bge-m3` (lokal, ücretsiz)
 - **Ticker Kaynağı:** `bist_hisseler.json` (proje kökünde)

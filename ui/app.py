@@ -533,9 +533,9 @@ with tab3:
     | 🎙️ Yükleme | Ses dosyası API'ye aktarılır |
     | 📝 Transkripsiyon | Whisper large-v3 ile ~10 dk'lık parçalar halinde gerçek zamanlı |
     | 📦 Chunking | Segment sınırlarına saygılı bölme + 300 kelime overlap |
-    | 🤖 Analiz | Gemini 2.0 Flash ile sinyal çıkarımı (yedek: GPT-4o-mini) |
+    | 🤖 Analiz | Gemini 2.5 Flash ile sinyal çıkarımı (yedek: GPT-4o-mini) |
     | 💾 Kayıt | BGE-M3 hybrid embedding → Qdrant |
 
     ### Teknolojiler
-    MLX Whisper · Gemini 2.0 Flash · GPT-4o-mini · BGE-M3 · Qdrant · FastAPI · Streamlit
+    MLX Whisper · Gemini 2.5 Flash · GPT-4o-mini · BGE-M3 · Qdrant · FastAPI · Streamlit
     """)
