@@ -152,6 +152,30 @@ def upload_signal(signal: dict, chunk: dict, video_title: str) -> bool:
         return False
 
 
+def _is_duplicate(hisse: str, sinyal_tipi: str, fiyat, video_title: str) -> bool:
+    """Aynı hisse+tip+fiyat+kaynak kombinasyonu Qdrant'ta zaten var mı kontrol eder."""
+    from qdrant_client.http.models import Filter, FieldCondition, MatchValue
+    try:
+        collection = os.getenv("QDRANT_COLLECTION", "finansal_analiz")
+        conditions = [
+            FieldCondition(key="hisse", match=MatchValue(value=hisse)),
+            FieldCondition(key="sinyal_tipi", match=MatchValue(value=sinyal_tipi)),
+            FieldCondition(key="video_title", match=MatchValue(value=video_title)),
+        ]
+        if fiyat is not None:
+            conditions.append(FieldCondition(key="fiyat", match=MatchValue(value=float(fiyat))))
+        results, _ = get_client().scroll(
+            collection_name=collection,
+            scroll_filter=Filter(must=conditions),
+            limit=1,
+            with_payload=False,
+            with_vectors=False,
+        )
+        return len(results) > 0
+    except Exception:
+        return False
+
+
 def upload_chunk_results(chunk: dict, analysis: dict, video_title: str) -> None:
     """Bir chunk'ın tüm sinyallerini Qdrant'a yükler.
 
@@ -165,9 +189,17 @@ def upload_chunk_results(chunk: dict, analysis: dict, video_title: str) -> None:
         logger.info("Chunk %s'de sinyal yok, atlanıyor", chunk.get("chunk_id"))
         return
 
-    success, skipped = 0, 0
+    success, skipped, dupes = 0, 0, 0
     for signal in sinyaller:
         try:
+            hisse = signal.get("hisse", "belirsiz")
+            tip   = signal.get("sinyal_tipi", "")
+            fiyat = signal.get("fiyat")
+            if hisse != "belirsiz" and _is_duplicate(hisse, tip, fiyat, video_title):
+                logger.info("Tekrar sinyal atlandı: %s %s %.2f (chunk %s)",
+                            hisse, tip, fiyat or 0, chunk.get("chunk_id"))
+                dupes += 1
+                continue
             uploaded = upload_signal(signal, chunk, video_title)
             if uploaded:
                 success += 1
@@ -178,6 +210,6 @@ def upload_chunk_results(chunk: dict, analysis: dict, video_title: str) -> None:
             skipped += 1
 
     logger.info(
-        "Chunk %s yükleme tamamlandı: %d başarılı, %d atlandı",
-        chunk.get("chunk_id"), success, skipped,
+        "Chunk %s yükleme tamamlandı: %d başarılı, %d tekrar, %d atlandı",
+        chunk.get("chunk_id"), success, dupes, skipped,
     )

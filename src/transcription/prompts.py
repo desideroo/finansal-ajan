@@ -142,10 +142,15 @@ sinyal_tipi YALNIZCA şu 6 değerden biri olabilir:
   genel_yorum → diğer tüm yorumlar
 
 DÖNÜŞTÜRME KURALLARI:
-  "hedef fiyat" → sinyal_tipi="direnc" (fiyatı doldur)
+  "hedef fiyat", "hedef" → sinyal_tipi="direnc" (fiyatı doldur)
   "negatif", "olumsuz" → sinyal_tipi="genel_yorum"
-  "hedef" → sinyal_tipi="direnc" (fiyatı doldur)
-  Bu 6 tip dışında HİÇBİR tip üretme."""
+  "X'in altına inerse düşüş", "X kırılırsa negatif" → sinyal_tipi="stop_loss" (X fiyatını doldur)
+  Bu 6 tip dışında HİÇBİR tip üretme.
+
+ARACILAR VE BROKERLAR:
+  A1 Capital, İş Yatırım, Gedik, Ata, Deniz Yatırım, Garanti Yatırım, Yapı Kredi Yatırım gibi
+  aracı kurum / broker isimleri HİSSE DEĞİLDİR. Bunların işlemlerini (satış, alış) sinyal olarak
+  üretme. Sadece analistin bizzat tavsiye ettiği hisseleri raporla."""
 
     # Alias tablosu — konuşma dilindeki kısa/takma adlar
     _aliases = load_bist_aliases()
