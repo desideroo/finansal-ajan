@@ -423,6 +423,17 @@ with tab1:
         if genel_yorum_sayisi and "genel_yorum" not in filtre_tip:
             st.caption(f"ℹ️ {genel_yorum_sayisi} adet genel yorum bu listede gösterilmiyor. Tümünü görmek için **Arama** sekmesinde sorgu girmeden 'Sinyal tipi → Tümü' seçip arayın.")
 
+        with st.expander("💡 Güven skoru nasıl belirlenir?"):
+            st.markdown(
+                "Güven skoru, analistin o sinyal için ne kadar net ve kararlı konuştuğunu yansıtır:\n\n"
+                "- **Yüksek** — Analist fiyat seviyesini açıkça belirtmiş ve kesin bir ifade kullanmış. "
+                "*(ör. '45 TL'den alırım', 'stop-loss 38'de')*\n"
+                "- **Orta** — Seviye söylenmiş ama koşullu ya da ihtimalli bir ifade var. "
+                "*(ör. 'o seviyelere gelirse düşünülebilir')*\n"
+                "- **Düşük** — Belirsiz, geçmiş kipe dayalı veya spekülatif bir yorum. "
+                "*(ör. 'düşmüş olsaydı cazip olurdu')*"
+            )
+
         goster = [s for s in sinyaller
                   if s.get("hisse") in filtre_hisse and s.get("sinyal_tipi") in filtre_tip]
         if goster:
