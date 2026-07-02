@@ -116,10 +116,13 @@ def upload_signal(signal: dict, chunk: dict, video_title: str) -> bool:
         logger.error("Embedding hatası (chunk %s): %s", chunk.get("chunk_id"), exc)
         return False
 
+    raw_fiyat = signal.get("fiyat")
+    normalized_fiyat = round(float(raw_fiyat), 2) if raw_fiyat is not None else None
+
     payload = {
         "hisse": hisse,
         "sinyal_tipi": signal.get("sinyal_tipi"),
-        "fiyat": signal.get("fiyat"),  # None ise null olarak saklanır
+        "fiyat": normalized_fiyat,  # None ise null olarak saklanır
         "para_birimi": signal.get("para_birimi", "TL"),
         "guven": signal.get("guven"),
         "kaynak_cumle": signal.get("kaynak_cumle", ""),
@@ -154,7 +157,7 @@ def upload_signal(signal: dict, chunk: dict, video_title: str) -> bool:
 
 def _is_duplicate(hisse: str, sinyal_tipi: str, fiyat, video_title: str) -> bool:
     """Aynı hisse+tip+fiyat+kaynak kombinasyonu Qdrant'ta zaten var mı kontrol eder."""
-    from qdrant_client.http.models import Filter, FieldCondition, MatchValue
+    from qdrant_client.http.models import Filter, FieldCondition, MatchValue, Range
     try:
         collection = os.getenv("QDRANT_COLLECTION", "finansal_analiz")
         conditions = [
@@ -163,7 +166,9 @@ def _is_duplicate(hisse: str, sinyal_tipi: str, fiyat, video_title: str) -> bool
             FieldCondition(key="video_title", match=MatchValue(value=video_title)),
         ]
         if fiyat is not None:
-            conditions.append(FieldCondition(key="fiyat", match=MatchValue(value=float(fiyat))))
+            f = round(float(fiyat), 2)
+            # Range filtresi: MatchValue float tip uyumsuzluğunu atlatır
+            conditions.append(FieldCondition(key="fiyat", range=Range(gte=f - 0.005, lte=f + 0.005)))
         results, _ = get_client().scroll(
             collection_name=collection,
             scroll_filter=Filter(must=conditions),
@@ -188,6 +193,19 @@ def upload_chunk_results(chunk: dict, analysis: dict, video_title: str) -> None:
     if not sinyaller:
         logger.info("Chunk %s'de sinyal yok, atlanıyor", chunk.get("chunk_id"))
         return
+
+    # Chunk içi tekilleştirme: aynı hisse+tip+fiyat kombinasyonunu bir kez al
+    seen_in_chunk: set = set()
+    unique_sinyaller = []
+    for s in sinyaller:
+        key = (s.get("hisse", "belirsiz"), s.get("sinyal_tipi", ""), s.get("fiyat"))
+        if key not in seen_in_chunk:
+            seen_in_chunk.add(key)
+            unique_sinyaller.append(s)
+    if len(unique_sinyaller) < len(sinyaller):
+        logger.info("Chunk %s içi duplikat: %d → %d sinyal",
+                    chunk.get("chunk_id"), len(sinyaller), len(unique_sinyaller))
+    sinyaller = unique_sinyaller
 
     success, skipped, dupes = 0, 0, 0
     for signal in sinyaller:
