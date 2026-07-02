@@ -419,6 +419,10 @@ with tab1:
             default=["alım","satım","stop_loss","destek","direnc"],
         )
 
+        genel_yorum_sayisi = sum(1 for s in sinyaller if s.get("sinyal_tipi") == "genel_yorum")
+        if genel_yorum_sayisi and "genel_yorum" not in filtre_tip:
+            st.caption(f"ℹ️ {genel_yorum_sayisi} adet genel yorum bu listede gösterilmiyor. Tümünü görmek için **Arama** sekmesinde sorgu girmeden 'Sinyal tipi → Tümü' seçip arayın.")
+
         goster = [s for s in sinyaller
                   if s.get("hisse") in filtre_hisse and s.get("sinyal_tipi") in filtre_tip]
         if goster:
