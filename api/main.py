@@ -487,6 +487,25 @@ async def verify(hisse: str = Query(...)):
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@app.post("/verify/bulk")
+async def verify_bulk(body: dict):
+    """Birden fazla hisse kodunun anlık fiyatını çeker ve sinyallerle karşılaştırır."""
+    from src.qdrant.searcher import scroll_all
+    hisseler = body.get("hisseler", [])
+    if not hisseler:
+        return {"count": 0, "results": []}
+    try:
+        results = []
+        for h in hisseler:
+            sinyaller = scroll_all(hisse=h, limit=50)
+            fiyatli = [s for s in sinyaller if s.get("fiyat") is not None]
+            for s in fiyatli:
+                results.append(verify_signal(s))
+        return {"count": len(results), "results": results}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @app.websocket("/progress")
 async def progress(websocket: WebSocket):
     await websocket.accept()

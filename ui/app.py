@@ -498,15 +498,19 @@ with tab2:
                 st.error(f"Arama hatası: {exc}")
 
         st.divider()
-        st.subheader("Fiyat Doğrulama")
-        if st.button("✅ Fiyat Doğrula", disabled=(sec_hisse == "Tümü")):
-            with st.spinner(f"{sec_hisse} doğrulanıyor..."):
+        st.subheader("Anlık Fiyat Karşılaştırması")
+        ana_hisseler = sorted({s.get("hisse") for s in st.session_state.get("a_sinyaller", [])
+                               if s.get("hisse") and s.get("hisse") != "belirsiz"})
+        if ana_hisseler:
+            st.caption(f"Bu analizde tespit edilen hisseler: {', '.join(ana_hisseler)}")
+        if st.button("📈 Tüm Hisselerin Güncel Fiyatlarını Getir", disabled=not ana_hisseler):
+            with st.spinner("Anlık fiyatlar çekiliyor..."):
                 try:
-                    r = httpx.get(f"{API_URL}/verify", params={"hisse": sec_hisse}, timeout=30)
+                    r = httpx.post(f"{API_URL}/verify/bulk",
+                                   json={"hisseler": ana_hisseler}, timeout=60)
                     r.raise_for_status()
                     data    = r.json()
                     results = data.get("results", [])
-                    st.caption(f"{data.get('count',0)} sinyal")
                     if results:
                         import pandas as pd
                         df   = pd.DataFrame(results)
@@ -516,13 +520,14 @@ with tab2:
                             if not isinstance(val, (int, float)): return ""
                             return "color:green" if val >= 0 else "color:red"
                         df_s = df[cols].copy()
+                        st.caption(f"{len(results)} sinyal karşılaştırıldı")
                         if "fark_yuzde" in df_s.columns:
                             st.dataframe(df_s.style.applymap(renk, subset=["fark_yuzde"]),
                                          use_container_width=True)
                         else:
                             st.dataframe(df_s, use_container_width=True)
                     else:
-                        st.info(f"{sec_hisse} için alım/satım sinyali bulunamadı.")
+                        st.info("Fiyat karşılaştırılacak sinyal bulunamadı (fiyat içeren sinyal yok).")
                 except Exception as exc:
                     st.error(f"Doğrulama hatası: {exc}")
 
