@@ -131,7 +131,21 @@ def build_analyst_system_prompt(
   ],
   "teknik_terimler": ["RSI"],
   "genel_yorum": "tek cümle özet"
-}"""
+}
+
+sinyal_tipi YALNIZCA şu 6 değerden biri olabilir:
+  alım       → net alım tavsiyesi
+  satım      → net satım / çıkış tavsiyesi
+  stop_loss  → zarar kes seviyesi
+  destek     → teknik destek seviyesi
+  direnc     → teknik direnç seviyesi (hedef fiyat dahil)
+  genel_yorum → diğer tüm yorumlar
+
+DÖNÜŞTÜRME KURALLARI:
+  "hedef fiyat" → sinyal_tipi="direnc" (fiyatı doldur)
+  "negatif", "olumsuz" → sinyal_tipi="genel_yorum"
+  "hedef" → sinyal_tipi="direnc" (fiyatı doldur)
+  Bu 6 tip dışında HİÇBİR tip üretme."""
 
     # Alias tablosu — konuşma dilindeki kısa/takma adlar
     _aliases = load_bist_aliases()
@@ -157,9 +171,23 @@ HİSSE TESPİT KURALLARI (EN ÖNEMLİ):
 - Sadece rakam/teknik seviye geçiyorsa ve hisse belli değilse → hisse="belirsiz"
 - Şirket adını yanlış duyulmuş hâliyle eşleştir (ör. "Dov Roboti" → "DOF Robotik" → DOFRB)
 {name_section}
+BAĞLAM KIRILMASI KURALLARI (ÇOK ÖNEMLİ):
+Analist yeni bir hisseye geçtiğinde önceki hisse bağlamını DÜŞÜR. Aşağıdaki sinyaller yeni hisseye geçildiğini gösterir:
+- Yeni bir şirket adı / ticker açıkça söyleniyorsa
+- Fiyat seviyesi öncekiyle çelişiyor ve hisse adı değişmişse (ör. 14 TL'lik hisseden 1.67 TL'ye geçiş)
+- "Şimdi X'e bakalım", "bir de şu var", "diğer hisse" gibi geçiş ifadeleri
+- Farklı bir sektör / grup adı geçiyorsa (ör. "Pasifik grubu", "halka arz")
+
+Bu durumlarda: YENİ hissenin adı açık değilse hisse="belirsiz" yaz. ESKİ hissenin adını yeni fiyat seviyelerine ATAMA.
+
 BAĞLAM KURALLARI:
 - [ÖNCEKİ BAĞLAM] bölümü bağlamı korumak içindir, oradan hisse adı çıkarabilirsin
 - [ŞİMDİYE KADAR BAHSEDİLENLER] listesi referans içindir, otomatik atama için değil
+
+genel_yorum SINIRLAMA:
+- Her hisse için en fazla 1 adet genel_yorum üret (en özlü olanı seç)
+- Birden fazla genel cümle varsa tek genel_yorum'da birleştir
+- Fiyat seviyesi olan sinyaller için genel_yorum üretme, direnc/destek/alım/satım kullan
 
 GEÇERLİ BIST KODLARI (yalnızca bunlar kabul edilir):
 {ticker_list}
