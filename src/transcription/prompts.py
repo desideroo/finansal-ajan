@@ -203,7 +203,9 @@ HİSSE TESPİT KURALLARI (EN ÖNEMLİ):
 - [ŞİMDİYE KADAR BAHSEDİLENLER] listesini YALNIZCA önceki cümledeki konuyu sürdüren açık atıflar için kullan
 - "bu hisse", "söz konusu şirket", "onun grafiği" gibi açık zamir atıfları kabul edilir
 - Sadece rakam/teknik seviye geçiyorsa ve hisse belli değilse → hisse="belirsiz"
-- Şirket adını yanlış duyulmuş hâliyle eşleştir (ör. "Dov Roboti" → "DOF Robotik" → DOFRB)
+- Transkripsiyon hataları olabilir: ses benzerliğine göre BIST koduna eşleştir
+  (ör. ünsüz düşmesi, hece kayması, benzer sesli harf — "Dov Roboti" → DOFRB, "Akfa" → VAKFA)
+  Eşleşme bulunamazsa → hisse="belirsiz"
 {name_section}
 BAĞLAM KIRILMASI KURALLARI (ÇOK ÖNEMLİ):
 Analist yeni bir hisseye geçtiğinde önceki hisse bağlamını DÜŞÜR. Aşağıdaki sinyaller yeni hisseye geçildiğini gösterir:
