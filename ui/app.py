@@ -507,7 +507,7 @@ with tab2:
             with st.spinner("Anlık fiyatlar çekiliyor..."):
                 try:
                     r = httpx.post(f"{API_URL}/verify/bulk",
-                                   json={"hisseler": ana_hisseler}, timeout=60)
+                                   json={"hisseler": ana_hisseler}, timeout=120)
                     r.raise_for_status()
                     data    = r.json()
                     results = data.get("results", [])

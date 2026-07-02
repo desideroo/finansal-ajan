@@ -489,19 +489,32 @@ async def verify(hisse: str = Query(...)):
 
 @app.post("/verify/bulk")
 async def verify_bulk(body: dict):
-    """Birden fazla hisse kodunun anlık fiyatını çeker ve sinyallerle karşılaştırır."""
+    """Birden fazla hisse kodunun anlık fiyatını paralel olarak çeker."""
+    import asyncio
     from src.qdrant.searcher import scroll_all
+
     hisseler = body.get("hisseler", [])
     if not hisseler:
         return {"count": 0, "results": []}
+
+    # Tüm hisselerin sinyallerini önce topla
+    tum_sinyaller = []
+    for h in hisseler:
+        sinyaller = scroll_all(hisse=h, limit=50)
+        tum_sinyaller.extend([s for s in sinyaller if s.get("fiyat") is not None])
+
+    if not tum_sinyaller:
+        return {"count": 0, "results": []}
+
+    # Her hisse için fiyat çekimini paralel yap (thread pool)
+    from concurrent.futures import ThreadPoolExecutor
+    loop = asyncio.get_event_loop()
+
     try:
-        results = []
-        for h in hisseler:
-            sinyaller = scroll_all(hisse=h, limit=50)
-            fiyatli = [s for s in sinyaller if s.get("fiyat") is not None]
-            for s in fiyatli:
-                results.append(verify_signal(s))
-        return {"count": len(results), "results": results}
+        with ThreadPoolExecutor(max_workers=min(len(hisseler), 10)) as pool:
+            futures = [loop.run_in_executor(pool, verify_signal, s) for s in tum_sinyaller]
+            results = await asyncio.gather(*futures)
+        return {"count": len(results), "results": list(results)}
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 
