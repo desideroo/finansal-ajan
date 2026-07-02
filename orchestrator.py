@@ -9,7 +9,7 @@ import time
 from src.agents.analyst import analyze_chunk, extract_stocks_from_result
 from src.agents.chunker import calculate_chunk_minutes, process_chunks
 from src.qdrant.client import get_or_create_collection
-from src.qdrant.uploader import upload_chunk_results
+from src.qdrant.uploader import delete_by_video_title, upload_chunk_results
 from src.transcription.transcriber import add_overlap, build_chunks, transcribe_audio
 from src.utils.logger import get_logger
 
@@ -38,6 +38,11 @@ def run_pipeline(
 
     # 1 — Koleksiyonu hazırla
     get_or_create_collection()
+
+    # 1b — Aynı video_title'ın önceki verilerini temizle (yeniden işleme desteği)
+    deleted = delete_by_video_title(video_title)
+    if deleted > 0:
+        logger.info("Önceki run temizlendi: '%s' → %d nokta silindi", video_title, deleted)
 
     # 2 — Transkripsiyon
     logger.info("Adım 1/3: Transkripsiyon başlıyor")

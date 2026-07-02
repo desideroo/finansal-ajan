@@ -181,6 +181,49 @@ def _is_duplicate(hisse: str, sinyal_tipi: str, fiyat, video_title: str) -> bool
         return False
 
 
+def delete_by_video_title(video_title: str) -> int:
+    """Verilen video_title'a ait tüm Qdrant noktalarını siler.
+
+    Args:
+        video_title: Silinecek kaynak başlığı.
+
+    Returns:
+        Silinen nokta sayısı (tahmin), hata durumunda -1.
+    """
+    from qdrant_client.http.models import Filter, FieldCondition, MatchValue
+
+    try:
+        collection = os.getenv("QDRANT_COLLECTION", "finansal_analiz")
+        client = get_client()
+
+        # Önce kaç nokta var say
+        results, _ = client.scroll(
+            collection_name=collection,
+            scroll_filter=Filter(must=[
+                FieldCondition(key="video_title", match=MatchValue(value=video_title))
+            ]),
+            limit=1000,
+            with_payload=False,
+            with_vectors=False,
+        )
+        count = len(results)
+        if count == 0:
+            logger.info("Qdrant'ta '%s' için kayıt yok, silme atlandı", video_title)
+            return 0
+
+        client.delete(
+            collection_name=collection,
+            points_selector=Filter(must=[
+                FieldCondition(key="video_title", match=MatchValue(value=video_title))
+            ]),
+        )
+        logger.info("Qdrant temizlendi: '%s' → %d nokta silindi", video_title, count)
+        return count
+    except Exception as exc:
+        logger.error("Qdrant silme hatası ('%s'): %s", video_title, exc)
+        return -1
+
+
 def upload_chunk_results(chunk: dict, analysis: dict, video_title: str) -> None:
     """Bir chunk'ın tüm sinyallerini Qdrant'a yükler.
 
