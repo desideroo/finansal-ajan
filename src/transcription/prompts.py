@@ -185,7 +185,15 @@ BANT / ARALIK SİNYALLERİ (aynı cümleden gereksiz ikili üretme):
 
 alım KRİTERİ:
   Analist açıkça "al", "alabilirsiniz", "portföye ekle" diyorsa → alım
-  "tepki beklerim", "yukarı gider", "güzel grafik" → alım DEĞİL, genel_yorum
+  Fiyat seviyesiyle birlikte "gelince alırım", "o seviyede alım yerim", "oradan alacağım",
+  "banda gelince alım" gibi niyet belirtiyorsa → alım (fiyatı doldur)
+  "tepki beklerim", "yukarı gider", "güzel grafik", "bekliyorum" (tek başına) → alım DEĞİL, genel_yorum
+
+direnc/destek KELİME KURALI:
+  Analist konuşmasında açıkça "direnç", "direnci", "direnç seviyesi" kelimesini kullanıyorsa → sinyal_tipi="direnc"
+  Analist açıkça "destek", "dip", "taban" diyorsa → sinyal_tipi="destek"
+  Model kendi yorumuyla tip ataması yaparken analistin kullandığı kelimeye öncelik ver.
+  ör. "beş lirada kanal direnci var" → direnc (model "destek gibi davranıyor" diye değiştirme)
 
 ARACILAR VE BROKERLAR:
   A1 Capital, İş Yatırım, Gedik, Ata, Deniz Yatırım, Garanti Yatırım, Yapı Kredi Yatırım gibi
