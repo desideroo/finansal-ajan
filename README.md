@@ -1,6 +1,6 @@
 # Türkçe Borsa Analizi Multi-Agent Sistemi
 
-Uzun Türkçe borsa analiz ses dosyalarını (95+ dakika) otonom olarak işleyen sistem. MLX Whisper ile sesi metne çevirir, LangGraph ajanları aracılığıyla finansal sinyalleri (hisse adı, alım/satım seviyeleri, teknik terimler) çıkarır ve Qdrant vektör veritabanında saklar. FastAPI backend ve Streamlit UI ile sunulur.
+Uzun Türkçe borsa analiz ses dosyalarını otonom olarak işleyen sistem. MLX Whisper ile sesi metne çevirir, LangGraph ajanları aracılığıyla finansal sinyalleri (hisse adı, alım/satım seviyeleri, teknik terimler) çıkarır ve Qdrant vektör veritabanında saklar. FastAPI backend ve Streamlit UI ile sunulur.
 
 ---
 
