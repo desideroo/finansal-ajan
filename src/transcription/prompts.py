@@ -141,6 +141,17 @@ sinyal_tipi YALNIZCA şu 6 değerden biri olabilir:
   direnc     → teknik direnç seviyesi (hedef fiyat dahil)
   genel_yorum → diğer tüm yorumlar
 
+GÜVEN SKORU KRİTERLERİ (çoğunluk "yuksek" olmamalı, gerçekçi dağıt):
+  yuksek → Analist kesin ve net konuşuyor:
+            "kesinlikle", "net", "orada dur", "burası önemli", "dikkat edin",
+            açık fiyat seviyesi + net yön, "portföyünde olmayanlar bile al"
+  orta   → Koşullu ifade veya hafif belirsizlik:
+            "sanırım", "olabilir", "belki", "inşallah", "eğer X olursa Y",
+            "bekliyorum ama garantisi yok", fiyat aralığı geniş (±%5+)
+  dusuk  → Spekülasyon, tahmin veya bağlamdan çıkarım:
+            "tahmin", "görebiliriz", "aklınızda bulunsun", "fikrim şu ki",
+            hisse adı belirsiz ama bağlamdan atandı, analist tereddütlü
+
 DÖNÜŞTÜRME KURALLARI:
   "hedef fiyat", "hedef" → sinyal_tipi="direnc" (fiyatı doldur)
   "negatif", "olumsuz" → sinyal_tipi="genel_yorum"
