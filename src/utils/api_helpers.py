@@ -1,4 +1,4 @@
-"""LLM API sarmalayıcı — Gemini 2.0 Flash (yedek: GPT-4o-mini).
+"""LLM API sarmalayıcı — Gemini 2.5 Flash (yedek: GPT-4o-mini).
 
 Tüm ajan LLM çağrıları bu modüldeki safe_llm_call() üzerinden geçer.
 Gemini başarısız olursa otomatik olarak GPT-4o-mini'ye geçilir.

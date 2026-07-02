@@ -12,4 +12,5 @@ qdrant_storage/
 logs/
 *.segments.json
 .pytest_cache/
-data/sessions/
+data/sessions/*
+!data/sessions/.gitkeep

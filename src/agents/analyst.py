@@ -1,6 +1,6 @@
 """Ajan 2 — Analyst: chunk'tan finansal sinyalleri çıkarır.
 
-safe_llm_call() üzerinden Gemini 2.0 Flash (yedek: GPT-4o-mini) kullanır.
+safe_llm_call() üzerinden Gemini 2.5 Flash (yedek: GPT-4o-mini) kullanır.
 Her chunk için JSON şemasına uygun sinyal dict'i döndürür.
 """
 
