@@ -12,9 +12,10 @@ Uzun Türkçe borsa analiz ses kayıtlarını otomatik olarak transkript eden, i
 4. [Kurulum](#kurulum)
 5. [Yapılandırma](#yapılandırma)
 6. [Sistemi Başlatma](#sistemi-başlatma)
-7. [Kullanım Kılavuzu](#kullanım-kılavuzu)
-8. [Proje Yapısı](#proje-yapısı)
-9. [Sık Karşılaşılan Sorunlar](#sık-karşılaşılan-sorunlar)
+7. [Arayüz Genel Bakış](#arayüz-genel-bakış)
+8. [Kullanım Kılavuzu](#kullanım-kılavuzu)
+9. [Proje Yapısı](#proje-yapısı)
+10. [Sık Karşılaşılan Sorunlar](#sık-karşılaşılan-sorunlar)
 
 ---
 
@@ -151,7 +152,7 @@ THYAO | Analist: 45.50 TL | Piyasa: 47.20 TL | Fark: +3.7% ↑
 GARAN | Analist: 28.00 TL (destek) | Piyasa: 29.15 TL | Destek üstünde ✓
 ```
 
-Bu kıyaslama UI'daki sinyal kartlarında "Doğrulama" sekmesinde görüntülenir ve her analizin ne kadar güncel veya geçerli olduğunu anlık olarak gösterir.
+Bu kıyaslama UI'daki **Arama** sekmesinde, bir hisse seçili iken "✅ Fiyat Doğrula" butonuna basıldığında görüntülenir. Sonuçlar tablo formatında renk kodlu olarak listelenir: pozitif fark yeşil, negatif fark kırmızı.
 
 ### Ajanlar Arası İletişim (JSON Şeması)
 
@@ -363,6 +364,35 @@ Streamlit için tarayıcıdan `http://localhost:8501` adresini açın.
 
 ---
 
+## Arayüz Genel Bakış
+
+Streamlit arayüzü üç ana sekmeden oluşur:
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  📈 Türkçe Borsa Analizi                                     │
+│                                                              │
+│  [ 🎙️ Analiz ] [ 🔍 Arama ] [ ℹ️ Hakkında ]                │
+│                                                              │
+│  ┌─── Sidebar ───┐  ┌─── Ana İçerik ──────────────────────┐ │
+│  │ 📂 Kayıtlı   │  │                                      │ │
+│  │ Oturumlar    │  │  1️⃣ Ses Dosyası                      │ │
+│  │              │  │  2️⃣ Transkripsiyon                   │ │
+│  │ • analiz-01  │  │  3️⃣ Finansal Sinyal Analizi          │ │
+│  │ • analiz-02  │  │                                      │ │
+│  │              │  │  [Sinyal kartları buraya akar]        │ │
+│  └──────────────┘  └──────────────────────────────────────┘ │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Sol kenar çubuğu (Sidebar):** Daha önce tamamlanan oturumlar listelenir. Her oturumun kaç chunk ve sinyal içerdiği, tarihi gösterilir. Bir oturuma tıklandığında transkript ve sinyaller anında yüklenir, yeniden analiz yapmaya gerek kalmaz. 🗑 simgesiyle oturum silinebilir.
+
+**Analiz sekmesi:** Ses yükleme, transkripsiyon ve sinyal analizi adımlarını sırasıyla yönetir.
+
+**Arama sekmesi:** Qdrant vektör araması ve fiyat doğrulama özelliklerini sunar.
+
+---
+
 ## Kullanım Kılavuzu
 
 ### 1. Ses Dosyası Yükleme ve Transkripsiyon
@@ -395,9 +425,23 @@ Transkripsiyon sırasında **"⏹ Durdur"** butonuna tıklayabilirsiniz. Devam e
 
 Transkripsiyon tamamlandıktan sonra:
 
-1. Sayfanın **"Finansal Sinyal Analizi"** bölümüne gidin.
+1. Sayfanın **"3️⃣ Finansal Sinyal Analizi"** bölümüne gidin.
 2. **"▶ Başlat"** butonuna tıklayın.
-3. Her chunk analiz edildikçe sinyal kartları ekranda görünür.
+3. Her chunk analiz edildikçe sinyal kartları ekranda akmaya başlar.
+
+Analiz tamamlanınca üstte özet metrikler görünür:
+
+```
+┌────────┬───────────┬──────────┬────────┐
+│ Chunk  │  Başarılı │  Sinyal  │ Hisse  │
+│   4    │     4     │   39     │   12   │
+└────────┴───────────┴──────────┴────────┘
+Tespit edilen hisseler: THYAO · GARAN · AKBNK · EREGL · ...
+```
+
+Sinyal listesinin üstünde iki filtre çubuğu vardır:
+- **Hisse filtresi:** Sadece belirli hisseleri göster (çoklu seçim)
+- **Sinyal tipi filtresi:** alım / satım / stop_loss / destek / direnc / genel_yorum
 
 Analiz de durdurulup devam ettirilebilir. "🔄 Sıfırla" ile sonuçlar temizlenip baştan çalıştırılabilir.
 
@@ -419,24 +463,42 @@ Her sinyal kartı şunları gösterir:
 - **Sinyal tipi ve fiyat** — alım / satım / stop_loss / destek / direnc / genel_yorum
 - **Kaynak cümle** — analistin tam ifadesi
 
-### 4. Vektör Arama ve Metadata Filtreleme
+### 4. Arama Sekmesi
 
-**"Sinyal Arama"** sekmesinden:
+**Arama sekmesi** iki ayrı işlev sunar:
 
-- **Metin araması:** "THYAO alım" veya "destek seviyesi" gibi doğal dil sorgusu girin
-- **Filtreler:** Hisse kodu, sinyal tipi ve güven seviyesi bazında filtreleme yapın
-- Sonuçlar semantik benzerliğe göre sıralanır
+#### Vektör Arama ve Metadata Filtreleme
 
-Qdrant'ın metadata filtreleme özelliği sayesinde son derece spesifik sorgular yapılabilir:
+Sol paneldeki filtreler:
+- **Hisse:** Açılır menüden hisse kodu seçin veya "Tümü" bırakın
+- **Sinyal tipi:** alım / satım / stop_loss / destek / direnc / genel_yorum
+- **Güven:** yuksek / orta / dusuk
+- **Sonuç sayısı:** 5-50 arası kaydırıcı
 
-| Soru | Filtre Kombinasyonu |
-|------|---------------------|
-| "Sadece THYAO'nun alım noktalarını getir" | `hisse=THYAO` + `sinyal_tipi=alım` |
-| "Yüksek güvenli tüm stop-loss seviyeleri" | `sinyal_tipi=stop_loss` + `guven=yuksek` |
-| "Bu videodaki tüm destek seviyeleri" | `sinyal_tipi=destek` + `video_title=...` |
-| "45 TL civarındaki tüm fiyat sinyalleri" | Semantik arama: "45 lira" |
+Sağ panele doğal dil sorgusu yazıp **"🔍 Ara"** butonuna basın. Qdrant, hem semantik benzerlik hem de anahtar kelime eşleşmesini birlikte kullanır:
+
+| Örnek sorgu | Ne döner |
+|-------------|----------|
+| "THYAO alım" | THYAO için tüm alım sinyalleri |
+| "destek seviyesi" | Tüm destek sinyalleri, benzer ifadeler dahil |
+| "45 lira" | Fiyat yaklaşık 45 TL olan sinyaller |
+
+Filtreler + metin araması birlikte kullanılabilir: ör. `hisse=THYAO` + `sinyal_tipi=alım` + sorgu "kesinlikle" → "Sadece THYAO'nun güçlü alım noktalarını getir" anlamına gelir.
 
 Her sinyal Qdrant'ta şu metadata alanlarıyla etiketlidir: `hisse`, `sinyal_tipi`, `fiyat`, `para_birimi`, `guven`, `chunk_id`, `zaman_sn`, `video_title`, `created_at`.
+
+#### Fiyat Doğrulama
+
+Sol panelde bir hisse seçili iken **"✅ Fiyat Doğrula"** butonuna tıklayın. Sistem o hisseye ait tüm fiyatlı sinyalleri çeker, her biri için BIST'ten anlık fiyat alır ve tablo olarak gösterir:
+
+```
+Hisse │ Sinyal │ Analist Fiyatı │ Anlık Fiyat │  Fark   │ Yorum
+──────┼────────┼────────────────┼─────────────┼─────────┼───────────────────────
+THYAO │  alım  │    45.50 TL    │   47.20 TL  │ +3.7% ↑ │ Analist 45.50 dedi...
+GARAN │ destek │    28.00 TL    │   29.15 TL  │ +4.1% ↑ │ Analist 28.00 dedi...
+```
+
+Pozitif fark yeşil, negatif fark kırmızı renkte gösterilir.
 
 **"🗑 Temizle"** butonu Qdrant'taki tüm kayıtları siler. Dikkatli kullanın.
 

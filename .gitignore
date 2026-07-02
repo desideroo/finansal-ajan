@@ -12,3 +12,4 @@ qdrant_storage/
 logs/
 *.segments.json
 .pytest_cache/
+data/sessions/

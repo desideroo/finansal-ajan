@@ -4,7 +4,7 @@
 
 Uzun Türkçe borsa analiz ses dosyalarını (95+ dakika) otonom olarak işleyen sistem:
 1. MLX Whisper ile ses → metin (Türkçe)
-2. LangGraph ajanları ile finansal sinyal çıkarımı
+2. Çoklu ajan mimarisi ile finansal sinyal çıkarımı
 3. Qdrant vektör DB'ye kayıt
 4. FastAPI backend + Streamlit UI ile sunum
 
@@ -15,7 +15,7 @@ Uzun Türkçe borsa analiz ses dosyalarını (95+ dakika) otonom olarak işleyen
 | Katman | Teknoloji | Detay |
 |--------|-----------|-------|
 | Transkripsiyon | mlx-whisper | checkpoint: `mlx-community/whisper-large-v3-mlx` |
-| Ajan Çerçevesi | langgraph + langchain-core | — |
+| Ajan Çerçevesi | langchain-core | Sade Python ajan mimarisi, JSON iletişim |
 | Ana LLM | Google Gemini 2.0 Flash | `gemini-2.0-flash`, max_output_tokens=1000 |
 | Yedek LLM | OpenAI GPT-4o-mini | `gpt-4o-mini`, max_tokens=1000, json_object |
 | Vektör DB | Qdrant (Docker) | localhost:6333, koleksiyon: `finansal_analiz` |
