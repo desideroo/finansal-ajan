@@ -235,7 +235,7 @@ genel_yorum SINIRLAMA (KESİN KURAL):
 - Her hisse için YALNIZCA 1 adet genel_yorum üret, asla 2 veya daha fazla üretme
 - Aynı hisse için birden fazla genel cümle varsa hepsini tek genel_yorum'un "gerekce" alanında birleştir
 - Fiyat seviyesi olan sinyaller için genel_yorum üretme, direnc/destek/alım/satım kullan
-- Bu kuralı ihlal etmek kesinlikle yasaktır: {"hisse": "ATATP", "sinyal_tipi": "genel_yorum"} listede yalnızca 1 kez görünebilir
+- Bu kuralı ihlal etmek kesinlikle yasaktır: hisse=ATATP, sinyal_tipi=genel_yorum kombinasyonu sinyaller listesinde yalnızca 1 kez görünebilir
 
 GEÇERLİ BIST KODLARI (yalnızca bunlar kabul edilir):
 {ticker_list}
