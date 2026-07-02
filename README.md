@@ -152,7 +152,7 @@ THYAO | Analist: 45.50 TL | Piyasa: 47.20 TL | Fark: +3.7% ↑
 GARAN | Analist: 28.00 TL (destek) | Piyasa: 29.15 TL | Destek üstünde ✓
 ```
 
-Bu kıyaslama UI'daki **Arama** sekmesinde, bir hisse seçili iken "✅ Fiyat Doğrula" butonuna basıldığında görüntülenir. Sonuçlar tablo formatında renk kodlu olarak listelenir: pozitif fark yeşil, negatif fark kırmızı.
+Bu kıyaslama UI'daki **Arama** sekmesinde, **"📈 Tüm Hisselerin Güncel Fiyatlarını Getir"** butonuna basıldığında görüntülenir. Mevcut analizdeki tüm hisseler için fiyatlar paralel olarak BIST'ten çekilir; sonuçlar tablo formatında renk kodlu listelenir: pozitif fark yeşil, negatif fark kırmızı.
 
 ### Ajanlar Arası İletişim (JSON Şeması)
 
@@ -439,6 +439,8 @@ Sinyal listesinin üstünde iki filtre çubuğu vardır:
 - **Hisse filtresi:** Sadece belirli hisseleri göster (çoklu seçim)
 - **Sinyal tipi filtresi:** alım / satım / stop_loss / destek / direnc / genel_yorum
 
+> **Not:** `genel_yorum` sinyalleri varsayılan olarak bu listede gösterilmez. Tümünü görmek için Arama sekmesinde sorgu girmeden "Sinyal tipi → Tümü" seçip arayın.
+
 Analiz de durdurulup devam ettirilebilir. "🔄 Sıfırla" ile sonuçlar temizlenip baştan çalıştırılabilir.
 
 ### 3. Sinyal Kartlarını Okuma
@@ -483,9 +485,9 @@ Filtreler + metin araması birlikte kullanılabilir: ör. `hisse=THYAO` + `sinya
 
 Her sinyal Qdrant'ta şu metadata alanlarıyla etiketlidir: `hisse`, `sinyal_tipi`, `fiyat`, `para_birimi`, `guven`, `chunk_id`, `zaman_sn`, `video_title`, `created_at`.
 
-#### Fiyat Doğrulama
+#### Anlık Fiyat Karşılaştırması
 
-Sol panelde bir hisse seçili iken **"✅ Fiyat Doğrula"** butonuna tıklayın. Sistem o hisseye ait tüm fiyatlı sinyalleri çeker, her biri için BIST'ten anlık fiyat alır ve tablo olarak gösterir:
+**"📈 Tüm Hisselerin Güncel Fiyatlarını Getir"** butonuna tıklayın. Sistem mevcut analizde tespit edilen tüm hisselerin fiyatlarını BIST'ten paralel olarak çeker ve fiyat içeren tüm sinyallerle karşılaştırır:
 
 ```
 Hisse │ Sinyal │ Analist Fiyatı │ Anlık Fiyat │  Fark   │ Yorum
