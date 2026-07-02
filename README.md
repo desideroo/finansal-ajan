@@ -1,6 +1,6 @@
 # Borsa Analizi Multi-Agent Sistemi
 
-Uzun Türkçe borsa analiz ses kayıtlarını (95+ dakika) otomatik olarak transkript eden, içindeki finansal sinyalleri yapay zeka ile çıkaran ve vektör veritabanına kaydederek aranabilir hale getiren uçtan uca bir sistemdir.
+Uzun Türkçe borsa analiz ses kayıtlarını otomatik olarak transkript eden, içindeki finansal sinyalleri yapay zeka ile çıkaran ve vektör veritabanına kaydederek aranabilir hale getiren uçtan uca bir sistemdir.
 
 ---
 
