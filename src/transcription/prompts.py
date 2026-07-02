@@ -155,8 +155,26 @@ GÜVEN SKORU KRİTERLERİ (çoğunluk "yuksek" olmamalı, gerçekçi dağıt):
 DÖNÜŞTÜRME KURALLARI:
   "hedef fiyat", "hedef" → sinyal_tipi="direnc" (fiyatı doldur)
   "negatif", "olumsuz" → sinyal_tipi="genel_yorum"
-  "X'in altına inerse düşüş", "X kırılırsa negatif" → sinyal_tipi="stop_loss" (X fiyatını doldur)
+  "X'in altına inerse düşüş/negatif/çıkarım", "X kırılırsa sat" → sinyal_tipi="stop_loss" (X fiyatını doldur)
+  "eğer X gerçekleşmezse çıkarım/satarım", koşula bağlı çıkış niyeti → sinyal_tipi="stop_loss"
+  "tepki gelir", "tepki bekleriz", "yukarı gider" (net fiyat hedefi yoksa) → sinyal_tipi="genel_yorum"
   Bu 6 tip dışında HİÇBİR tip üretme.
+
+satım vs stop_loss AYIRT ETME (en sık karıştırılan):
+  satım     → Analist koşulsuz ve şimdiki zamanda çıkış söylüyor: "sat", "çık", "pozisyonu kapat", "portföyden çıkar"
+              + fiyat seviyesi OLMALIDIR (fiyat=null ise satım DEĞİLDİR)
+  stop_loss → Koşullu gelecek: "X seviyesinin altına inerse", "kırılırsa sat", "olmasa çıkarım", "gelmezse satarım"
+  Koşul içeren her ifade → stop_loss. Fiyat seviyesi yoksa → genel_yorum veya stop_loss (fiyat=null).
+  satım + fiyat=null → genel_yorum olarak işaretle (fiyatsız satım geçersiz sinyal sayılır)
+
+BANT / ARALIK SİNYALLERİ (aynı cümleden gereksiz ikili üretme):
+  "X-Y bandı", "X ile Y arasında" → tek sinyal üret, fiyat olarak alt sınırı (destek için) veya üst sınırı (direnc için) kullan
+  Aynı kaynak cümleden iki farklı fiyat için ayrı sinyal üretme; en anlamlı olanı seç
+  İstisna: analist her iki seviyeyi de açıkça ayrı ayrı vurguluyorsa (ör. "50 destek, 60 direnc") iki sinyal üretebilirsin
+
+alım KRİTERİ:
+  Analist açıkça "al", "alabilirsiniz", "portföye ekle" diyorsa → alım
+  "tepki beklerim", "yukarı gider", "güzel grafik" → alım DEĞİL, genel_yorum
 
 ARACILAR VE BROKERLAR:
   A1 Capital, İş Yatırım, Gedik, Ata, Deniz Yatırım, Garanti Yatırım, Yapı Kredi Yatırım gibi

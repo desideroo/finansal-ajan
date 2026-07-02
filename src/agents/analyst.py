@@ -58,6 +58,12 @@ def analyze_chunk(chunk: dict, seen_stocks: list[str]) -> dict:
     # chunk_id'yi her zaman kaynaktan al (model yanlış yazabilir)
     result["chunk_id"] = chunk_id
 
+    # Post-processing: fiyatsız satım → genel_yorum (prompt kuralı garantisi)
+    for s in result.get("sinyaller", []):
+        if s.get("sinyal_tipi") == "satım" and s.get("fiyat") is None:
+            s["sinyal_tipi"] = "genel_yorum"
+            logger.info("Fiyatsız satım → genel_yorum dönüştürüldü (chunk %s, hisse %s)", chunk_id, s.get("hisse"))
+
     new_stocks = extract_stocks_from_result(result)
     logger.info(
         "Chunk %s analiz edildi: %d sinyal, %d yeni hisse",
