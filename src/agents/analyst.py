@@ -64,6 +64,22 @@ def analyze_chunk(chunk: dict, seen_stocks: list[str]) -> dict:
             s["sinyal_tipi"] = "genel_yorum"
             logger.info("Fiyatsız satım → genel_yorum dönüştürüldü (chunk %s, hisse %s)", chunk_id, s.get("hisse"))
 
+    # Post-processing: hisse başına en fazla 1 genel_yorum (prompt kuralı garantisi)
+    seen_genel: set[str] = set()
+    filtered: list[dict] = []
+    for s in result.get("sinyaller", []):
+        if s.get("sinyal_tipi") == "genel_yorum":
+            hisse = s.get("hisse", "belirsiz")
+            if hisse in seen_genel:
+                logger.info("Fazladan genel_yorum atlandı (chunk %s, hisse %s)", chunk_id, hisse)
+                continue
+            seen_genel.add(hisse)
+        filtered.append(s)
+    if len(filtered) < len(result.get("sinyaller", [])):
+        logger.info("genel_yorum tekilleştirme: %d → %d sinyal (chunk %s)",
+                    len(result["sinyaller"]), len(filtered), chunk_id)
+    result["sinyaller"] = filtered
+
     new_stocks = extract_stocks_from_result(result)
     logger.info(
         "Chunk %s analiz edildi: %d sinyal, %d yeni hisse",

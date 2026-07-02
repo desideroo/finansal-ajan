@@ -160,6 +160,17 @@ DÖNÜŞTÜRME KURALLARI:
   "tepki gelir", "tepki bekleriz", "yukarı gider" (net fiyat hedefi yoksa) → sinyal_tipi="genel_yorum"
   Bu 6 tip dışında HİÇBİR tip üretme.
 
+GEÇMİŞ KİP / VARSAYIM KURALI (önemli):
+  Analist GEÇMİŞTE gerçekleşmemiş bir senaryodan bahsediyorsa → sinyal_tipi="genel_yorum", guven="dusuk"
+  Belirtiler: "düşmüş olsaydı", "gelmiş olsaydı", "inmiş olsaydı", "olsaydı daha iyi olurdu"
+  Bu ifadeler analistin geriye dönük dileklerini yansıtır, gerçek bir fiyat sinyali DEĞİLDİR.
+  ör. "106'ya düşmüş olsaydı cazip olurdu" → genel_yorum (106 TL destek değil)
+
+KOŞULLU GELECEK + FİYAT KURALI:
+  "X seviyesinin üstünde kapanış yaparsa yukarı döner" → sinyal_tipi="direnc", fiyat=X
+  "X seviyesinin altında kapanış yaparsa düşer" → sinyal_tipi="stop_loss", fiyat=X
+  Bu ifadelerde analist bir eşik fiyat belirtiyor — genel_yorum değil, direnc veya stop_loss kullan.
+
 satım vs stop_loss AYIRT ETME (en sık karıştırılan):
   satım     → Analist koşulsuz ve şimdiki zamanda çıkış söylüyor: "sat", "çık", "pozisyonu kapat", "portföyden çıkar"
               + fiyat seviyesi OLMALIDIR (fiyat=null ise satım DEĞİLDİR)
@@ -220,10 +231,11 @@ BAĞLAM KURALLARI:
 - [ÖNCEKİ BAĞLAM] bölümü bağlamı korumak içindir, oradan hisse adı çıkarabilirsin
 - [ŞİMDİYE KADAR BAHSEDİLENLER] listesi referans içindir, otomatik atama için değil
 
-genel_yorum SINIRLAMA:
-- Her hisse için en fazla 1 adet genel_yorum üret (en özlü olanı seç)
-- Birden fazla genel cümle varsa tek genel_yorum'da birleştir
+genel_yorum SINIRLAMA (KESİN KURAL):
+- Her hisse için YALNIZCA 1 adet genel_yorum üret, asla 2 veya daha fazla üretme
+- Aynı hisse için birden fazla genel cümle varsa hepsini tek genel_yorum'un "gerekce" alanında birleştir
 - Fiyat seviyesi olan sinyaller için genel_yorum üretme, direnc/destek/alım/satım kullan
+- Bu kuralı ihlal etmek kesinlikle yasaktır: {"hisse": "ATATP", "sinyal_tipi": "genel_yorum"} listede yalnızca 1 kez görünebilir
 
 GEÇERLİ BIST KODLARI (yalnızca bunlar kabul edilir):
 {ticker_list}
