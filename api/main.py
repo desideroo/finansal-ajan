@@ -506,15 +506,18 @@ async def verify_bulk(body: dict):
     if not tum_sinyaller:
         return {"count": 0, "results": []}
 
-    # Her hisse için fiyat çekimini paralel yap (thread pool)
+    # Önce her benzersiz hisse için fiyatı paralel çek
     from concurrent.futures import ThreadPoolExecutor
-    loop = asyncio.get_event_loop()
+    from src.verification.agent import get_current_price
 
+    unique_hisseler = list({s["hisse"] for s in tum_sinyaller if s.get("hisse")})
     try:
-        with ThreadPoolExecutor(max_workers=min(len(hisseler), 10)) as pool:
-            futures = [loop.run_in_executor(pool, verify_signal, s) for s in tum_sinyaller]
-            results = await asyncio.gather(*futures)
-        return {"count": len(results), "results": list(results)}
+        with ThreadPoolExecutor(max_workers=min(len(unique_hisseler), 10)) as pool:
+            list(pool.map(get_current_price, unique_hisseler))  # cache'e yükler
+
+        # Cache doldu, şimdi senkron verify_signal hızlı çalışır
+        results = [verify_signal(s) for s in tum_sinyaller]
+        return {"count": len(results), "results": results}
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 

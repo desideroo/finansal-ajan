@@ -522,7 +522,7 @@ with tab2:
                         df_s = df[cols].copy()
                         st.caption(f"{len(results)} sinyal karşılaştırıldı")
                         if "fark_yuzde" in df_s.columns:
-                            st.dataframe(df_s.style.applymap(renk, subset=["fark_yuzde"]),
+                            st.dataframe(df_s.style.map(renk, subset=["fark_yuzde"]),
                                          use_container_width=True)
                         else:
                             st.dataframe(df_s, use_container_width=True)
