@@ -111,6 +111,47 @@ def search_semantic(query: str, limit: int = 10) -> list[dict]:
         return []
 
 
+def scroll_all(
+    hisse: str | None = None,
+    sinyal_tipi: str | None = None,
+    guven: str | None = None,
+    limit: int = 100,
+) -> list[dict]:
+    """Tüm sinyalleri metadata filtresiyle döndürür (vektör araması yapmaz).
+
+    Args:
+        hisse: Hisse kodu filtresi (None = filtre yok).
+        sinyal_tipi: Sinyal tipi filtresi (None = filtre yok).
+        guven: Güven seviyesi filtresi (None = filtre yok).
+        limit: Maksimum sonuç sayısı.
+
+    Returns:
+        Payload dict listesi.
+    """
+    try:
+        conditions = []
+        if hisse:
+            conditions.append(FieldCondition(key="hisse", match=MatchValue(value=hisse)))
+        if sinyal_tipi:
+            conditions.append(FieldCondition(key="sinyal_tipi", match=MatchValue(value=sinyal_tipi)))
+        if guven:
+            conditions.append(FieldCondition(key="guven", match=MatchValue(value=guven)))
+
+        flt = Filter(must=conditions) if conditions else None
+        hits = get_client().scroll(
+            collection_name=_collection(),
+            scroll_filter=flt,
+            limit=limit,
+            with_payload=True,
+            with_vectors=False,
+        )[0]
+        logger.info("scroll_all (hisse=%s, tip=%s, güven=%s): %d sonuç", hisse, sinyal_tipi, guven, len(hits))
+        return _hits_to_payloads(hits)
+    except Exception as exc:
+        logger.error("scroll_all hatası: %s", exc)
+        return []
+
+
 def search_filtered(
     query: str,
     hisse: str | None = None,

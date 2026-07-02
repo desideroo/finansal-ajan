@@ -464,25 +464,23 @@ with tab2:
         sorgu = st.text_input("Arama sorgusu", placeholder="ör. THYAO alım seviyesi")
 
         if st.button("🔍 Ara", type="primary"):
-            if not sorgu.strip():
-                st.warning("Lütfen bir arama sorgusu girin.")
-            else:
-                params = {"q": sorgu, "limit": limit}
-                if sec_hisse != "Tümü": params["hisse"]       = sec_hisse
-                if sec_tip   != "Tümü": params["sinyal_tipi"] = sec_tip
-                if sec_guven != "Tümü": params["guven"]       = sec_guven
-                try:
-                    r = httpx.get(f"{API_URL}/search", params=params, timeout=30)
-                    r.raise_for_status()
-                    data    = r.json()
-                    results = data.get("results", [])
-                    st.caption(f"{data.get('count',0)} sonuç")
-                    for s in results:
-                        st.markdown(_sinyal_html(s), unsafe_allow_html=True)
-                    if not results:
-                        st.info("Sonuç bulunamadı.")
-                except Exception as exc:
-                    st.error(f"Arama hatası: {exc}")
+            params = {"limit": limit}
+            if sorgu.strip():            params["q"]           = sorgu
+            if sec_hisse != "Tümü":     params["hisse"]       = sec_hisse
+            if sec_tip   != "Tümü":     params["sinyal_tipi"] = sec_tip
+            if sec_guven != "Tümü":     params["guven"]       = sec_guven
+            try:
+                r = httpx.get(f"{API_URL}/search", params=params, timeout=30)
+                r.raise_for_status()
+                data    = r.json()
+                results = data.get("results", [])
+                st.caption(f"{data.get('count',0)} sonuç")
+                for s in results:
+                    st.markdown(_sinyal_html(s), unsafe_allow_html=True)
+                if not results:
+                    st.info("Sonuç bulunamadı.")
+            except Exception as exc:
+                st.error(f"Arama hatası: {exc}")
 
         st.divider()
         st.subheader("Fiyat Doğrulama")

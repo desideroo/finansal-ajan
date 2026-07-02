@@ -424,14 +424,18 @@ async def analyze(file: UploadFile = File(...), title: str = "bilinmiyor"):
 
 @app.get("/search")
 async def search(
-    q: str = Query(...),
+    q: str | None = Query(None),
     hisse: str | None = Query(None),
     sinyal_tipi: str | None = Query(None),
     guven: str | None = Query(None),
     limit: int = Query(10, ge=1, le=100),
 ):
     try:
-        results = search_filtered(query=q, hisse=hisse, sinyal_tipi=sinyal_tipi, guven=guven, limit=limit)
+        if q and q.strip():
+            results = search_filtered(query=q, hisse=hisse, sinyal_tipi=sinyal_tipi, guven=guven, limit=limit)
+        else:
+            from src.qdrant.searcher import scroll_all
+            results = scroll_all(hisse=hisse, sinyal_tipi=sinyal_tipi, guven=guven, limit=limit)
         return {"results": results, "count": len(results)}
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
