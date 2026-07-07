@@ -198,7 +198,7 @@ Hiçbir ajan diğerinin iç yapısını bilmez; yalnızca bu JSON sözleşmesine
 
 ### Donanım
 
-- **İşlemci:** Apple Silicon (M1/M2/M3/M4) — `mlx-whisper` yalnızca Apple Silicon'da çalışır
+- **İşlemci:** Apple Silicon (M1/M2/M3/M4/M5) — `mlx-whisper` yalnızca Apple Silicon'da çalışır
 - **RAM:** En az 16 GB önerilir (Whisper large-v3 ~6 GB, BGE-M3 ~2 GB)
 - **Disk:** En az 10 GB boş alan (modeller ilk çalıştırmada indirilir)
 
